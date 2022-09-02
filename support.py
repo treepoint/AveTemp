@@ -1,5 +1,5 @@
-from PIL import Image, ImageDraw, ImageFont
-from PyQt6.QtGui import QIcon
+from PIL import Image, ImageDraw, ImageFont, ImageQt
+from PyQt6.QtGui import QPixmap
 import configparser  # Для чтения конфига
 import ctypes
 import os
@@ -69,8 +69,8 @@ def readConfig(self):
     self.config.set_close_to_tray(to_bool(config['main']['close_to_tray']))
     self.config.set_open_minimized(to_bool(config['main']['open_minimized']))
 
-#Отрисовываем картинку для трея
-def update_tray_image(value, path):
+#Получаем картинку для трея
+def get_tray_image(value):
     value = float(value)
         
     #Делаем базовое изображение с прозрачным фоном
@@ -86,4 +86,8 @@ def update_tray_image(value, path):
     text = round(value)
     dc.text((6,6), f"{text}", fill=(255,255,255), font = font_type)
 
-    image.save(path)
+    imageQT = ImageQt.ImageQt(image)
+
+    pixmap = QPixmap.fromImage(imageQT)
+
+    return pixmap

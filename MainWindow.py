@@ -33,7 +33,7 @@ class Worker(QThread):
         self.keepRunning = False
 
 class Main(QMainWindow):
-    def __init__(self, path, parent=None):
+    def __init__(self, parent=None):
         super().__init__(parent)
         uic.loadUi('windows/main.ui', self)
 
@@ -42,14 +42,12 @@ class Main(QMainWindow):
         self.average_temps = []
         self.tdp = []
 
-        self.path = path
-
         # прочитаем конфиг
         self.config = Entities.Config()
 
         support.readConfig(self)
         
-        support.update_tray_image(0, self.path)
+        self.image = support.get_tray_image(0)
 
         #За сколько секунд храним данные, 86400 — сутки
         self.store_period = self.config.get_store_period()
@@ -145,7 +143,8 @@ class Main(QMainWindow):
             #Текущая
             current_temp = support.to_round_str(self.general_temps[:1][0])
             self.lineEditCpuCurrentTemp.setText(current_temp)
-            support.update_tray_image(current_temp, self.path)
+
+            self.image = support.get_tray_image(current_temp)
 
             #Максимальная
             max_temp = support.to_round_str((max(self.general_temps)))

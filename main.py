@@ -29,16 +29,13 @@ class TrayWrapper:
         #Схлопываем трей когда закрываем основное окно
         self.app.setQuitOnLastWindowClosed(True)
 
-        #Текущее изображение для трея
-        self.image = 'tray.ico'
+        self.window = MainWindow.Main()
+        self.window.resize(300, 300)
 
-        icon = QIcon(self.image)
+        icon = QIcon(self.window.image)
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(icon)
         self.tray.setVisible(True)
-
-        self.window = MainWindow.Main(self.image)
-        self.window.resize(300, 300)
 
         if self.window.config.open_minimized:
             self.window.hide()
@@ -68,7 +65,7 @@ class TrayWrapper:
         self.app.exec()
 
     def update_icon(self):
-        icon = QIcon(self.image)
+        icon = QIcon(self.window.image)
         self.tray.setIcon(icon)
 
     def onTrayIconActivated(self, reason):
