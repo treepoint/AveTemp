@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="images">
+    <file>images/settings.png</file>
+    <file>images/settings_hover.png</file>
+    <file>images/settings_pressed.png</file>
+  </qresource>
+</RCC>

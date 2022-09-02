@@ -1,0 +1,4 @@
+pythonnet
+PyQt6
+configparser
+Pillow
