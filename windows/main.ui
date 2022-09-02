@@ -77,6 +77,12 @@ QWidget {
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
            <widget class="QFrame" name="frame_2">
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="styleSheet">
              <string notr="true">background: #eee; border-right: 1px solid #d8d8d8; border-top: 1px solid #d8d8d8;</string>
             </property>
@@ -91,7 +97,7 @@ QWidget {
               <number>8</number>
              </property>
              <property name="leftMargin">
-              <number>6</number>
+              <number>4</number>
              </property>
              <property name="topMargin">
               <number>12</number>

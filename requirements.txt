@@ -2,3 +2,4 @@ pythonnet
 PyQt6
 configparser
 Pillow
+auto-py-to-exe

@@ -32,6 +32,8 @@ class TrayWrapper:
         self.window = MainWindow.Main()
         self.window.resize(300, 300)
 
+        self.window.setWindowIcon(QIcon('icon.png'))
+
         icon = QIcon(self.window.image)
         self.tray = QSystemTrayIcon()
         self.tray.setIcon(icon)
