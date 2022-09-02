@@ -73,9 +73,11 @@ class TrayWrapper:
             if self.window.isHidden():
                 self.window.show()
                 self.window.setWindowState(Qt.WindowState.WindowActive)
+                self.window.setFocus()
             else:
                 if self.window.windowState() != Qt.WindowState.WindowActive:
                     self.window.setWindowState(Qt.WindowState.WindowActive)
+                    self.window.setFocus()
                 else:
                     self.window.hide()
 
