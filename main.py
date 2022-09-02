@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
 from PyQt6.QtGui import QIcon, QAction
-from PyQt6.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal, Qt
 import sys
 import time
 
@@ -70,11 +70,14 @@ class TrayWrapper:
 
     def onTrayIconActivated(self, reason):
         if reason == QSystemTrayIcon.ActivationReason.DoubleClick:
-            
             if self.window.isHidden():
                 self.window.show()
+                self.window.setWindowState(Qt.WindowState.WindowActive)
             else:
-                self.window.hide()
+                if self.window.windowState() != Qt.WindowState.WindowActive:
+                    self.window.setWindowState(Qt.WindowState.WindowActive)
+                else:
+                    self.window.hide()
 
 if __name__ == "__main__":
     app = TrayWrapper()
