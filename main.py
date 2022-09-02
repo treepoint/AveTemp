@@ -70,7 +70,11 @@ class TrayWrapper:
 
     def onTrayIconActivated(self, reason):
         if reason == QSystemTrayIcon.ActivationReason.DoubleClick:
-            self.window.showNormal()
+            
+            if self.window.isHidden():
+                self.window.show()
+            else:
+                self.window.hide()
 
 if __name__ == "__main__":
     app = TrayWrapper()
