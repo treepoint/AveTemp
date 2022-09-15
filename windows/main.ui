@@ -9,24 +9,33 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>462</height>
+    <width>400</width>
+    <height>338</height>
    </rect>
   </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
     <horstretch>0</horstretch>
-    <verstretch>0</verstretch>
+    <verstretch>6</verstretch>
    </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>330</height>
+   </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>516</width>
-    <height>16500</height>
+    <width>403</width>
+    <height>600</height>
    </size>
   </property>
   <property name="windowTitle">
-   <string>  </string>
+   <string/>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
   </property>
   <property name="styleSheet">
    <string notr="true">QApplication:title {
@@ -73,6 +82,9 @@ QWidget {
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <property name="spacing">
+         <number>12</number>
+        </property>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
@@ -177,7 +189,7 @@ QPushButton:pressed
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <property name="spacing">
-           <number>8</number>
+           <number>16</number>
           </property>
           <property name="topMargin">
            <number>12</number>
@@ -189,34 +201,470 @@ QPushButton:pressed
            <number>12</number>
           </property>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0,0">
+           <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="0,0">
             <property name="spacing">
-             <number>8</number>
+             <number>16</number>
             </property>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_14" stretch="0,0,0,0,0,0,0,0,0,0">
+             <layout class="QVBoxLayout" name="verticalLayout_11">
               <property name="spacing">
                <number>8</number>
               </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
               <item>
-               <widget class="QLabel" name="label_9">
+               <widget class="QLabel" name="cpuNameLabel">
+                <property name="font">
+                 <font>
+                  <pointsize>-1</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="styleSheet">
-                 <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+                 <string notr="true">font-weight: bold; font-size:12px;</string>
                 </property>
                 <property name="text">
-                 <string>Основные температуры, С°</string>
+                 <string/>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="Line" name="line_5">
+               <widget class="QTableWidget" name="CPUinfoTable">
+                <property name="minimumSize">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>16777215</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="sizeIncrement">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="font">
+                 <font>
+                  <family>MS Shell Dlg 2</family>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QWidget {
+	border: none;
+	font-family: &quot;MS Shell Dlg 2&quot;;
+    font-size: 8pt;
+}
+
+QHeaderView::section {
+    background-color: #eee;
+    border-style: none;
+	border: 1px solid #d8d8d8;
+    padding-left: 4px;
+}
+
+QHeaderView::section::vertical {
+   border: 1px solid #d8d8d8;
+   font-weight: bold; 
+   color: #222; 
+   font-size:12px;
+   border-top: none;
+   text-align: right;
+}
+
+
+
+QHeaderView::section::horizontal {
+   border: 1px solid #d8d8d8;
+   border-left: none;
+   color: #222; 
+   font-size:12px;
+}
+
+QHeaderView::section::horizontal::first {
+   border-left: 1px solid #d8d8d8;
+}
+
+QTableView
+{
+    border-top: 1px solid #d8d8d8;
+}
+</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Plain</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>0</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>0</number>
+                </property>
+                <property name="verticalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="horizontalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="sizeAdjustPolicy">
+                 <enum>QAbstractScrollArea::AdjustToContents</enum>
+                </property>
+                <property name="autoScroll">
+                 <bool>false</bool>
+                </property>
+                <property name="alternatingRowColors">
+                 <bool>false</bool>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::NoSelection</enum>
+                </property>
+                <property name="verticalScrollMode">
+                 <enum>QAbstractItemView::ScrollPerItem</enum>
+                </property>
+                <property name="showGrid">
+                 <bool>true</bool>
+                </property>
+                <property name="gridStyle">
+                 <enum>Qt::SolidLine</enum>
+                </property>
+                <property name="sortingEnabled">
+                 <bool>false</bool>
+                </property>
+                <property name="cornerButtonEnabled">
+                 <bool>true</bool>
+                </property>
+                <property name="rowCount">
+                 <number>0</number>
+                </property>
+                <attribute name="horizontalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <attribute name="horizontalHeaderCascadingSectionResizes">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>58</number>
+                </attribute>
+                <attribute name="horizontalHeaderMinimumSectionSize">
+                 <number>42</number>
+                </attribute>
+                <attribute name="horizontalHeaderStretchLastSection">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="verticalHeaderVisible">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="verticalHeaderCascadingSectionResizes">
+                 <bool>false</bool>
+                </attribute>
+                <attribute name="verticalHeaderDefaultSectionSize">
+                 <number>24</number>
+                </attribute>
+                <attribute name="verticalHeaderMinimumSectionSize">
+                 <number>24</number>
+                </attribute>
+                <attribute name="verticalHeaderStretchLastSection">
+                 <bool>false</bool>
+                </attribute>
+                <column>
+                 <property name="text">
+                  <string>Частота</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Загрузка</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer">
                 <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeType">
+                 <enum>QSizePolicy::Expanding</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>0</width>
+                  <height>0</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,0,0">
+              <property name="spacing">
+               <number>8</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="font">
+                 <font>
+                  <pointsize>-1</pointsize>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+                </property>
+                <property name="text">
+                 <string>Средние показатели</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                 </property>
                </widget>
+              </item>
+              <item>
+               <widget class="QTableWidget" name="tableAverage">
+                <property name="font">
+                 <font>
+                  <family>MS Shell Dlg 2</family>
+                  <pointsize>8</pointsize>
+                 </font>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QWidget {
+	border: none;
+	font-family: &quot;MS Shell Dlg 2&quot;;
+    font-size: 8pt;
+}
+
+QHeaderView::section {
+    background-color: #eee;
+    border-style: none;
+	border: 1px solid #d8d8d8;
+    padding-left: 4px;
+}
+
+QHeaderView::section::vertical {
+   border: 1px solid #d8d8d8;
+   font-weight: bold; 
+   color: #222; 
+   font-size:12px;
+   border-top: none;
+   text-align: right;
+}
+
+QHeaderView::section::horizontal {
+   border: 1px solid #d8d8d8;
+   border-left: none;
+   color: #222; 
+   font-size:12px;
+}
+
+QHeaderView::section::horizontal::first {
+   border-left: 1px solid #d8d8d8;
+}
+
+QTableView
+{
+    border-top: 1px solid #d8d8d8;
+}
+</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::NoFrame</enum>
+                </property>
+                <property name="verticalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="horizontalScrollBarPolicy">
+                 <enum>Qt::ScrollBarAlwaysOff</enum>
+                </property>
+                <property name="sizeAdjustPolicy">
+                 <enum>QAbstractScrollArea::AdjustToContents</enum>
+                </property>
+                <property name="selectionMode">
+                 <enum>QAbstractItemView::NoSelection</enum>
+                </property>
+                <property name="showGrid">
+                 <bool>true</bool>
+                </property>
+                <property name="gridStyle">
+                 <enum>Qt::SolidLine</enum>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+                <property name="cornerButtonEnabled">
+                 <bool>true</bool>
+                </property>
+                <property name="columnCount">
+                 <number>2</number>
+                </property>
+                <attribute name="horizontalHeaderVisible">
+                 <bool>false</bool>
+                </attribute>
+                <attribute name="horizontalHeaderDefaultSectionSize">
+                 <number>58</number>
+                </attribute>
+                <attribute name="horizontalHeaderMinimumSectionSize">
+                 <number>24</number>
+                </attribute>
+                <attribute name="horizontalHeaderStretchLastSection">
+                 <bool>true</bool>
+                </attribute>
+                <attribute name="verticalHeaderDefaultSectionSize">
+                 <number>24</number>
+                </attribute>
+                <attribute name="verticalHeaderMinimumSectionSize">
+                 <number>24</number>
+                </attribute>
+                <attribute name="verticalHeaderStretchLastSection">
+                 <bool>false</bool>
+                </attribute>
+                <row>
+                 <property name="text">
+                  <string>1 мин.</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>5 мин.</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>15 мин.</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>1 час</string>
+                 </property>
+                </row>
+                <row>
+                 <property name="text">
+                  <string>24 часа</string>
+                 </property>
+                </row>
+                <column>
+                 <property name="text">
+                  <string>Температура, С°</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>Теплопакет, Вт</string>
+                 </property>
+                </column>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="buttonResetAverageTemps">
+                <property name="styleSheet">
+                 <string notr="true">QPushButton {
+	border-radius:4px; 
+	background: #e1e1e1; 
+	padding: 4px; 
+	font-weight: normal; 
+	color: #222;
+    border: 1px solid #d8d8d8;
+}
+
+QPushButton:hover
+{
+   background: #d8d8d8; 
+}
+
+QPushButton:pressed
+{
+   background: #c9c9c9; 
+}</string>
+                </property>
+                <property name="text">
+                 <string>Сбросить</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <spacer name="verticalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Expanding</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>0</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+            <property name="spacing">
+             <number>16</number>
+            </property>
+            <property name="bottomMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_7">
+              <property name="spacing">
+               <number>8</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_9">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="label_9">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+                  </property>
+                  <property name="text">
+                   <string>Температура, С°</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="Line" name="line_4">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -263,7 +711,7 @@ QPushButton:pressed
                      <bool>false</bool>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
+                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
                     </property>
                     <property name="text">
                      <string>0</string>
@@ -302,7 +750,7 @@ QPushButton:pressed
                      <enum>Qt::NoFocus</enum>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
+                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
                     </property>
                     <property name="text">
                      <string>0</string>
@@ -338,7 +786,7 @@ QPushButton:pressed
                      <enum>Qt::NoFocus</enum>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
+                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
                     </property>
                     <property name="text">
                      <string>0</string>
@@ -379,38 +827,42 @@ QPushButton:pressed
                 </property>
                </widget>
               </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QVBoxLayout" name="verticalLayout_8">
+              <property name="spacing">
+               <number>8</number>
+              </property>
               <item>
-               <spacer name="verticalSpacer_2">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
+               <layout class="QVBoxLayout" name="verticalLayout_14">
+                <property name="spacing">
+                 <number>4</number>
                 </property>
-                <property name="sizeType">
-                 <enum>QSizePolicy::Fixed</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>20</width>
-                  <height>8</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLabel" name="label_10">
-                <property name="styleSheet">
-                 <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
-                </property>
-                <property name="text">
-                 <string>Теплопакет, ватт</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="Line" name="line_2">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-               </widget>
+                <item>
+                 <widget class="QLabel" name="label_10">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>16</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+                  </property>
+                  <property name="text">
+                   <string>Теплопакет, Вт</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="Line" name="line_7">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
               <item>
                <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -432,7 +884,7 @@ QPushButton:pressed
                      <enum>Qt::NoFocus</enum>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
+                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
                     </property>
                     <property name="text">
                      <string>0</string>
@@ -459,7 +911,7 @@ QPushButton:pressed
                      <enum>Qt::NoFocus</enum>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
+                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
                     </property>
                     <property name="text">
                      <string>0</string>
@@ -486,7 +938,7 @@ QPushButton:pressed
                      <enum>Qt::NoFocus</enum>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
+                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
                     </property>
                     <property name="text">
                      <string>0</string>
@@ -527,460 +979,9 @@ QPushButton:pressed
                 </property>
                </widget>
               </item>
-              <item>
-               <spacer name="verticalSpacer_3">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeType">
-                 <enum>QSizePolicy::Expanding</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Fixed</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>24</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_11">
-              <property name="spacing">
-               <number>8</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="cpuNameLabel">
-                <property name="font">
-                 <font>
-                  <pointsize>-1</pointsize>
-                  <weight>75</weight>
-                  <bold>true</bold>
-                 </font>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-weight: bold; font-size:12px;</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QTableWidget" name="CPUinfoTable">
-                <property name="minimumSize">
-                 <size>
-                  <width>160</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>16777215</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="sizeIncrement">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="font">
-                 <font>
-                  <family>MS Shell Dlg 2</family>
-                  <pointsize>8</pointsize>
-                 </font>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QWidget {
-	border-top: 1px solid #d8d8d8;
-}
-
-QHeaderView::section {
-    background-color: #eee;
-    padding: 4px;
-    border-style: none;
-	border-bottom: 1px solid #d8d8d8;
-    border-left: 1px solid #d8d8d8;
-}
-
-QHeaderView::vertical {
-   border:none;
-}
-
-QHeaderView::row {
-    background-color: #eee;
-    padding: 4px;
-    border-style: none;
-	border-bottom: 1px solid #d8d8d8;
-    border-right: 1px solid #d8d8d8;
-    border-left: 1px solid #d8d8d8;
-}</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::NoFrame</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Plain</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>0</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>0</number>
-                </property>
-                <property name="verticalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="horizontalScrollBarPolicy">
-                 <enum>Qt::ScrollBarAlwaysOff</enum>
-                </property>
-                <property name="sizeAdjustPolicy">
-                 <enum>QAbstractScrollArea::AdjustToContents</enum>
-                </property>
-                <property name="autoScroll">
-                 <bool>false</bool>
-                </property>
-                <property name="alternatingRowColors">
-                 <bool>false</bool>
-                </property>
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::NoSelection</enum>
-                </property>
-                <property name="verticalScrollMode">
-                 <enum>QAbstractItemView::ScrollPerItem</enum>
-                </property>
-                <property name="showGrid">
-                 <bool>true</bool>
-                </property>
-                <property name="gridStyle">
-                 <enum>Qt::SolidLine</enum>
-                </property>
-                <property name="sortingEnabled">
-                 <bool>false</bool>
-                </property>
-                <property name="cornerButtonEnabled">
-                 <bool>false</bool>
-                </property>
-                <property name="rowCount">
-                 <number>0</number>
-                </property>
-                <attribute name="horizontalHeaderVisible">
-                 <bool>false</bool>
-                </attribute>
-                <attribute name="horizontalHeaderDefaultSectionSize">
-                 <number>65</number>
-                </attribute>
-                <attribute name="horizontalHeaderMinimumSectionSize">
-                 <number>42</number>
-                </attribute>
-                <attribute name="horizontalHeaderStretchLastSection">
-                 <bool>true</bool>
-                </attribute>
-                <attribute name="verticalHeaderVisible">
-                 <bool>true</bool>
-                </attribute>
-                <attribute name="verticalHeaderCascadingSectionResizes">
-                 <bool>false</bool>
-                </attribute>
-                <attribute name="verticalHeaderDefaultSectionSize">
-                 <number>20</number>
-                </attribute>
-                <attribute name="verticalHeaderMinimumSectionSize">
-                 <number>20</number>
-                </attribute>
-                <attribute name="verticalHeaderStretchLastSection">
-                 <bool>false</bool>
-                </attribute>
-                <column>
-                 <property name="text">
-                  <string>Частота</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>Загрузка</string>
-                 </property>
-                </column>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="frame">
-                <property name="minimumSize">
-                 <size>
-                  <width>2</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <spacer name="verticalSpacer">
-                <property name="orientation">
-                 <enum>Qt::Vertical</enum>
-                </property>
-                <property name="sizeType">
-                 <enum>QSizePolicy::Expanding</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>0</width>
-                  <height>0</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
              </layout>
             </item>
            </layout>
-          </item>
-          <item>
-           <spacer name="verticalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>8</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QLabel" name="label_7">
-            <property name="styleSheet">
-             <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
-            </property>
-            <property name="text">
-             <string>Средние температуры</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="Line" name="line">
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="horizontalLayout">
-            <property name="spacing">
-             <number>8</number>
-            </property>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QLabel" name="label_3">
-                <property name="text">
-                 <string>За 1 минуту</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="lineEditCpu1minTemp">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_18">
-              <item>
-               <widget class="QLabel" name="label_13">
-                <property name="text">
-                 <string>За 5 минут</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="lineEditCpu5minTemp">
-                <property name="styleSheet">
-                 <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_7">
-              <item>
-               <widget class="QLabel" name="label_4">
-                <property name="text">
-                 <string>За 15 минут</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="lineEditCpu15minTemp">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <widget class="Line" name="line_3">
-              <property name="orientation">
-               <enum>Qt::Vertical</enum>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_8">
-              <item>
-               <widget class="QLabel" name="label_5">
-                <property name="text">
-                 <string>За 1 час</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="lineEditCpu1hourTemp">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_9">
-              <item>
-               <widget class="QLabel" name="label_6">
-                <property name="text">
-                 <string>За 24 часа</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLineEdit" name="lineEditCpu24hourTemp">
-                <property name="enabled">
-                 <bool>true</bool>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font-weight:normal; border:  1px solid #d8d8d8;</string>
-                </property>
-                <property name="text">
-                 <string>0</string>
-                </property>
-                <property name="readOnly">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonResetAverageTemps">
-            <property name="styleSheet">
-             <string notr="true">QPushButton {
-	border-radius:4px; 
-	background: #e1e1e1; 
-	padding: 4px; 
-	font-weight: normal; 
-	color: #222;
-    border: 1px solid #d8d8d8;
-}
-
-QPushButton:hover
-{
-   background: #d8d8d8; 
-}
-
-QPushButton:pressed
-{
-   background: #c9c9c9; 
-}</string>
-            </property>
-            <property name="text">
-             <string>Сбросить</string>
-            </property>
-           </widget>
           </item>
           <item>
            <widget class="QFrame" name="frameAdminRight">
@@ -1030,7 +1031,7 @@ QPushButton:pressed
                 <string notr="true">padding:4px;</string>
                </property>
                <property name="text">
-                <string>Для полной функциональности требуются права администратора</string>
+                <string>Для доступа к температурам нужны права администратора</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>

@@ -1,12 +1,12 @@
-from PyQt6 import uic
-from PyQt6.QtWidgets import QDialog
+from PyQt6 import QtWidgets
+import windows.settingsWindow
 
 import Entities
 
-class Main(QDialog):
+class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
     def __init__(self, parent=None):
         super().__init__(parent)
-        uic.loadUi('windows/settings.ui', self)
+        self.setupUi(self)  # Дизайн
 
         self.buttonSaveSettings.clicked.connect(self.closeWindow)
 

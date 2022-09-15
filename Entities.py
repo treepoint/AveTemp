@@ -7,7 +7,7 @@ class Config:
         self.close_to_tray = close_to_tray
         self.open_minimized = open_minimized
         self.name = "AveTemp"
-        self.version = "1.0.1"
+        self.version = "1.1.0"
 
     def get_collect_interval(self):
         return self.collect_interval

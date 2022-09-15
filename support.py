@@ -2,11 +2,32 @@ from PIL import Image, ImageDraw, ImageFont, ImageQt
 from PyQt6.QtGui import QPixmap
 import configparser  # Для чтения конфига
 import ctypes
-import os
+import os, sys
+
+from pathlib import Path
 
 import Entities 
 
 config_file = 'settings.ini'
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+
+    path = Path(relative_path)
+
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath('.')
+
+    path = str(os.path.join(base_path, path))
+
+    path = path.replace('\\', '/')
+
+    path = path[0:2] + '/' + path[2:]
+
+    return path
 
 def to_round_str(value):
     return str(round(value,1))

@@ -3,6 +3,7 @@ from PyQt6.QtGui import QIcon, QAction
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 import sys
 import time
+import support
 
 import MainWindow
 
@@ -30,9 +31,10 @@ class TrayWrapper:
         self.app.setQuitOnLastWindowClosed(True)
 
         self.window = MainWindow.Main()
-        self.window.resize(300, 300)
+        
+        app_icon = support.resource_path('./images/icon.png')
 
-        self.window.setWindowIcon(QIcon('icon.png'))
+        self.window.setWindowIcon(QIcon(app_icon))
 
         icon = QIcon(self.window.image)
         self.tray = QSystemTrayIcon()

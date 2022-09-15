@@ -3,7 +3,8 @@
 from types import NoneType
 import clr # the pythonnet module.
 
-clr.AddReference(r'DLL/LibreHardwareMonitorLib') 
+clr.AddReference(r'./DLL/LibreHardwareMonitorLib') 
+clr.FindAssembly(r'./DLL')
 from LibreHardwareMonitor.Hardware import Computer
 
 import Entities

@@ -1,0 +1,113 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "E:/Nextcloud/Code/avetemp/AveTemp.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": true
+  },
+  {
+   "optionDest": "console",
+   "value": false
+  },
+  {
+   "optionDest": "icon_file",
+   "value": "E:/Nextcloud/Code/avetemp/images/icon.ico"
+  },
+  {
+   "optionDest": "ascii",
+   "value": false
+  },
+  {
+   "optionDest": "clean_build",
+   "value": false
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "embed_manifest",
+   "value": true
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": true
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": true
+  },
+  {
+   "optionDest": "win_private_assemblies",
+   "value": false
+  },
+  {
+   "optionDest": "win_no_prefer_redirects",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "argv_emulation",
+   "value": false
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/images;images/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/DLL;DLL/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/windows;windows/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/icon.ico;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/icon.png;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/icon.svg;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/images.qrc;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/LICENSE;."
+  },
+  {
+   "optionDest": "datas",
+   "value": "E:/Nextcloud/Code/avetemp/settings.ini;."
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}
