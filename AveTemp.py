@@ -10,6 +10,7 @@ import MainWindow
 class Worker(QThread):
     result = pyqtSignal(str)
 
+
     def __init__(self, collect_interval):
         super().__init__()
 
@@ -51,7 +52,7 @@ class TrayWrapper:
         #Меню
         menu = QMenu()
         #Набор пунктов
-        action = QAction('Выйти')
+        action = QAction('Закрыть')
         menu.addAction(action)
         action.triggered.connect(self.app.quit)
 

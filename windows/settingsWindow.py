@@ -1,4 +1,4 @@
-# Form implementation generated from reading ui file 'settings.ui'
+# Form implementation generated from reading ui file './windows/settings.ui'
 #
 # Created by: PyQt6 UI code generator 6.3.1
 #
@@ -13,7 +13,7 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.WindowModality.NonModal)
-        Dialog.resize(342, 169)
+        Dialog.resize(342, 206)
         Dialog.setToolTip("")
         Dialog.setStyleSheet("background: #fff;")
         Dialog.setModal(True)
@@ -46,6 +46,26 @@ class Ui_Dialog(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout_2)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.checkBoxStoreStat = QtWidgets.QCheckBox(Dialog)
+        self.checkBoxStoreStat.setToolTip("")
+        self.checkBoxStoreStat.setToolTipDuration(-1)
+        self.checkBoxStoreStat.setWhatsThis("")
+        self.checkBoxStoreStat.setChecked(True)
+        self.checkBoxStoreStat.setObjectName("checkBoxStoreStat")
+        self.verticalLayout_2.addWidget(self.checkBoxStoreStat)
+        self.label = QtWidgets.QLabel(Dialog)
+        font = QtGui.QFont()
+        font.setPointSize(7)
+        self.label.setFont(font)
+        self.label.setStyleSheet("color: #444;\n"
+"margin-left:16px;")
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setObjectName("label")
+        self.verticalLayout_2.addWidget(self.label)
+        self.verticalLayout.addLayout(self.verticalLayout_2)
         self.checkBoxCloseToTray = QtWidgets.QCheckBox(Dialog)
         self.checkBoxCloseToTray.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
         self.checkBoxCloseToTray.setChecked(False)
@@ -83,6 +103,8 @@ class Ui_Dialog(object):
         _translate = QtCore.QCoreApplication.translate
         Dialog.setWindowTitle(_translate("Dialog", "Настройки"))
         self.label_11.setText(_translate("Dialog", "Интервал сбора, секунды: "))
+        self.checkBoxStoreStat.setText(_translate("Dialog", "Хранить и восстанавливать статистику за сутки"))
+        self.label.setText(_translate("Dialog", "При отключении все собранные данные будут удалены"))
         self.checkBoxCloseToTray.setText(_translate("Dialog", "При закрытии сворачивать в трей"))
         self.checkBoxOpenMinimized.setText(_translate("Dialog", "Запускать свернутым"))
         self.buttonSaveSettings.setText(_translate("Dialog", "Применить"))
