@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
-from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtGui import QIcon, QAction, QFont
 from PyQt6.QtCore import QThread, pyqtSignal, Qt
 import sys
 import time
@@ -9,7 +9,6 @@ import MainWindow
 
 class Worker(QThread):
     result = pyqtSignal(str)
-
 
     def __init__(self, collect_interval):
         super().__init__()
@@ -33,7 +32,7 @@ class TrayWrapper:
 
         self.window = MainWindow.Main()
         
-        app_icon = support.resource_path('./images/icon.png')
+        app_icon = support.getResourcePath('./images/icon.png')
 
         self.window.setWindowIcon(QIcon(app_icon))
 
@@ -51,6 +50,15 @@ class TrayWrapper:
 
         #Меню
         menu = QMenu()
+        menu.setFont(QFont('Segoe UI Semilight', 10))
+        menu.setStyleSheet("QMenu::item {"
+                                        "padding: 2px 12px 2px 12px;"
+                                        "}"
+                           "QMenu::item:selected {"
+                                        "background-color: rgb(225, 225, 225);"
+                                        "color: rgb(25, 25, 25);"
+                                        "}")
+
         #Набор пунктов
         action = QAction('Закрыть')
         menu.addAction(action)
@@ -63,13 +71,13 @@ class TrayWrapper:
 
         #Создаем поток для обновления информации в трее
         self.worker = Worker(self.collect_interval)
-        self.worker.result.connect(self.update_icon)
+        self.worker.result.connect(self.updateIcon)
         self.worker.start()
 
         #Ну и запускаем
         self.app.exec()
 
-    def update_icon(self):
+    def updateIcon(self):
         icon = QIcon(self.window.image)
         self.tray.setIcon(icon)
 

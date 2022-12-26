@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 import Entities 
+import registry 
 
 config_file = 'settings.ini'
 stat_file = 'stat.json'
@@ -16,8 +17,8 @@ stat_file = 'stat.json'
 ## Тогда как я хочу относительные, по крайней мере для этапа разработки. Так что она просто в нужных местах меняет.
 
 ## Разумеется это значит, что если в интерфейсных файлах хочется абсолютные пути, то там надо ручками после QT designer менять
-## Например, чтобы было вот так —   "    border-image: url("+ support.resource_path('./images/settings.png')+ ");\n"
-def resource_path(relative_path):
+## Например, чтобы было вот так —   "    border-image: url("+ support.getResourcePath('./images/settings.png')+ ");\n"
+def getResourcePath(relative_path):
     path = Path(relative_path)
 
     try:
@@ -31,10 +32,10 @@ def resource_path(relative_path):
 
     return path
 
-def to_round_str(value):
+def toRoundStr(value):
     return str(round(value,1))
 
-def check_admin_right():
+def isThereAdminRight():
     try:
         is_admin = os.getuid() == 0
     except AttributeError:
@@ -47,11 +48,11 @@ def createEmptyConfigFile():
 
     configParser = configparser.ConfigParser()
 
-    configParser['main'] = {'collect_interval': config.get_collect_interval(), 
-                            'store_period': config.get_store_period(),
-                            'is_backup_needed' : config.get_is_backup_needed(),
-                            'close_to_tray': config.get_close_to_tray(),
-                            'open_minimized': config.get_open_minimized()}
+    configParser['main'] = {'collect_interval': config.getCollectInterval(), 
+                            'store_period': config.getStorePeriod(),
+                            'is_backup_needed' : config.getIsBackupNeeded(),
+                            'close_to_tray': config.getCloseToTray(),
+                            'open_minimized': config.getOpenMinimized()}
 
     with open(config_file, 'w') as configfile:
         configParser.write(configfile)
@@ -63,24 +64,27 @@ def writeToConfig(self, config):
 
     configParser['main'] = {'collect_interval': config.collect_interval, 
                             'store_period': config.store_period,
-                            'is_backup_needed' : config.get_is_backup_needed(),
+                            'is_backup_needed' : config.getIsBackupNeeded(),
                             'close_to_tray': config.close_to_tray,
                             'open_minimized': config.open_minimized}
 
     with open(config_file, 'w') as configfile:
         configParser.write(configfile)
 
-def to_bool(value):
-    if type(value):
+def toBool(value):
+    if isinstance(value, str):
         if str(value) == 'False':
             return False
         else:
             return True
-    else:
+
+    if isinstance(value, int):
         if int(value) == 0:
             return False
         else:
-            return True  
+            return True
+    
+    return False
 
 def readConfig(self):
     config = configparser.ConfigParser()
@@ -89,16 +93,22 @@ def readConfig(self):
         createEmptyConfigFile()
         config.read(config_file)
 
-    self.config.set_collect_interval(float(config['main']['collect_interval']))
-    self.config.set_store_period(int(config['main']['store_period']))
-    self.config.set_is_backup_needed(to_bool(config['main']['is_backup_needed']))
-    self.config.set_close_to_tray(to_bool(config['main']['close_to_tray']))
-    self.config.set_open_minimized(to_bool(config['main']['open_minimized']))
+    #Заберем настройки из файла
+    self.config.setCollectInterval(float(config['main']['collect_interval']))
+    self.config.setStorePeriod(int(config['main']['store_period']))
+    self.config.setIsBackupNeeded(toBool(config['main']['is_backup_needed']))
+    self.config.setCloseToTray(toBool(config['main']['close_to_tray']))
+    self.config.setOpenMinimized(toBool(config['main']['open_minimized']))
+
+    #И, заодно, прочитаем нужные параметры реестра
+    self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight())
 
 #Получаем картинку для трея
-def get_tray_image(value):
+def getTrayImage(value, config):
     value = float(value)
-        
+
+    is_light_theme = config.getSystemUsesLightTheme()
+
     #Делаем базовое изображение с прозрачным фоном
     image = Image.new('RGBA', (100, 100), color = (255, 255, 255, 0))
 
@@ -106,11 +116,17 @@ def get_tray_image(value):
     dc = ImageDraw.Draw(image)
 
     #Задаем шрифт
-    font_type  = ImageFont.truetype("arial.ttf", 82)
+    font_type  = ImageFont.truetype("segoeuisl.ttf", 86)
 
     #Округляем значение и отрисовываем
     text = round(value)
-    dc.text((6,6), f"{text}", fill=(255,255,255), font = font_type)
+
+    if is_light_theme:
+        text_color = (25, 25, 25)
+    else:
+        text_color = (255,255,255)
+     
+    dc.text((6,-12), f"{text}", fill=text_color, font = font_type)
 
     imageQT = ImageQt.ImageQt(image)
 
@@ -118,18 +134,16 @@ def get_tray_image(value):
 
     return pixmap
 
-def save_data(data):
-
+def saveData(data):
     jsonStr = json.dumps(data)
 
     with open(stat_file, 'w') as bf:
         bf.write(jsonStr)
 
-def remove_stat_file():
+def removeStatFile():
     os.remove(stat_file)
 
-def get_restored_data():
-
+def getRestoredData():
     data = False
 
     try:

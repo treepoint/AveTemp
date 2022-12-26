@@ -14,46 +14,53 @@ class Config:
         self.store_period = store_period
         self.close_to_tray = close_to_tray
         self.open_minimized = open_minimized
+        self.systemUsesLightTheme = False
         self.name = "AveTemp"
-        self.version = "1.1.1"
+        self.version = "1.2.0"
 
-    def get_collect_interval(self):
+    def getCollectInterval(self):
         return self.collect_interval
 
-    def set_collect_interval(self, value):
+    def setCollectInterval(self, value):
         self.collect_interval = value
 
-    def get_backup_interval(self):
+    def getBackupInterval(self):
         return self.backup_interval
 
-    def get_store_period(self):
+    def getStorePeriod(self):
         return self.store_period
 
-    def set_store_period(self, value):
+    def setStorePeriod(self, value):
         self.store_period = value
 
-    def get_is_backup_needed(self):
+    def getIsBackupNeeded(self):
         return self.is_backup_needed
 
-    def set_is_backup_needed(self, value):
+    def setIsBackupNeeded(self, value):
         self.is_backup_needed = value
 
-    def get_close_to_tray(self):
+    def getCloseToTray(self):
         return self.close_to_tray
 
-    def set_close_to_tray(self, value):
+    def setCloseToTray(self, value):
         self.close_to_tray = value
 
-    def get_open_minimized(self):
+    def getOpenMinimized(self):
         return self.open_minimized
 
-    def set_open_minimized(self, value):
+    def setOpenMinimized(self, value):
         self.open_minimized = value
 
-    def get_name(self):
+    def setSystemUsesLightTheme(self, value):
+        self.systemUsesLightTheme = value
+
+    def getSystemUsesLightTheme(self):
+        return self.systemUsesLightTheme
+
+    def getName(self):
         return self.name
 
-    def get_version(self):
+    def getVersion(self):
         return self.version
 
 class Status(enum.Enum):

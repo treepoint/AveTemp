@@ -7,7 +7,7 @@
   },
   {
    "optionDest": "filenames",
-   "value": "E:/Nextcloud/Code/avetemp/AveTemp.py"
+   "value": "D:/Nextcloud/Code/avetemp/AveTemp.py"
   },
   {
    "optionDest": "onefile",
@@ -19,7 +19,7 @@
   },
   {
    "optionDest": "icon_file",
-   "value": "E:/Nextcloud/Code/avetemp/images/icon.ico"
+   "value": "D:/Nextcloud/Code/avetemp/images/icon.ico"
   },
   {
    "optionDest": "ascii",
@@ -51,7 +51,7 @@
   },
   {
    "optionDest": "uac_uiaccess",
-   "value": true
+   "value": false
   },
   {
    "optionDest": "win_private_assemblies",
@@ -71,39 +71,27 @@
   },
   {
    "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/images;images/"
+   "value": "D:/Nextcloud/Code/avetemp/images;images/"
   },
   {
    "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/DLL;DLL/"
+   "value": "D:/Nextcloud/Code/avetemp/DLL;DLL/"
   },
   {
    "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/windows;windows/"
+   "value": "D:/Nextcloud/Code/avetemp/windows;windows/"
   },
   {
    "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/icon.ico;."
+   "value": "D:/Nextcloud/Code/avetemp/images.qrc;."
   },
   {
    "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/icon.png;."
+   "value": "D:/Nextcloud/Code/avetemp/LICENSE;."
   },
   {
    "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/icon.svg;."
-  },
-  {
-   "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/images.qrc;."
-  },
-  {
-   "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/LICENSE;."
-  },
-  {
-   "optionDest": "datas",
-   "value": "E:/Nextcloud/Code/avetemp/settings.ini;."
+   "value": "D:/Nextcloud/Code/avetemp/settings.ini;."
   }
  ],
  "nonPyinstallerOptions": {

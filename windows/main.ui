@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>338</height>
+    <width>338</width>
+    <height>374</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,13 +21,13 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>400</width>
-    <height>330</height>
+    <width>338</width>
+    <height>374</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>403</width>
+    <width>410</width>
     <height>600</height>
    </size>
   </property>
@@ -1031,7 +1031,7 @@ QPushButton:pressed
                 <string notr="true">padding:4px;</string>
                </property>
                <property name="text">
-                <string>Для доступа к температурам нужны права администратора</string>
+                <string>Для корректной работы нужны права администратора</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>

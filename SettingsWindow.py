@@ -12,7 +12,7 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
 
         self.config = Entities.Config()
 
-        self.labelNameAndVersion.setText(self.config.get_name() + ' ' + self.config.get_version())
+        self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
         
     def setData(self, config):
         self.spinBoxLoggingInterval.setValue(config.collect_interval)
@@ -21,9 +21,9 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.checkBoxOpenMinimized.setChecked(config.open_minimized)
 
     def closeWindow(self):
-        self.config.set_collect_interval(float(self.spinBoxLoggingInterval.value()))
-        self.config.set_is_backup_needed(self.checkBoxStoreStat.isChecked())
-        self.config.set_close_to_tray(self.checkBoxCloseToTray.isChecked())
-        self.config.set_open_minimized(self.checkBoxOpenMinimized.isChecked())
+        self.config.setCollectInterval(float(self.spinBoxLoggingInterval.value()))
+        self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())
+        self.config.setCloseToTray(self.checkBoxCloseToTray.isChecked())
+        self.config.setOpenMinimized(self.checkBoxOpenMinimized.isChecked())
 
         self.accept()

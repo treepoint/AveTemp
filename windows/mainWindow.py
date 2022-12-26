@@ -13,14 +13,14 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(400, 338)
+        MainWindow.resize(410, 338)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(6)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QtCore.QSize(400, 330))
-        MainWindow.setMaximumSize(QtCore.QSize(403, 600))
+        MainWindow.setMinimumSize(QtCore.QSize(410, 338))
+        MainWindow.setMaximumSize(QtCore.QSize(410, 600))
         MainWindow.setWindowTitle(" ")
         MainWindow.setWindowOpacity(1.0)
         MainWindow.setStyleSheet("QApplication:title {\n"
@@ -67,18 +67,18 @@ class Ui_MainWindow(object):
         "    border:solid 0px;\n"
         "    qproperty-icon: url(\" \"); /* empty image */\n"
         "    qproperty-iconSize: 20px 20px; /* space for the background image */\n"
-        "    border-image: url("+ support.resource_path('./images/settings.png')+ ");\n"
+        "    border-image: url("+ support.getResourcePath('./images/settings.png')+ ");\n"
         "    background-repeat: no-repeat;\n"
         "}\n"
         "\n"
         "QPushButton:hover {\n"
-        "    border-image: url("+ support.resource_path('./images/settings_hover.png')+ ");\n"
+        "    border-image: url("+ support.getResourcePath('./images/settings_hover.png')+ ");\n"
         "    background-repeat: no-repeat;\n"
         "}\n"
         "\n"
         "QPushButton:pressed\n"
         "{\n"
-        "    border-image: url("+ support.resource_path('./images/settings_pressed.png')+ ");\n"
+        "    border-image: url("+ support.getResourcePath('./images/settings_pressed.png')+ ");\n"
         "    background-repeat: no-repeat;\n"
         "}")
         self.buttonShowSettings.setText("")
@@ -561,6 +561,6 @@ class Ui_MainWindow(object):
         self.label_16.setText(_translate("MainWindow", "Макс."))
         self.lineEditCpuMaxTDP.setText(_translate("MainWindow", "0"))
         self.buttonResetTDP.setText(_translate("MainWindow", "Сбросить"))
-        self.labelAdminRights.setText(_translate("MainWindow", "Для доступа к температурам нужны права администратора"))
+        self.labelAdminRights.setText(_translate("MainWindow", "Для корректной работы нужны права администратора"))
         self.actionShowSettings.setText(_translate("MainWindow", "Настройки"))
         self.actionResetAll.setText(_translate("MainWindow", "Сбросить все"))
