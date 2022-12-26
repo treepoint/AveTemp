@@ -28,7 +28,7 @@ def getCpuName():
             
             return cpu_name
 
-def collectData():
+def collectData(config):
     #Обновляем значения
     #c.Reset() 
 
@@ -98,10 +98,10 @@ def collectData():
         all_load = all_load/cores_count
         data['all_load'] = all_load
 
-    if all_load < 50:
-        setCpuPerformanceStatePercentage(99)
+    if all_load < config.CPU_turbo_threshhold:
+        setCpuPerformanceStatePercentage(config.CPU_turbo_idle_state)
     else:
-        setCpuPerformanceStatePercentage(100)
+        setCpuPerformanceStatePercentage(config.CPU_turbo_load_state)
 
     return data
 

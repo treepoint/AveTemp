@@ -34,17 +34,18 @@ class BackupWorker(QThread):
 
 # Воркер для сбора данных
 class CollectWorker(QThread):
-    def __init__(self, collect_interval):
+    def __init__(self, collect_interval, config):
         super().__init__()
 
         self.collect_interval = collect_interval
+        self.config = config
 
     result = pyqtSignal(dict)
 
     def run(self):
         self.keepRunning = True
         while self.keepRunning:
-            res = hardware.collectData()
+            res = hardware.collectData(self.config)
             self.result.emit(res)
             time.sleep(self.collect_interval)
 
@@ -59,6 +60,11 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         super().__init__(parent)
         self.setupUi(self)  # Дизайн
 
+        #Прочитаем конфиг
+        self.config = Entities.Config()
+
+        support.readConfig(self)
+
         #Листы для хранения данных
         self.data = {
                         'general_temps' : [], 
@@ -67,7 +73,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                         'average_tdp' : []
                     }
 
-        init_data = hardware.collectData()
+        init_data = hardware.collectData(self.config)
 
         self.cpu_cores = len(init_data['cpu']['cores'])
         self.cpu_threads = len(init_data['cpu']['threads'])
@@ -80,12 +86,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         #Проставим размер таблицы для проца
         self.CPUinfoTable.setRowCount(self.cpu_cores)
-
-        # прочитаем конфиг
-        self.config = Entities.Config()
-
-        support.readConfig(self)
-        
+ 
         self.image = support.getTrayImage(0, self.config)
 
         #За сколько секунд храним данные, 86400 — сутки
@@ -135,7 +136,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
     def startCollectWorker(self):
         #Создаем воркер для сбора и обновления информации
-        self.collect_worker = CollectWorker(self.collect_interval)
+        self.collect_worker = CollectWorker(self.collect_interval, self.config)
         self.collect_worker.result.connect(self.processData)
         self.collect_worker.start()
 

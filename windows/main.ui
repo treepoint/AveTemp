@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>338</width>
-    <height>374</height>
+    <width>342</width>
+    <height>368</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,8 +21,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>338</width>
-    <height>374</height>
+    <width>342</width>
+    <height>368</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -81,7 +81,7 @@ QWidget {
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,1">
         <property name="spacing">
          <number>12</number>
         </property>
@@ -155,18 +155,18 @@ QWidget {
     border:solid 0px;
     qproperty-icon: url(&quot; &quot;); /* empty image */
     qproperty-iconSize: 20px 20px; /* space for the background image */
-    border-image: url(./images/settings.png);
+    border-image: url(./images/settings.svg);
     background-repeat: no-repeat;
 }
 
 QPushButton:hover {
-    border-image : url(./images/settings_hover.png);
+    border-image : url(./images/settings_hover.svg);
     background-repeat: no-repeat;
 }
 
 QPushButton:pressed
 {
-    border-image : url(./images/settings_pressed.png);
+    border-image : url(./images/settings_pressed.svg);
     background-repeat: no-repeat;
 }</string>
                </property>
@@ -192,7 +192,7 @@ QPushButton:pressed
            <number>16</number>
           </property>
           <property name="topMargin">
-           <number>12</number>
+           <number>6</number>
           </property>
           <property name="rightMargin">
            <number>12</number>

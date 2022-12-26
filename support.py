@@ -11,7 +11,7 @@ import Entities
 import registry 
 
 config_file = 'settings.ini'
-stat_file = 'stat.json'
+stat_file = 'statistics.json'
 
 ## Эта функция нужна, потому что auto-py-to-exe с какого-то времени хочет абсолютные пути для картинок и прочего
 ## Тогда как я хочу относительные, по крайней мере для этапа разработки. Так что она просто в нужных местах меняет.
@@ -52,11 +52,14 @@ def createEmptyConfigFile():
                             'store_period': config.getStorePeriod(),
                             'is_backup_needed' : config.getIsBackupNeeded(),
                             'close_to_tray': config.getCloseToTray(),
-                            'open_minimized': config.getOpenMinimized()}
+                            'open_minimized': config.getOpenMinimized(),
+                            'CPU_managment': config.getCPUManagment(),
+                            'CPU_turbo_threshhold': config.getCPUTurboThreshhold(),
+                            'CPU_turbo_idle_state': config.getCPUTurboIdleState(),
+                            'CPU_turbo_load_state': config.getCPUTurboLoadState()}
 
     with open(config_file, 'w') as configfile:
         configParser.write(configfile)
-
 
 def writeToConfig(self, config):
 
@@ -66,7 +69,11 @@ def writeToConfig(self, config):
                             'store_period': config.store_period,
                             'is_backup_needed' : config.getIsBackupNeeded(),
                             'close_to_tray': config.close_to_tray,
-                            'open_minimized': config.open_minimized}
+                            'open_minimized': config.open_minimized,
+                            'CPU_managment': config.CPU_managment,
+                            'CPU_turbo_threshhold': config.CPU_turbo_threshhold,
+                            'CPU_turbo_idle_state': config.CPU_turbo_idle_state,
+                            'CPU_turbo_load_state': config.CPU_turbo_load_state}
 
     with open(config_file, 'w') as configfile:
         configParser.write(configfile)
@@ -93,16 +100,23 @@ def readConfig(self):
         createEmptyConfigFile()
         config.read(config_file)
 
-    #Заберем настройки из файла
-    self.config.setCollectInterval(float(config['main']['collect_interval']))
-    self.config.setStorePeriod(int(config['main']['store_period']))
-    self.config.setIsBackupNeeded(toBool(config['main']['is_backup_needed']))
-    self.config.setCloseToTray(toBool(config['main']['close_to_tray']))
-    self.config.setOpenMinimized(toBool(config['main']['open_minimized']))
+    try:
+        #Заберем настройки из файла
+        self.config.setCollectInterval(float(config['main']['collect_interval']))
+        self.config.setStorePeriod(int(config['main']['store_period']))
+        self.config.setIsBackupNeeded(toBool(config['main']['is_backup_needed']))
+        self.config.setCloseToTray(toBool(config['main']['close_to_tray']))
+        self.config.setOpenMinimized(toBool(config['main']['open_minimized']))
+        self.config.setCPUManagment(toBool(config['main']['CPU_managment']))
+        self.config.setCPUTurboThreshhold(int(config['main']['CPU_turbo_threshhold']))
+        self.config.setCPUTurboIdleState(int(config['main']['CPU_turbo_idle_state']))
+        self.config.setCPUTurboLoadState(int(config['main']['CPU_turbo_load_state']))
 
-    #И, заодно, прочитаем нужные параметры реестра
-    self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight())
-
+        #И, заодно, прочитаем нужные параметры реестра
+        self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight()) 
+    except:
+        createEmptyConfigFile()
+    
 #Получаем картинку для трея
 def getTrayImage(value, config):
     value = float(value)
