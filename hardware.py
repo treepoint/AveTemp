@@ -3,6 +3,7 @@
 from types import NoneType
 import clr # the pythonnet module.
 import subprocess
+import asyncio
 
 clr.AddReference(r'./DLL/LibreHardwareMonitorLib') 
 clr.FindAssembly(r'./DLL')
@@ -28,7 +29,7 @@ def getCpuName():
             
             return cpu_name
 
-def collectData(config):
+def collectData():
     #Обновляем значения
     #c.Reset() 
 
@@ -95,19 +96,58 @@ def collectData(config):
          data['status'] = Entities.Status.error
     else:
         data['status'] = Entities.Status.success
+        
         all_load = all_load/cores_count
         data['all_load'] = all_load
 
-    if all_load < config.CPU_turbo_threshhold:
-        setCpuPerformanceStatePercentage(config.CPU_turbo_idle_state)
-    else:
-        setCpuPerformanceStatePercentage(config.CPU_turbo_load_state)
-
     return data
 
-def setCpuPerformanceStatePercentage(percentage):
-    subprocess.call("powercfg -setacvalueindex SCHEME_BALANCED SUB_PROCESSOR PROCTHROTTLEMAX " + str(percentage))
-    subprocess.call("powercfg -setdcvalueindex SCHEME_BALANCED SUB_PROCESSOR PROCTHROTTLEMAX " + str(percentage))
+def setCpuPerformanceState(config, data_lists):
+    if not config.getCPUManagment():
+        return
 
-if __name__ == "__main__":
-    setCpuPerformanceStatePercentage(100)
+    #Надо проверить, если последние несколько записей были из режима простоя — значит его можно активировать
+    #Это надо, чтобы процессор туда-сюда не дергать постоянно
+    data = data_lists['all_load'][:config.getCPUIdleStatePause()]
+
+    if len(list(filter(lambda all_load: (all_load < config.getCPUTurboThreshhold()), data))) == config.getCPUIdleStatePause():
+        percentage = config.CPU_turbo_idle_state
+        turbo_state = False
+    else:
+        if int(data[0]) > int(config.getCPUTurboThreshhold()):
+            percentage = config.CPU_turbo_load_state
+            turbo_state = True
+        else:
+            turbo_state = config.getIsTurboStateNow()
+
+    if config.getIsTurboStateNow() == turbo_state:
+        return turbo_state
+
+    setCPULimits(percentage)
+
+    return turbo_state
+
+def updateCPULimits(config, idle, load):
+    if config.getIsTurboStateNow() == False and config.CPU_turbo_idle_state != idle:
+        setCPULimits(idle)
+
+    if config.getIsTurboStateNow() == True and config.CPU_turbo_load_state != load:
+        setCPULimits(load)
+
+def setCPUtoDefault():
+    setCPULimits(100)
+        
+def setCPULimits(percentage):
+    #Вот эти пляски со startupinfo нужны, чтобы окно не теряло фокус в процессе запуска подпроцессов
+    startupinfo = None
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    startupinfo.wShowWindow = subprocess.SW_HIDE
+
+    print('set — '+ str(percentage))
+
+    subprocess.run("powercfg -setacvalueindex SCHEME_BALANCED SUB_PROCESSOR PROCTHROTTLEMAX " + 
+                    str(percentage), startupinfo=startupinfo)
+
+    subprocess.run("powercfg -setdcvalueindex SCHEME_BALANCED SUB_PROCESSOR PROCTHROTTLEMAX " + 
+                    str(percentage), startupinfo=startupinfo)

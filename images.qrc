@@ -1,7 +1,10 @@
 <RCC>
   <qresource prefix="images">
-    <file>images/settings.png</file>
-    <file>images/settings_hover.png</file>
-    <file>images/settings_pressed.png</file>
+    <file>images/settings.svg</file>
+    <file>images/settings_hover.svg</file>
+    <file>images/settings_pressed.svg</file>
+    <file>images/save.svg</file>
+    <file>images/save_hover.svg</file>
+    <file>images/save_pressed.svg</file>
   </qresource>
 </RCC>

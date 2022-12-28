@@ -4,6 +4,7 @@ from PyQt6.QtCore import QThread, pyqtSignal, Qt
 import sys
 import time
 import support
+import hardware
 
 import MainWindow
 

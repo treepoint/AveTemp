@@ -34,23 +34,31 @@ class BackupWorker(QThread):
 
 # Воркер для сбора данных
 class CollectWorker(QThread):
-    def __init__(self, collect_interval, config):
+    def __init__(self, config, data_lists):
         super().__init__()
 
-        self.collect_interval = collect_interval
+        self.collect_interval = config.getCollectInterval()
         self.config = config
+        self.data_lists = data_lists
 
-    result = pyqtSignal(dict)
+    result = pyqtSignal(dict, bool)
 
     def run(self):
         self.keepRunning = True
         while self.keepRunning:
-            res = hardware.collectData(self.config)
-            self.result.emit(res)
+            data = hardware.collectData()
+
+            if not self.config.getCPUManagment():
+                turbo_state = True
+            else:
+                turbo_state = hardware.setCpuPerformanceState(self.config, self.data_lists)
+
+            self.result.emit(data, turbo_state)
             time.sleep(self.collect_interval)
 
-    def update(self, collect_interval):
-        self.collect_interval = collect_interval
+    def update(self, config):
+        self.collect_interval = config.getCollectInterval()
+        self.config = config
 
     def stop(self):
         self.keepRunning = False
@@ -66,17 +74,31 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         support.readConfig(self)
 
         #Листы для хранения данных
-        self.data = {
+        self.data_lists = {
                         'general_temps' : [], 
                         'average_temps' : [],
                         'general_tdp' : [],
-                        'average_tdp' : []
+                        'average_tdp' : [],
+                        'all_load' : [],
                     }
 
-        init_data = hardware.collectData(self.config)
+        if self.config.getIsBackupNeeded():
+            if support.getRestoredData():
+                self.data_lists = support.getRestoredData()
 
-        self.cpu_cores = len(init_data['cpu']['cores'])
-        self.cpu_threads = len(init_data['cpu']['threads'])
+            #Интервал для сохранения данных на диск
+            self.backup_interval = self.config.getBackupInterval()
+
+            self.startBackupWorker()
+
+        data = hardware.collectData()
+
+        if self.config.getCPUManagment():
+            turbo_state = hardware.setCpuPerformanceState(self.config, self.data_lists)
+            self.config.setIsTurboStateNow(turbo_state)
+
+        self.cpu_cores = len(data['cpu']['cores'])
+        self.cpu_threads = len(data['cpu']['threads'])
 
         #Есть ли HT/SMT
         if self.cpu_cores != self.cpu_threads:
@@ -94,9 +116,6 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         #Интервал сбора
         self.collect_interval = self.config.getCollectInterval()
-
-        #Интервал для сохранения данных на диск
-        self.backup_interval = self.config.getBackupInterval()
 
         #А это коэффициент, зависящий от сбора, чтобы вне зависимости от частоты сбора, 
         #мы всегда брали столько показаний, сколько нужно для временных рамок.
@@ -118,12 +137,6 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         self.startCollectWorker()
 
-        if self.config.getIsBackupNeeded():
-            if support.getRestoredData():
-                self.data = support.getRestoredData()
-
-            self.startBackupWorker()
-
         #Плашка если нет админских прав
         if support.isThereAdminRight():
             self.frameAdminRight.setVisible(False)
@@ -133,10 +146,13 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         if self.config.getCloseToTray():
             event.ignore()
             self.hide()
+        else:
+            #Иначе вернем лимиты проца по умолчанию — 100
+            hardware.setCPUtoDefault()
 
     def startCollectWorker(self):
         #Создаем воркер для сбора и обновления информации
-        self.collect_worker = CollectWorker(self.collect_interval, self.config)
+        self.collect_worker = CollectWorker(self.config, self.data_lists)
         self.collect_worker.result.connect(self.processData)
         self.collect_worker.start()
 
@@ -148,14 +164,14 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
     #Функции для сбора записанных данных
     def resetGeneralTemps(self):
-        self.data['general_temps'] = []
+        self.data_lists['general_temps'] = []
 
     def resetTDP(self):
-         self.data['general_tdp'] = []
+         self.data_lists['general_tdp'] = []
 
     def resetAverage(self):
-        self.data['average_temps'] = []
-        self.data['average_tdp'] = []
+        self.data_lists['average_temps'] = []
+        self.data_lists['average_tdp'] = []
 
     def resetAllData(self):
         self.resetGeneralTemps()
@@ -173,57 +189,63 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.resize(400, 330 + additional_cpu_cores_height)
 
     def getAvgTempForSeconds(self, collect_interval):
-        average_temps_sum_perion = sum(self.data['average_temps'][:collect_interval*self.collect_koef])
-        average_temps_len_perion = len(self.data['average_temps'][:collect_interval*self.collect_koef])
+        average_temps_sum_perion = sum(self.data_lists['average_temps'][:collect_interval*self.collect_koef])
+        average_temps_len_perion = len(self.data_lists['average_temps'][:collect_interval*self.collect_koef])
 
         return average_temps_sum_perion/average_temps_len_perion
 
     def getAvgTDPForSeconds(self, collect_interval):
-        average_tdps_sum_perion = sum(self.data['average_tdp'][:collect_interval*self.collect_koef])
-        average_tdps_len_perion = len(self.data['average_tdp'][:collect_interval*self.collect_koef])
+        average_tdps_sum_perion = sum(self.data_lists['average_tdp'][:collect_interval*self.collect_koef])
+        average_tdps_len_perion = len(self.data_lists['average_tdp'][:collect_interval*self.collect_koef])
 
         return average_tdps_sum_perion/average_tdps_len_perion
 
     #Записываем данные
-    def writeData(self, result):
+    def writeData(self, result):        
         #Записываем значения
         if round(result['cpu']['temp'], 1) > 0:
-            self.data['general_temps'].insert(0, result['cpu']['temp'])
-            self.data['average_temps'].insert(0, result['cpu']['temp'])
+            self.data_lists['general_temps'].insert(0, result['cpu']['temp'])
+            self.data_lists['average_temps'].insert(0, result['cpu']['temp'])
         
         if round(result['cpu']['tdp'], 1) > 0 and result['cpu']['tdp'] != inf:
-            self.data['general_tdp'].insert(0, result['cpu']['tdp'])
-            self.data['average_tdp'].insert(0, result['cpu']['tdp'])
+            self.data_lists['general_tdp'].insert(0, result['cpu']['tdp'])
+            self.data_lists['average_tdp'].insert(0, result['cpu']['tdp'])
+
+        if round(result['all_load'], 1) > 0 and result['all_load'] != inf:
+            self.data_lists['all_load'].insert(0, result['all_load'])
 
         #Обрезаем массивы
-        self.data['general_temps'] = self.data['general_temps'][:self.store_period]
-        self.data['average_temps'] = self.data['average_temps'][:self.store_period]
-        self.data['general_tdp'] = self.data['general_tdp'][:self.store_period]
+        self.data_lists['general_temps'] = self.data_lists['general_temps'][:self.store_period]
+        self.data_lists['average_temps'] = self.data_lists['average_temps'][:self.store_period]
+        self.data_lists['general_tdp'] = self.data_lists['general_tdp'][:self.store_period]
+        self.data_lists['all_load'] = self.data_lists['all_load'][:self.store_period]
 
     #Обработка данных из backupWorker'а
-    def saveData(self, result):
-        support.saveData(self.data)
+    def saveData(self):
+        support.saveData(self.data_lists)
 
     #Обработка данных из collectWorker'а
-    def processData(self, result):
+    def processData(self, result, turbo_state):
         if result['status'] in (Entities.Status.error, Entities.Status.not_collect):
             return
 
+        self.config.setIsTurboStateNow(turbo_state)
+
         self.writeData(result)
         
-        if len(self.data['general_temps']) > 0:
+        if len(self.data_lists['general_temps']) > 0:
             #Минимальная
-            min_temp = support.toRoundStr(min(self.data['general_temps']))
+            min_temp = support.toRoundStr(min(self.data_lists['general_temps']))
             self.lineEditCpuMinTemp.setText(min_temp)
 
             #Текущая
-            current_temp = support.toRoundStr(self.data['general_temps'][:1][0])
+            current_temp = support.toRoundStr(self.data_lists['general_temps'][:1][0])
             self.lineEditCpuCurrentTemp.setText(current_temp)
 
             self.image = support.getTrayImage(current_temp, self.config)
 
             #Максимальная
-            max_temp = support.toRoundStr((max(self.data['general_temps'])))
+            max_temp = support.toRoundStr((max(self.data_lists['general_temps'])))
             self.lineEditCpuMaxTemp.setText(max_temp)
         else:
             self.lineEditCpuMinTemp.setDisabled(True)
@@ -231,17 +253,17 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             self.lineEditCpuMaxTemp.setDisabled(True)
             self.buttonResetGeneralTemps.setDisabled(True)
 
-        if len(self.data['general_tdp']) > 0:
+        if len(self.data_lists['general_tdp']) > 0:
             #Минимальный
-            min_tdp = support.toRoundStr(min(self.data['general_tdp']))
+            min_tdp = support.toRoundStr(min(self.data_lists['general_tdp']))
             self.lineEditCpuMinTDP.setText(min_tdp)
 
             #Текущий
-            current_tdp = support.toRoundStr(self.data['general_tdp'][:1][0])
+            current_tdp = support.toRoundStr(self.data_lists['general_tdp'][:1][0])
             self.lineEditCpuCurrentTDP.setText(current_tdp)
 
             #Максимальный
-            max_tdp = support.toRoundStr((max(self.data['general_tdp'])))
+            max_tdp = support.toRoundStr((max(self.data_lists['general_tdp'])))
             self.lineEditCpuMaxTDP.setText(max_tdp)
         else:
             self.lineEditCpuMinTDP.setDisabled(True)
@@ -249,7 +271,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             self.lineEditCpuMaxTDP.setDisabled(True)
             self.buttonResetTDP.setDisabled(True)
 
-        if len(self.data['average_temps']) > 0:
+        if len(self.data_lists['average_temps']) > 0:
 
             row = 0
 
@@ -296,8 +318,16 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             if not self.config.getIsBackupNeeded() and window.config.getIsBackupNeeded():
                 self.startBackupWorker()
 
-            self.collect_worker.update(window.config.getCollectInterval())
+            #Позаботимся обновить ограничения процессора если они поменялись
+            if self.config.getCPUManagment():
+                hardware.updateCPULimits(self.config, window.config.getCPUTurboIdleState(), window.config.getCPUTurboLoadState())
+            
+            #И если пользователь отключил управление процом — выставим все в сотку, обычно это дефолт
+            if window.config.getCPUManagment() == False and (window.config.getCPUManagment() != self.config.getCPUManagment()):
+                hardware.updateCPULimits(self.config, 100, 100)
 
             #Обновим конфиг и перечитаем его
             support.writeToConfig(self, window.config)
-            support.readConfig(self)
+            new_config = support.readConfig(self)
+
+            self.collect_worker.update(new_config)

@@ -7,15 +7,15 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-
+import support
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.WindowModality.NonModal)
-        Dialog.resize(433, 378)
-        Dialog.setMinimumSize(QtCore.QSize(433, 378))
-        Dialog.setMaximumSize(QtCore.QSize(433, 378))
+        Dialog.resize(400, 378)
+        Dialog.setMinimumSize(QtCore.QSize(400, 378))
+        Dialog.setMaximumSize(QtCore.QSize(400, 378))
         Dialog.setToolTip("")
         Dialog.setStyleSheet("background: #fff;")
         Dialog.setModal(True)
@@ -50,18 +50,18 @@ class Ui_Dialog(object):
 "    border:solid 0px;\n"
 "    qproperty-icon: url(\" \"); /* empty image */\n"
 "    /*qproperty-iconSize: 20px 20px;  space for the background image */\n"
-"    border-image: url(./images/save.svg);\n"
+"    border-image: url("+ support.getResourcePath('./images/save.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    border-image : url(./images/save_hover.svg);\n"
+"    border-image: url("+ support.getResourcePath('./images/save_hover.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"    border-image : url(./images/save_pressed.svg);\n"
+"    border-image: url("+ support.getResourcePath('./images/save_pressed.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}")
         self.buttonSaveSettings.setText("")

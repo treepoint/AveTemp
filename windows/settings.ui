@@ -9,19 +9,19 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>433</width>
+    <width>400</width>
     <height>378</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>433</width>
+    <width>400</width>
     <height>378</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>433</width>
+    <width>400</width>
     <height>378</height>
    </size>
   </property>
@@ -648,6 +648,8 @@ QWidget:disabled{color: #999;}</string>
    </item>
   </layout>
  </widget>
- <resources/>
+  <resources>
+  <include location="../images.qrc"/>
+ </resources>
  <connections/>
 </ui>

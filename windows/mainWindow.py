@@ -7,19 +7,20 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+import support
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(342, 368)
+        MainWindow.resize(342, 346)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(6)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QtCore.QSize(342, 368))
+        MainWindow.setMinimumSize(QtCore.QSize(342, 346))
         MainWindow.setMaximumSize(QtCore.QSize(410, 600))
         MainWindow.setWindowTitle("")
         MainWindow.setWindowOpacity(1.0)
@@ -67,18 +68,18 @@ class Ui_MainWindow(object):
 "    border:solid 0px;\n"
 "    qproperty-icon: url(\" \"); /* empty image */\n"
 "    qproperty-iconSize: 20px 20px; /* space for the background image */\n"
-"    border-image: url(./images/settings.svg);\n"
+"    border-image: url("+ support.getResourcePath('./images/settings.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    border-image : url(./images/settings_hover.svg);\n"
+"    border-image: url("+ support.getResourcePath('./images/settings_hover.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"    border-image : url(./images/settings_pressed.svg);\n"
+"    border-image: url("+ support.getResourcePath('./images/settings_pressed.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}")
         self.buttonShowSettings.setText("")

@@ -17,7 +17,7 @@ stat_file = 'statistics.json'
 ## Тогда как я хочу относительные, по крайней мере для этапа разработки. Так что она просто в нужных местах меняет.
 
 ## Разумеется это значит, что если в интерфейсных файлах хочется абсолютные пути, то там надо ручками после QT designer менять
-## Например, чтобы было вот так —   "    border-image: url("+ support.getResourcePath('./images/settings.png')+ ");\n"
+## Например, чтобы было вот так — "border-image: url("+ support.getResourcePath('./images/settings.png')+ ");\n"
 def getResourcePath(relative_path):
     path = Path(relative_path)
 
@@ -116,6 +116,9 @@ def readConfig(self):
         self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight()) 
     except:
         createEmptyConfigFile()
+        readConfig(self)
+
+    return self.config
     
 #Получаем картинку для трея
 def getTrayImage(value, config):

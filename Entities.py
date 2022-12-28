@@ -23,6 +23,8 @@ class Config:
         self.CPU_turbo_threshhold = CPU_turbo_threshhold
         self.CPU_turbo_idle_state = CPU_turbo_idle_state
         self.CPU_turbo_load_state = CPU_turbo_load_state
+        self.is_turbo_state_now = True
+        self.CPU_idle_state_pause = 10
         self.systemUsesLightTheme = False
         self.name = "AveTemp"
         self.version = "1.2.2"
@@ -81,6 +83,12 @@ class Config:
     def getCPUTurboLoadState(self):
         return self.CPU_turbo_load_state
 
+    def setIsTurboStateNow(self, value):
+        self.is_turbo_state_now = value
+
+    def getIsTurboStateNow(self):
+        return self.is_turbo_state_now
+
     def setCPUTurboLoadState(self, value):
         self.CPU_turbo_load_state = value
 
@@ -89,6 +97,9 @@ class Config:
 
     def getSystemUsesLightTheme(self):
         return self.systemUsesLightTheme
+
+    def getCPUIdleStatePause(self):
+        return self.CPU_idle_state_pause
 
     def getName(self):
         return self.name
