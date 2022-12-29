@@ -2,33 +2,45 @@ import enum
 
 class Config:
     def __init__(self, 
-                 collect_interval=1, 
+                 collect_interval = 1, 
                  backup_interval = 15, 
                  is_backup_needed = True, 
-                 store_period=86400, 
-                 close_to_tray=False, 
-                 open_minimized=False,
-                 CPU_managment=False,
-                 CPU_turbo_threshhold = 20,
-                 CPU_turbo_idle_state = 99,
-                 CPU_turbo_load_state = 100
+                 store_period = 86400, 
+                 close_to_tray = False, 
+                 open_minimized = False,
+                 is_CPU_managment_on = False,
+                 CPU_threshhold = 20,
+                 CPU_idle_state = 99,
+                 CPU_load_state = 100,
+                 is_turbo_managment_on = False,
+                 CPU_turbo_idle_id = 0,
+                 CPU_turbo_load_id = 2
                  ):
+        #Общие
         self.collect_interval = collect_interval
         self.backup_interval = backup_interval
         self.is_backup_needed = is_backup_needed
         self.store_period = store_period
         self.close_to_tray = close_to_tray
         self.open_minimized = open_minimized
-        self.CPU_managment = CPU_managment
-        self.CPU_turbo_threshhold = CPU_turbo_threshhold
-        self.CPU_turbo_idle_state = CPU_turbo_idle_state
-        self.CPU_turbo_load_state = CPU_turbo_load_state
-        self.is_turbo_state_now = True
+        #Управление процессором
+        self.performance_CPU_mode_on = True
         self.CPU_idle_state_pause = 10
-        self.systemUsesLightTheme = False
-        self.name = "AveTemp"
-        self.version = "1.2.2"
+        self.is_CPU_managment_on = is_CPU_managment_on
+        self.CPU_threshhold = CPU_threshhold
+        self.CPU_idle_state = CPU_idle_state
+        self.CPU_load_state = CPU_load_state
+        #Управление турбо режимом
+        self.is_turbo_managment_on = is_turbo_managment_on
+        self.CPU_turbo_idle_id = CPU_turbo_idle_id
+        self.CPU_turbo_load_id = CPU_turbo_load_id
+        #Служебные
+        self.system_uses_light_theme = False
+        self.system_data_collect_interval = 300
+        self.name = 'AveTemp'
+        self.version = '1.3.0'
 
+    #Общие
     def getCollectInterval(self):
         return self.collect_interval
 
@@ -60,46 +72,70 @@ class Config:
         return self.open_minimized
 
     def setOpenMinimized(self, value):
-        self.CPU_managment = value
+        self.open_minimized = value
 
-    def getCPUManagment(self):
-        return self.CPU_managment
+    #Управление процессором
+    def setPerformanceCPUModeOn(self, value):
+        self.performance_CPU_mode_on = value
 
-    def setCPUManagment(self, value):
-        self.CPU_managment = value
-
-    def getCPUTurboThreshhold(self):
-        return self.CPU_turbo_threshhold
-
-    def setCPUTurboThreshhold(self, value):
-        self.CPU_turbo_threshhold = value
-
-    def getCPUTurboIdleState(self):
-        return self.CPU_turbo_idle_state
-
-    def setCPUTurboIdleState(self, value):
-        self.CPU_turbo_idle_state = value
-
-    def getCPUTurboLoadState(self):
-        return self.CPU_turbo_load_state
-
-    def setIsTurboStateNow(self, value):
-        self.is_turbo_state_now = value
-
-    def getIsTurboStateNow(self):
-        return self.is_turbo_state_now
-
-    def setCPUTurboLoadState(self, value):
-        self.CPU_turbo_load_state = value
-
-    def setSystemUsesLightTheme(self, value):
-        self.systemUsesLightTheme = value
-
-    def getSystemUsesLightTheme(self):
-        return self.systemUsesLightTheme
+    def getPerformanceCPUModeOn(self):
+        return self.performance_CPU_mode_on
 
     def getCPUIdleStatePause(self):
         return self.CPU_idle_state_pause
+
+    def getIsCPUManagmentOn(self):
+        return self.is_CPU_managment_on
+
+    def setIsCPUManagmentOn(self, value):
+        self.is_CPU_managment_on = value
+
+    def getCPUThreshhold(self):
+        return self.CPU_threshhold
+
+    def setCPUThreshhold(self, value):
+        self.CPU_threshhold = value
+
+    def getCPUIdleState(self):
+        return self.CPU_idle_state
+
+    def setCPUIdleState(self, value):
+        self.CPU_idle_state = value
+
+    def getCPULoadState(self):
+        return self.CPU_load_state
+    
+    def setCPULoadState(self, value):
+        self.CPU_load_state = value
+    
+    #Управление турбо режимом
+    def setIsTurboManagmentOn(self, value):
+        self.is_turbo_managment_on = value
+
+    def getIsTurboManagmentOn(self):
+        return self.is_turbo_managment_on
+
+    def setCPUTurboIdleId(self, value):
+        self.CPU_turbo_idle_id = value
+
+    def getCPUTurboIdleId(self):
+        return self.CPU_turbo_idle_id
+
+    def setCPUTurboLoadId(self, value):
+        self.CPU_turbo_load_id = value
+
+    def getCPUTurboLoadId(self):
+        return self.CPU_turbo_load_id
+
+    #Служебные
+    def getSystemDataCollectIntreval(self):
+        return self.system_data_collect_interval
+
+    def setSystemUsesLightTheme(self, value):
+        self.system_uses_light_theme = value
+
+    def getSystemUsesLightTheme(self):
+        return self.system_uses_light_theme
 
     def getName(self):
         return self.name
@@ -111,3 +147,26 @@ class Status(enum.Enum):
     error = 1
     success = 2
     not_collect = 3
+
+class TurboStatuses:
+    def __init__(self):
+        self.eco = {'id' : 0, 'name' : 'Минимальные частоты (энергоэффективно)', 'index': '000'}
+        self.basic = {'id' : 1, 'name' : 'Базовые частоты (сбалансировано)', 'index': '004'}
+        self.turbo = {'id' : 2, 'name' : 'Максимальные частоты (производительно)', 'index': '002'}
+
+    def getEco(self):
+        return self.eco
+
+    def getBasic(self):
+        return self.basic
+
+    def getTurbo(self):
+        return self.turbo
+
+    def getIndexById(self, id):
+        if id == 0:
+            return self.eco['index']
+        elif id == 1:
+            return self.basic['index']
+        elif id == 2:
+            return self.turbo['index']

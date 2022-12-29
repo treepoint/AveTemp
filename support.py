@@ -8,7 +8,8 @@ import json
 from pathlib import Path
 
 import Entities 
-import registry 
+import registry
+import hardware
 
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
@@ -48,15 +49,23 @@ def createEmptyConfigFile():
 
     configParser = configparser.ConfigParser()
 
-    configParser['main'] = {'collect_interval': config.getCollectInterval(), 
+    configParser['main'] = {
+                            #Общие
+                            'collect_interval': config.getCollectInterval(), 
                             'store_period': config.getStorePeriod(),
                             'is_backup_needed' : config.getIsBackupNeeded(),
                             'close_to_tray': config.getCloseToTray(),
                             'open_minimized': config.getOpenMinimized(),
-                            'CPU_managment': config.getCPUManagment(),
-                            'CPU_turbo_threshhold': config.getCPUTurboThreshhold(),
-                            'CPU_turbo_idle_state': config.getCPUTurboIdleState(),
-                            'CPU_turbo_load_state': config.getCPUTurboLoadState()}
+                            #Управление процессором
+                            'is_CPU_managment_on': config.getIsCPUManagmentOn(),
+                            'CPU_threshhold': config.getCPUThreshhold(),
+                            'CPU_idle_state': config.getCPUIdleState(),
+                            'CPU_load_state': config.getCPULoadState(),
+                            #Управление турбо режимом
+                            'is_turbo_managment_on': config.getIsTurboManagmentOn(),
+                            'CPU_turbo_idle_id': config.getCPUTurboIdleId(),
+                            'CPU_turbo_load_id': config.getCPUTurboLoadId()
+                            }
 
     with open(config_file, 'w') as configfile:
         configParser.write(configfile)
@@ -65,15 +74,22 @@ def writeToConfig(self, config):
 
     configParser = configparser.ConfigParser()
 
-    configParser['main'] = {'collect_interval': config.collect_interval, 
+    configParser['main'] = {
+                            #Общие
+                            'collect_interval': config.collect_interval, 
                             'store_period': config.store_period,
                             'is_backup_needed' : config.getIsBackupNeeded(),
                             'close_to_tray': config.close_to_tray,
                             'open_minimized': config.open_minimized,
-                            'CPU_managment': config.CPU_managment,
-                            'CPU_turbo_threshhold': config.CPU_turbo_threshhold,
-                            'CPU_turbo_idle_state': config.CPU_turbo_idle_state,
-                            'CPU_turbo_load_state': config.CPU_turbo_load_state}
+                            #Управление процессором
+                            'is_CPU_managment_on': config.is_CPU_managment_on,
+                            'CPU_threshhold': config.CPU_threshhold,
+                            'CPU_idle_state': config.CPU_idle_state,
+                            'CPU_load_state': config.CPU_load_state,
+                            #Управление турбо режимом
+                            'is_turbo_managment_on': config.getIsTurboManagmentOn(),
+                            'CPU_turbo_idle_id': config.getCPUTurboIdleId(),
+                            'CPU_turbo_load_id': config.getCPUTurboLoadId()}
 
     with open(config_file, 'w') as configfile:
         configParser.write(configfile)
@@ -102,18 +118,25 @@ def readConfig(self):
 
     try:
         #Заберем настройки из файла
+
+        #Общие
         self.config.setCollectInterval(float(config['main']['collect_interval']))
         self.config.setStorePeriod(int(config['main']['store_period']))
         self.config.setIsBackupNeeded(toBool(config['main']['is_backup_needed']))
         self.config.setCloseToTray(toBool(config['main']['close_to_tray']))
         self.config.setOpenMinimized(toBool(config['main']['open_minimized']))
-        self.config.setCPUManagment(toBool(config['main']['CPU_managment']))
-        self.config.setCPUTurboThreshhold(int(config['main']['CPU_turbo_threshhold']))
-        self.config.setCPUTurboIdleState(int(config['main']['CPU_turbo_idle_state']))
-        self.config.setCPUTurboLoadState(int(config['main']['CPU_turbo_load_state']))
+        #Управление процессором
+        self.config.setIsCPUManagmentOn(toBool(config['main']['is_CPU_managment_on']))
+        self.config.setCPUThreshhold(int(config['main']['CPU_threshhold']))
+        self.config.setCPUIdleState(int(config['main']['CPU_idle_state']))
+        self.config.setCPULoadState(int(config['main']['CPU_load_state']))
+        #Управление турбо режимом
+        self.config.setIsTurboManagmentOn(toBool(config['main']['is_turbo_managment_on']))
+        self.config.setCPUTurboIdleId(int(config['main']['CPU_turbo_idle_id']))
+        self.config.setCPUTurboLoadId(int(config['main']['CPU_turbo_load_id']))
 
         #И, заодно, прочитаем нужные параметры реестра
-        self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight()) 
+        self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight())
     except:
         createEmptyConfigFile()
         readConfig(self)

@@ -10,6 +10,38 @@ import windows.mainWindow
 import hardware
 import Entities
 import support
+import registry
+
+# Воркер для сбора данных
+class CollectWorker(QThread):
+    def __init__(self, config, data_lists):
+        super().__init__()
+
+        self.collect_interval = config.getCollectInterval()
+        self.config = config
+        self.data_lists = data_lists
+
+    result = pyqtSignal(dict, bool)
+
+    def run(self):
+        self.keepRunning = True
+        while self.keepRunning:
+            data = hardware.collectData()
+
+            if not self.config.getIsCPUManagmentOn():
+                CPU_performance_mode = True
+            else:
+                CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
+
+            self.result.emit(data, CPU_performance_mode)
+            time.sleep(self.collect_interval)
+
+    def update(self, config):
+        self.collect_interval = config.getCollectInterval()
+        self.config = config
+
+    def stop(self):
+        self.keepRunning = False
 
 # Воркер для бэкапа данных
 class BackupWorker(QThread):
@@ -32,33 +64,28 @@ class BackupWorker(QThread):
     def stop(self):
         self.keepRunning = False
 
-# Воркер для сбора данных
-class CollectWorker(QThread):
-    def __init__(self, config, data_lists):
+# Воркер для мониторинга системных параметров
+class SystemMonitoringWorker(QThread):
+    def __init__(self, system_data_collect_interval):
         super().__init__()
 
-        self.collect_interval = config.getCollectInterval()
-        self.config = config
-        self.data_lists = data_lists
+        self.system_data_collect_interval = system_data_collect_interval
 
-    result = pyqtSignal(dict, bool)
+    result = pyqtSignal(dict)
 
     def run(self):
         self.keepRunning = True
         while self.keepRunning:
-            data = hardware.collectData()
 
-            if not self.config.getCPUManagment():
-                turbo_state = True
-            else:
-                turbo_state = hardware.setCpuPerformanceState(self.config, self.data_lists)
+            data = {
+                    'system_uses_light_theme' : registry.getCurrentThemeIsLight()
+                    }
 
-            self.result.emit(data, turbo_state)
-            time.sleep(self.collect_interval)
+            self.result.emit(data)
+            time.sleep(self.system_data_collect_interval)
 
-    def update(self, config):
-        self.collect_interval = config.getCollectInterval()
-        self.config = config
+    def update(self, system_data_collect_interval):
+        self.system_data_collect_interval = system_data_collect_interval
 
     def stop(self):
         self.keepRunning = False
@@ -70,6 +97,9 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         #Прочитаем конфиг
         self.config = Entities.Config()
+
+        #Прочитаем статус турбо
+        self.turbo_statuses = Entities.TurboStatuses()
 
         support.readConfig(self)
 
@@ -91,11 +121,13 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
             self.startBackupWorker()
 
+        self.startSystemMonitoringWorker()
+
         data = hardware.collectData()
 
-        if self.config.getCPUManagment():
-            turbo_state = hardware.setCpuPerformanceState(self.config, self.data_lists)
-            self.config.setIsTurboStateNow(turbo_state)
+        if self.config.getIsCPUManagmentOn():
+            CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
+            self.config.setPerformanceCPUModeOn(CPU_performance_mode)
 
         self.cpu_cores = len(data['cpu']['cores'])
         self.cpu_threads = len(data['cpu']['threads'])
@@ -148,7 +180,8 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             self.hide()
         else:
             #Иначе вернем лимиты проца по умолчанию — 100
-            hardware.setCPUtoDefault()
+            hardware.setCPUStatetoDefault()
+            hardware.setTurboToDefault()
 
     def startCollectWorker(self):
         #Создаем воркер для сбора и обновления информации
@@ -161,6 +194,12 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.backup_worker = BackupWorker(self.backup_interval)
         self.backup_worker.result.connect(self.saveData)
         self.backup_worker.start()
+
+    def startSystemMonitoringWorker(self):
+        #Создаем воркер для мониторинга системных параметров
+        self.system_monitoring_worker = SystemMonitoringWorker(self.config.getSystemDataCollectIntreval())
+        self.system_monitoring_worker.result.connect(self.updateSystemStateConfig)
+        self.system_monitoring_worker.start()
 
     #Функции для сбора записанных данных
     def resetGeneralTemps(self):
@@ -220,16 +259,12 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.data_lists['general_tdp'] = self.data_lists['general_tdp'][:self.store_period]
         self.data_lists['all_load'] = self.data_lists['all_load'][:self.store_period]
 
-    #Обработка данных из backupWorker'а
-    def saveData(self):
-        support.saveData(self.data_lists)
-
     #Обработка данных из collectWorker'а
-    def processData(self, result, turbo_state):
+    def processData(self, result, CPU_performance_mode):
         if result['status'] in (Entities.Status.error, Entities.Status.not_collect):
             return
 
-        self.config.setIsTurboStateNow(turbo_state)
+        self.config.setPerformanceCPUModeOn(CPU_performance_mode)
 
         self.writeData(result)
         
@@ -301,13 +336,22 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
                 self.CPUinfoTable.setItem(int(core['id'])-1 , 1, QTableWidgetItem(avg_load_by_core + '%'))
 
+    #Обработка данных из backupWorker'а
+    def saveData(self):
+        support.saveData(self.data_lists)
+
+    #Обработка данных из SystemMonitoringWorker'а
+    def updateSystemStateConfig(self, data):
+
+        self.config.setSystemUsesLightTheme(data['system_uses_light_theme'])
+
     def showSettings(self):
         window = SettingsWindow.Main()        
         app_icon = support.getResourcePath('./images/icon.png')
 
         window.setWindowIcon(QIcon(app_icon))
 
-        window.setData(self.config)
+        window.setData(self.config, self.turbo_statuses)
 
         if window.exec():
             #Обновим воркеры, пока мы еще можем сравнивать состояния
@@ -319,12 +363,18 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                 self.startBackupWorker()
 
             #Позаботимся обновить ограничения процессора если они поменялись
-            if self.config.getCPUManagment():
-                hardware.updateCPULimits(self.config, window.config.getCPUTurboIdleState(), window.config.getCPUTurboLoadState())
+            if self.config.getIsCPUManagmentOn():
+                hardware.updateCPUParameters(self.config, 
+                                             window.config.getCPUIdleState(), 
+                                             window.config.getCPULoadState(),
+                                             window.config.getCPUTurboIdleId(),
+                                             window.config.getCPUTurboLoadId()
+                                             )
             
-            #И если пользователь отключил управление процом — выставим все в сотку, обычно это дефолт
-            if window.config.getCPUManagment() == False and (window.config.getCPUManagment() != self.config.getCPUManagment()):
-                hardware.updateCPULimits(self.config, 100, 100)
+            #И если пользователь отключил управление процом — выставим все в сотку и турбо без ограничений, обычно это дефолт
+            if window.config.getIsCPUManagmentOn() == False and (window.config.getIsCPUManagmentOn() != self.config.getIsCPUManagmentOn()):
+                hardware.setCPUStatetoDefault()
+                hardware.setTurboToDefault()
 
             #Обновим конфиг и перечитаем его
             support.writeToConfig(self, window.config)
