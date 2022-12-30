@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>490</height>
+    <height>510</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>440</width>
-    <height>490</height>
+    <height>510</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>440</width>
-    <height>490</height>
+    <height>510</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -311,6 +311,13 @@ margin-left:16px;</string>
         <widget class="QCheckBox" name="checkBoxOpenMinimized">
          <property name="text">
           <string>Запускать свернутым</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="checkBoxAutostartIsActive">
+         <property name="text">
+          <string>Добавить в автозагрузку</string>
          </property>
         </widget>
        </item>

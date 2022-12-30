@@ -2,6 +2,7 @@ from PyQt6 import QtWidgets
 import windows.settingsWindow
 
 import Entities
+import taskManager
 
 class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
     def __init__(self, parent=None):
@@ -21,10 +22,11 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.checkBoxStoreStat.setChecked(config.getIsBackupNeeded())
         self.checkBoxCloseToTray.setChecked(config.getCloseToTray())
         self.checkBoxOpenMinimized.setChecked(config.getOpenMinimized())
+        self.checkBoxAutostartIsActive.setChecked(config.getAutostartIsActive())
 
         #Управление процессором
         self.checkBoxCPUManagment.setChecked(config.getIsCPUManagmentOn())
-        self.spinBoxCPUThreshhold.setValue(config.CPU_threshhold)
+        self.spinBoxCPUThreshhold.setValue(config.getCPUThreshhold())
         self.spinBoxCPUIdleState.setValue(config.getCPUIdleState())
         self.spinBoxCPULoadState.setValue(config.getCPULoadState())
 
@@ -36,7 +38,7 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.comboBoxCPUTurboLoadState.addItem(turbo_statuses.getTurbo()['name'], turbo_statuses.getTurbo()['id'])
 
         #Управление турбо режимом
-        self.checkBoxCPUTurboManagment.setChecked(config.is_turbo_managment_on)
+        self.checkBoxCPUTurboManagment.setChecked(config.getIsTurboManagmentOn())
 
         idleComboboxIndex = self.comboBoxCPUTurboIdleState.findData(config.getCPUTurboIdleId())
         loadComboboxIndex = self.comboBoxCPUTurboLoadState.findData(config.getCPUTurboLoadId())
@@ -74,6 +76,7 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())
         self.config.setCloseToTray(self.checkBoxCloseToTray.isChecked())
         self.config.setOpenMinimized(self.checkBoxOpenMinimized.isChecked())
+        self.config.setAutostartIsActive(self.checkBoxAutostartIsActive.isChecked())
         
         #Управление процессором
         self.config.setIsCPUManagmentOn(self.checkBoxCPUManagment.isChecked())
@@ -85,5 +88,11 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.config.setIsTurboManagmentOn(self.checkBoxCPUTurboManagment.isChecked())
         self.config.setCPUTurboIdleId(self.comboBoxCPUTurboIdleState.currentData())
         self.config.setCPUTurboLoadId(self.comboBoxCPUTurboLoadState.currentData())
+
+        #Управление автостартом
+        if self.checkBoxAutostartIsActive.isChecked():
+            taskManager.addToAutostart(self)
+        else:
+            taskManager.removeFromAutostart(self)
 
         self.accept()

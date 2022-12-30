@@ -9,7 +9,7 @@ from pathlib import Path
 
 import Entities 
 import registry
-import hardware
+import taskManager
 
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
@@ -52,10 +52,10 @@ def createEmptyConfigFile():
     configParser['main'] = {
                             #Общие
                             'collect_interval': config.getCollectInterval(), 
-                            'store_period': config.getStorePeriod(),
+                            'store_period' : config.getStorePeriod(),
                             'is_backup_needed' : config.getIsBackupNeeded(),
-                            'close_to_tray': config.getCloseToTray(),
-                            'open_minimized': config.getOpenMinimized(),
+                            'close_to_tray' : config.getCloseToTray(),
+                            'open_minimized' : config.getOpenMinimized(),
                             #Управление процессором
                             'is_CPU_managment_on': config.getIsCPUManagmentOn(),
                             'CPU_threshhold': config.getCPUThreshhold(),
@@ -68,10 +68,10 @@ def createEmptyConfigFile():
                             }
 
     with open(config_file, 'w') as configfile:
+        configfile.truncate(0)
         configParser.write(configfile)
 
 def writeToConfig(self, config):
-
     configParser = configparser.ConfigParser()
 
     configParser['main'] = {
@@ -92,6 +92,7 @@ def writeToConfig(self, config):
                             'CPU_turbo_load_id': config.getCPUTurboLoadId()}
 
     with open(config_file, 'w') as configfile:
+        configfile.truncate(0)
         configParser.write(configfile)
 
 def toBool(value):
@@ -137,6 +138,9 @@ def readConfig(self):
 
         #И, заодно, прочитаем нужные параметры реестра
         self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight())
+
+        #И из системных данных windows
+        self.config.setAutostartIsActive(taskManager.checkThatAutostartIsActive(self))
     except:
         createEmptyConfigFile()
         readConfig(self)

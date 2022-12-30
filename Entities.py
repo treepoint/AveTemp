@@ -37,6 +37,7 @@ class Config:
         #Служебные
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
+        self.autostart_is_active = False
         self.name = 'AveTemp'
         self.version = '1.3.0'
 
@@ -136,6 +137,12 @@ class Config:
 
     def getSystemUsesLightTheme(self):
         return self.system_uses_light_theme
+
+    def setAutostartIsActive(self, value):
+        self.autostart_is_active = value
+
+    def getAutostartIsActive(self):
+        return self.autostart_is_active
 
     def getName(self):
         return self.name
