@@ -39,7 +39,7 @@ class Config:
         self.system_data_collect_interval = 300
         self.autostart_is_active = False
         self.name = 'AveTemp'
-        self.version = '1.3.0'
+        self.version = '1.3.1'
 
     #Общие
     def getCollectInterval(self):

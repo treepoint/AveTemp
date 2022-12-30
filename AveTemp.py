@@ -8,18 +8,23 @@ import support
 import MainWindow
 
 class Worker(QThread):
-    result = pyqtSignal(str)
-
-    def __init__(self, collect_interval):
+    def __init__(self, app, collect_interval):
         super().__init__()
 
         self.collect_interval = collect_interval
+        self.app = app
+
+    result = pyqtSignal(bool)
 
     def run(self):
         self.keepRunning = True
         while self.keepRunning:
             time.sleep(self.collect_interval)
-            self.result.emit('')
+
+            if self.app.lastWindowClosed:
+                self.result.emit(True)
+            else:
+                self.result.emit(False)
 
     def stop(self):
         self.keepRunning = False
@@ -70,16 +75,21 @@ class TrayWrapper:
         self.tray.activated.connect(self.onTrayIconActivated)
 
         #Создаем поток для обновления информации в трее
-        self.worker = Worker(self.collect_interval)
+        self.worker = Worker(self.app, self.collect_interval)
         self.worker.result.connect(self.updateIcon)
         self.worker.start()
 
         #Ну и запускаем
         self.app.exec()
 
-    def updateIcon(self):
-        icon = QIcon(self.window.image)
-        self.tray.setIcon(icon)
+    def updateIcon(self, result):
+        if result:
+            icon = QIcon(self.window.image)
+            self.tray.setIcon(icon)
+        else:
+            #Если из воркера не пришло результат — значит приложение закрыли, дропаем
+            self.tray.setVisible(False)
+            exit(0)
 
     def onTrayIconActivated(self, reason):
         if reason == QSystemTrayIcon.ActivationReason.DoubleClick:
