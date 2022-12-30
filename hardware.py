@@ -35,7 +35,7 @@ def getCpuName():
             
             return cpu_name
 
-def collectData():
+def collectData(data_lists):
     #Обновляем значения
     #c.Reset() 
 
@@ -60,12 +60,18 @@ def collectData():
         for sensor in hardware.Sensors:
             #Добавляем общую температуру проца
             if str(sensor.SensorType) == 'Temperature' and str(sensor.Name) in ('Core (Tctl/Tdie)', 'CPU Package'):
-                data['cpu']['temp'] = round(sensor.Value, 2)
+                new_data = round(sensor.Value, 2)
+                old_data = data_lists['general_temps'][:1][0]
+
+                data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
                 continue
 
             #Добавляем TDP
             if str(sensor.SensorType) == 'Power' and str(sensor.Name) in ('Package', 'CPU Package') and type(sensor.Value) != NoneType:
-                data['cpu']['tdp'] = round(sensor.Value, 2)
+                new_data = round(sensor.Value, 2)
+                old_data = data_lists['general_tdp'][:1][0]
+                
+                data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
                 continue 
 
             #Добавляем частоты в рамках физических ядер проца
@@ -112,6 +118,12 @@ def collectData():
     data['all_load'] = all_load
 
     return data
+
+def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data):
+    if new_data > old_data*3:
+        return old_data*0.5
+    else:
+        return new_data
 
 def setCpuPerformanceState(config, data_lists):
     if not config.getIsCPUManagmentOn():

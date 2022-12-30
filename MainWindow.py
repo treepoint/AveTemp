@@ -26,7 +26,7 @@ class CollectWorker(QThread):
     def run(self):
         self.keepRunning = True
         while self.keepRunning:
-            data = hardware.collectData()
+            data = hardware.collectData(self.data_lists)
 
             if not self.config.getIsCPUManagmentOn():
                 CPU_performance_mode = True
@@ -123,11 +123,11 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         self.startSystemMonitoringWorker()
 
-        data = hardware.collectData()
-
         if self.config.getIsCPUManagmentOn():
             CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
             self.config.setPerformanceCPUModeOn(CPU_performance_mode)
+
+        data = hardware.collectData(self.data_lists)
 
         self.cpu_cores = len(data['cpu']['cores'])
         self.cpu_threads = len(data['cpu']['threads'])
