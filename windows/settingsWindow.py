@@ -13,9 +13,9 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.WindowModality.NonModal)
-        Dialog.resize(440, 510)
-        Dialog.setMinimumSize(QtCore.QSize(440, 510))
-        Dialog.setMaximumSize(QtCore.QSize(440, 510))
+        Dialog.resize(440, 518)
+        Dialog.setMinimumSize(QtCore.QSize(440, 518))
+        Dialog.setMaximumSize(QtCore.QSize(440, 518))
         Dialog.setToolTip("")
         Dialog.setStyleSheet("background: #fff;")
         Dialog.setModal(True)
