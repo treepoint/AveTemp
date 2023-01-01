@@ -30,6 +30,10 @@ And win10/11.
 
 If you have issues with AveTemp on your CPU/system please contact me: https://t.me/PaulKhoziashev, you can write me english or russian. Also, you can send me the issue here: https://github.com/treepoint/AveTemp/issues
 
+## Download
+
+Current release see here: https://github.com/treepoint/AveTemp/releases
+
 ## Build and run
 For the running:
 + Install Python > 3.10 and PIP
