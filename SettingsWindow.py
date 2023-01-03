@@ -3,20 +3,23 @@ import windows.settingsWindow
 
 import Entities
 import taskManager
+import support
 
 class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)  # Дизайн
 
+        self.config = Entities.Config()
+
         self.buttonSaveSettings.clicked.connect(self.closeWindow)
         self.checkBoxCPUManagment.toggled.connect(self.enableCPUManagmentBlock)
-
-        self.config = Entities.Config()
 
         self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
         
     def setData(self, config, turbo_statuses):
+        self.config = config
+
         #Базовые настройки
         self.spinBoxLoggingInterval.setValue(config.getCollectInterval())
         self.checkBoxStoreStat.setChecked(config.getIsBackupNeeded())
@@ -76,6 +79,20 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())
         self.config.setCloseToTray(self.checkBoxCloseToTray.isChecked())
         self.config.setOpenMinimized(self.checkBoxOpenMinimized.isChecked())
+
+        #Управление автостартом
+        if self.checkBoxAutostartIsActive.isChecked():
+            if not self.config.getAutostartIsActive():
+                location = str(support.getCurrentPath(self))
+
+                taskManager.addToAutostart(self, location)
+
+                self.config.setLastLocation(location)
+
+        else:
+            if self.config.getAutostartIsActive():
+                taskManager.removeFromAutostart(self)
+
         self.config.setAutostartIsActive(self.checkBoxAutostartIsActive.isChecked())
         
         #Управление процессором
@@ -88,11 +105,5 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.config.setIsTurboManagmentOn(self.checkBoxCPUTurboManagment.isChecked())
         self.config.setCPUTurboIdleId(self.comboBoxCPUTurboIdleState.currentData())
         self.config.setCPUTurboLoadId(self.comboBoxCPUTurboLoadState.currentData())
-
-        #Управление автостартом
-        if self.checkBoxAutostartIsActive.isChecked():
-            taskManager.addToAutostart(self)
-        else:
-            taskManager.removeFromAutostart(self)
 
         self.accept()

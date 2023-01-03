@@ -5,21 +5,21 @@ scheduler = win32com.client.Dispatch('Schedule.Service')
 scheduler.Connect()
 root_folder = scheduler.GetFolder('\\')
 
-def addToAutostart(self):
+def addToAutostart(self, location):
     task_def = scheduler.NewTask(0)
 
     # Создаем триггер
-    #start_time = datetime.datetime.now() + datetime.timedelta(minutes=5)
     TASK_TRIGGER_LOGON = 9
     trigger = task_def.Triggers.Create(TASK_TRIGGER_LOGON)
     trigger.Id = "LogonTriggerId"
-    trigger.UserId = os.environ.get('USERNAME') # current user account
-
+    trigger.UserId = os.environ.get('USERNAME') # получаем имя текущего пользователя
+    
     # Добавляем к нему действие
     TASK_ACTION_EXEC = 0
     action = task_def.Actions.Create(TASK_ACTION_EXEC)
-    action.ID = 'AveTemp'
-    action.Path = str(getCurrentPath()) + '\\' + 'AveTemp.exe'
+    action.ID = self.config.getName()
+    action.Path = location + '\\' + self.config.getName() + '.exe'
+    action.WorkingDirectory = location
 
     # Выставляем параметры запуска
     task_def.Settings.Enabled = True
@@ -52,12 +52,11 @@ def removeFromAutostart(self):
 # в общем списке
 def checkThatAutostartIsActive(self):
     tasks = root_folder.GetTasks(0)
-    is_task_exist = bool(len(list(filter(lambda task: (task.name ==  self.config.getName()), tasks))))
+    task_name = self.config.getName()
+
+    is_task_exist = bool(len(list(filter(lambda task: (task.name == task_name), tasks))))
 
     return is_task_exist
 
-def getCurrentPath():
-    return os.getcwd()
-
 if __name__ == "__main__":
-    print(getCurrentPath())
+    print(checkThatAutostartIsActive())

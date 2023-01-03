@@ -153,12 +153,15 @@ def setCpuPerformanceState(config, data_lists):
         turbo_id = config.getCPUTurboIdleId()
         CPU_performance_mode = False
     else:
-        if int(data[0]) > int(config.getCPUThreshhold()):
-            percentage = config.getCPULoadState()
-            turbo_id = config.getCPUTurboLoadId()
-            CPU_performance_mode = True
+        if len(data) > 0:
+            if int(data[0]) > int(config.getCPUThreshhold()):
+                percentage = config.getCPULoadState()
+                turbo_id = config.getCPUTurboLoadId()
+                CPU_performance_mode = True
+            else:
+                CPU_performance_mode = config.getPerformanceCPUModeOn()
         else:
-            CPU_performance_mode = config.getPerformanceCPUModeOn()
+                CPU_performance_mode = config.getPerformanceCPUModeOn()
 
     if config.getPerformanceCPUModeOn() == CPU_performance_mode:
         return CPU_performance_mode
