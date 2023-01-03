@@ -77,12 +77,12 @@ class SystemMonitoringWorker(QThread):
         self.keepRunning = True
         while self.keepRunning:
 
+            time.sleep(self.system_data_collect_interval)
             data = {
                     'system_uses_light_theme' : registry.getCurrentThemeIsLight()
                     }
 
             self.result.emit(data)
-            time.sleep(self.system_data_collect_interval)
 
     def update(self, system_data_collect_interval):
         self.system_data_collect_interval = system_data_collect_interval
@@ -342,8 +342,12 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
     #Обработка данных из SystemMonitoringWorker'а
     def updateSystemStateConfig(self, data):
-
         self.config.setSystemUsesLightTheme(data['system_uses_light_theme'])
+
+        support.writeToConfig(self.config)
+        new_config = support.readConfig(self)
+
+        self.collect_worker.update(new_config)
 
     def showSettings(self):
         window = SettingsWindow.Main()        
@@ -377,7 +381,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                 hardware.setTurboToDefault()
 
             #Обновим конфиг и перечитаем его
-            support.writeToConfig(self, window.config)
+            support.writeToConfig(window.config)
             new_config = support.readConfig(self)
 
             self.collect_worker.update(new_config)

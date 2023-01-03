@@ -34,7 +34,7 @@ def getResourcePath(relative_path):
     return path
 
 def toRoundStr(value):
-    return str(round(value,1))
+    return str(round(value, 1))
 
 def isThereAdminRight():
     try:
@@ -44,56 +44,20 @@ def isThereAdminRight():
 
     return is_admin
 
+def writeToConfig(config):
+    configParser = configparser.ConfigParser()
+
+    #Получим описание раздела main для конфига
+    configParser['main'] = Entities.ConfigParser.getMain(config)
+
+    with open(config_file, 'w') as configfile:
+        configfile.truncate(0)
+        configParser.write(configfile)
+
 def createEmptyConfigFile():
     config = Entities.Config()
 
-    configParser = configparser.ConfigParser()
-
-    configParser['main'] = {
-                            #Общие
-                            'collect_interval': config.getCollectInterval(), 
-                            'store_period' : config.getStorePeriod(),
-                            'is_backup_needed' : config.getIsBackupNeeded(),
-                            'close_to_tray' : config.getCloseToTray(),
-                            'open_minimized' : config.getOpenMinimized(),
-                            #Управление процессором
-                            'is_CPU_managment_on': config.getIsCPUManagmentOn(),
-                            'CPU_threshhold': config.getCPUThreshhold(),
-                            'CPU_idle_state': config.getCPUIdleState(),
-                            'CPU_load_state': config.getCPULoadState(),
-                            #Управление турбо режимом
-                            'is_turbo_managment_on': config.getIsTurboManagmentOn(),
-                            'CPU_turbo_idle_id': config.getCPUTurboIdleId(),
-                            'CPU_turbo_load_id': config.getCPUTurboLoadId()
-                            }
-
-    with open(config_file, 'w') as configfile:
-        configfile.truncate(0)
-        configParser.write(configfile)
-
-def writeToConfig(self, config):
-    configParser = configparser.ConfigParser()
-
-    configParser['main'] = {
-                            #Общие
-                            'collect_interval': config.collect_interval, 
-                            'store_period': config.store_period,
-                            'is_backup_needed' : config.getIsBackupNeeded(),
-                            'close_to_tray': config.close_to_tray,
-                            'open_minimized': config.open_minimized,
-                            #Управление процессором
-                            'is_CPU_managment_on': config.is_CPU_managment_on,
-                            'CPU_threshhold': config.CPU_threshhold,
-                            'CPU_idle_state': config.CPU_idle_state,
-                            'CPU_load_state': config.CPU_load_state,
-                            #Управление турбо режимом
-                            'is_turbo_managment_on': config.getIsTurboManagmentOn(),
-                            'CPU_turbo_idle_id': config.getCPUTurboIdleId(),
-                            'CPU_turbo_load_id': config.getCPUTurboLoadId()}
-
-    with open(config_file, 'w') as configfile:
-        configfile.truncate(0)
-        configParser.write(configfile)
+    writeToConfig(config)
 
 def toBool(value):
     if isinstance(value, str):
@@ -113,6 +77,7 @@ def toBool(value):
 def readConfig(self):
     config = configparser.ConfigParser()
 
+    #Проверяем, что файл в наличии
     if len(config.read(config_file)) != 1:
         createEmptyConfigFile()
         config.read(config_file)
@@ -126,6 +91,7 @@ def readConfig(self):
         self.config.setIsBackupNeeded(toBool(config['main']['is_backup_needed']))
         self.config.setCloseToTray(toBool(config['main']['close_to_tray']))
         self.config.setOpenMinimized(toBool(config['main']['open_minimized']))
+
         #Управление процессором
         self.config.setIsCPUManagmentOn(toBool(config['main']['is_CPU_managment_on']))
         self.config.setCPUThreshhold(int(config['main']['CPU_threshhold']))
@@ -142,6 +108,7 @@ def readConfig(self):
         #И из системных данных windows
         self.config.setAutostartIsActive(taskManager.checkThatAutostartIsActive(self))
     except:
+        print('Settings file is corrupted, makes new one')
         createEmptyConfigFile()
         readConfig(self)
 
@@ -197,3 +164,6 @@ def getRestoredData():
         return data
 
     return data
+
+def getCurrentPath():
+    return os.getcwd()

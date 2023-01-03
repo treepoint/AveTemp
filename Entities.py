@@ -39,7 +39,7 @@ class Config:
         self.system_data_collect_interval = 300
         self.autostart_is_active = False
         self.name = 'AveTemp'
-        self.version = '1.3.1'
+        self.version = '1.3.2'
 
     #Общие
     def getCollectInterval(self):
@@ -149,6 +149,27 @@ class Config:
 
     def getVersion(self):
         return self.version
+
+class ConfigParser:
+    def getMain(config):
+        #Описание парсера
+        return  {
+                    #Общие
+                    'collect_interval': config.collect_interval, 
+                    'store_period' : config.store_period,
+                    'is_backup_needed' : config.is_backup_needed,
+                    'close_to_tray' : config.close_to_tray,
+                    'open_minimized' : config.open_minimized,
+                    #Управление процессором
+                    'is_CPU_managment_on': config.is_CPU_managment_on,
+                    'CPU_threshhold': config.CPU_threshhold,
+                    'CPU_idle_state': config.CPU_idle_state,
+                    'CPU_load_state': config.CPU_load_state,
+                    #Управление турбо режимом
+                    'is_turbo_managment_on': config.is_turbo_managment_on,
+                    'CPU_turbo_idle_id': config.CPU_turbo_idle_id,
+                    'CPU_turbo_load_id': config.CPU_turbo_load_id
+                }
 
 class Status(enum.Enum):
     error = 1
