@@ -1,33 +1,11 @@
 from PyQt6.QtWidgets import QApplication, QSystemTrayIcon, QMenu
 from PyQt6.QtGui import QIcon, QAction, QFont
-from PyQt6.QtCore import QThread, pyqtSignal, Qt
-import sys
-import time
+from PyQt6.QtCore import Qt
+
 import support
-
+import sys
+import workers
 import MainWindow
-
-class Worker(QThread):
-    def __init__(self, app, collect_interval):
-        super().__init__()
-
-        self.collect_interval = collect_interval
-        self.app = app
-
-    result = pyqtSignal(bool)
-
-    def run(self):
-        self.keepRunning = True
-        while self.keepRunning:
-            time.sleep(self.collect_interval)
-
-            if self.app.lastWindowClosed:
-                self.result.emit(True)
-            else:
-                self.result.emit(False)
-
-    def stop(self):
-        self.keepRunning = False
 
 class TrayWrapper:
     def __init__(self):
@@ -46,12 +24,12 @@ class TrayWrapper:
         self.tray.setIcon(icon)
         self.tray.setVisible(True)
 
-        if self.window.config.open_minimized:
+        if self.window.config.getOpenMinimized():
             self.window.hide()
         else:
             self.window.show()
 
-        self.collect_interval = self.window.collect_interval
+        self.collect_interval = self.window.config.getCollectInterval()
 
         #Меню
         menu = QMenu()
@@ -75,9 +53,9 @@ class TrayWrapper:
         self.tray.activated.connect(self.onTrayIconActivated)
 
         #Создаем поток для обновления информации в трее
-        self.worker = Worker(self.app, self.collect_interval)
-        self.worker.result.connect(self.updateIcon)
-        self.worker.start()
+        self.app_worker = workers.AppWorker(self.app, self.collect_interval)
+        self.app_worker.result.connect(self.updateIcon)
+        self.app_worker.start()
 
         #Ну и запускаем
         self.app.exec()

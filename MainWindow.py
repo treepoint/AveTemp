@@ -1,8 +1,6 @@
 from math import inf
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QTableWidgetItem
-from PyQt6.QtCore import QThread, pyqtSignal
-import time
 
 import SettingsWindow
 import windows.mainWindow
@@ -10,85 +8,7 @@ import windows.mainWindow
 import hardware
 import Entities
 import support
-import registry
-
-# Воркер для сбора данных
-class CollectWorker(QThread):
-    def __init__(self, config, data_lists):
-        super().__init__()
-
-        self.collect_interval = config.getCollectInterval()
-        self.config = config
-        self.data_lists = data_lists
-
-    result = pyqtSignal(dict, bool)
-
-    def run(self):
-        self.keepRunning = True
-        while self.keepRunning:
-            data = hardware.collectData(self.data_lists)
-
-            if not self.config.getIsCPUManagmentOn():
-                CPU_performance_mode = True
-            else:
-                CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
-
-            self.result.emit(data, CPU_performance_mode)
-            time.sleep(self.collect_interval)
-
-    def update(self, config):
-        self.collect_interval = config.getCollectInterval()
-        self.config = config
-
-    def stop(self):
-        self.keepRunning = False
-
-# Воркер для бэкапа данных
-class BackupWorker(QThread):
-    def __init__(self, backup_interval):
-        super().__init__()
-
-        self.backup_interval = backup_interval
-
-    result = pyqtSignal(bool)
-
-    def run(self):
-        self.keepRunning = True
-        while self.keepRunning:
-            time.sleep(self.backup_interval)
-            self.result.emit(True)
-
-    def update(self, backup_interval):
-        self.backup_interval = backup_interval
-
-    def stop(self):
-        self.keepRunning = False
-
-# Воркер для мониторинга системных параметров
-class SystemMonitoringWorker(QThread):
-    def __init__(self, system_data_collect_interval):
-        super().__init__()
-
-        self.system_data_collect_interval = system_data_collect_interval
-
-    result = pyqtSignal(dict)
-
-    def run(self):
-        self.keepRunning = True
-        while self.keepRunning:
-
-            time.sleep(self.system_data_collect_interval)
-            data = {
-                    'system_uses_light_theme' : registry.getCurrentThemeIsLight()
-                    }
-
-            self.result.emit(data)
-
-    def update(self, system_data_collect_interval):
-        self.system_data_collect_interval = system_data_collect_interval
-
-    def stop(self):
-        self.keepRunning = False
+import workers
 
 class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -185,19 +105,19 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
     def startCollectWorker(self):
         #Создаем воркер для сбора и обновления информации
-        self.collect_worker = CollectWorker(self.config, self.data_lists)
+        self.collect_worker = workers.CollectWorker(self.config, self.data_lists)
         self.collect_worker.result.connect(self.processData)
         self.collect_worker.start()
 
     def startBackupWorker(self):
         #Создаем воркер для бэкапа данных
-        self.backup_worker = BackupWorker(self.backup_interval)
+        self.backup_worker = workers.BackupWorker(self.backup_interval)
         self.backup_worker.result.connect(self.saveData)
         self.backup_worker.start()
 
     def startSystemMonitoringWorker(self):
         #Создаем воркер для мониторинга системных параметров
-        self.system_monitoring_worker = SystemMonitoringWorker(self.config.getSystemDataCollectIntreval())
+        self.system_monitoring_worker = workers.SystemMonitoringWorker(self.config.getSystemDataCollectIntreval())
         self.system_monitoring_worker.result.connect(self.updateSystemStateConfig)
         self.system_monitoring_worker.start()
 
