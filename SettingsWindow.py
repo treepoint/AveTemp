@@ -83,11 +83,7 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         #Управление автостартом
         if self.checkBoxAutostartIsActive.isChecked():
             if not self.config.getAutostartIsActive():
-                location = str(support.getCurrentPath(self))
-
-                taskManager.addToAutostart(self, location)
-
-                self.config.setLastLocation(location)
+                taskManager.addToAutostart(self)
 
         else:
             if self.config.getAutostartIsActive():

@@ -91,7 +91,6 @@ def readConfig(self):
         self.config.setIsBackupNeeded(toBool(config['main']['is_backup_needed']))
         self.config.setCloseToTray(toBool(config['main']['close_to_tray']))
         self.config.setOpenMinimized(toBool(config['main']['open_minimized']))
-        self.config.setLastLocation(config['main']['last_location'])
 
         #Управление процессором
         self.config.setIsCPUManagmentOn(toBool(config['main']['is_CPU_managment_on']))
@@ -166,14 +165,5 @@ def getRestoredData():
 
     return data
 
-def getCurrentPath(self):
-    system_current_path = os.getcwd()
-
-    autostart_location = 'C:\Windows\system32' + '\\' + self.config.getName() + '.exe'
-
-    if str(system_current_path) == autostart_location:
-        location = Path(self.config.getLastLocation())
-    else:
-        location = system_current_path
-
-    return location
+def getCurrentPath():
+    return os.getcwd()

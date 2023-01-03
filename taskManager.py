@@ -1,12 +1,14 @@
 import os
 import win32com.client
+import support
 
 scheduler = win32com.client.Dispatch('Schedule.Service')
 scheduler.Connect()
 root_folder = scheduler.GetFolder('\\')
 
-def addToAutostart(self, location):
+def addToAutostart(self):
     task_def = scheduler.NewTask(0)
+    location = str(support.getCurrentPath())
 
     # Создаем триггер
     TASK_TRIGGER_LOGON = 9

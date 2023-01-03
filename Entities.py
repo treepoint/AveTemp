@@ -38,7 +38,6 @@ class Config:
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
         self.autostart_is_active = False
-        self.last_location = ''
         self.name = 'AveTemp'
         self.version = '1.3.2'
 
@@ -145,12 +144,6 @@ class Config:
     def getAutostartIsActive(self):
         return self.autostart_is_active
 
-    def setLastLocation(self, value):
-        self.last_location = value
-
-    def getLastLocation(self):
-        return self.last_location
-
     def getName(self):
         return self.name
 
@@ -167,7 +160,6 @@ class ConfigParser:
                     'is_backup_needed' : config.is_backup_needed,
                     'close_to_tray' : config.close_to_tray,
                     'open_minimized' : config.open_minimized,
-                    'last_location' : config.last_location,
                     #Управление процессором
                     'is_CPU_managment_on': config.is_CPU_managment_on,
                     'CPU_threshhold': config.CPU_threshhold,
