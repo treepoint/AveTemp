@@ -2,8 +2,6 @@ from PyQt6 import QtWidgets
 import windows.settingsWindow
 
 import Entities
-import taskManager
-import support
 
 class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
     def __init__(self, parent=None):
@@ -18,7 +16,7 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
         
     def setData(self, config, turbo_statuses):
-        self.config = config
+        #self.config = config
 
         #Базовые настройки
         self.spinBoxLoggingInterval.setValue(config.getCollectInterval())
@@ -79,16 +77,6 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())
         self.config.setCloseToTray(self.checkBoxCloseToTray.isChecked())
         self.config.setOpenMinimized(self.checkBoxOpenMinimized.isChecked())
-
-        #Управление автостартом
-        if self.checkBoxAutostartIsActive.isChecked():
-            if not self.config.getAutostartIsActive():
-                taskManager.addToAutostart(self)
-
-        else:
-            if self.config.getAutostartIsActive():
-                taskManager.removeFromAutostart(self)
-
         self.config.setAutostartIsActive(self.checkBoxAutostartIsActive.isChecked())
         
         #Управление процессором

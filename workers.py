@@ -28,19 +28,21 @@ class AppWorker(QThread):
 
 # Воркер для сбора данных
 class CollectWorker(QThread):
-    def __init__(self, config, data_lists):
+    def __init__(self, config, data_lists, cpu_cores, cpu_threads):
         super().__init__()
 
         self.collect_interval = config.getCollectInterval()
         self.config = config
         self.data_lists = data_lists
+        self.cpu_cores = cpu_cores
+        self.cpu_threads = cpu_threads
 
     result = pyqtSignal(dict, bool)
 
     def run(self):
         self.keepRunning = True
         while self.keepRunning:
-            data = hardware.collectData(self.data_lists)
+            data = hardware.collectData(self.data_lists, self.cpu_cores, self.cpu_threads)
 
             if not self.config.getIsCPUManagmentOn():
                 CPU_performance_mode = True
