@@ -35,10 +35,36 @@ def getCpuName():
             
             return cpu_name
 
-def collectData(data_lists):
-    #Обновляем значения
-    #c.Reset() 
+def getCoresAndThreadsCount():
+    data = {
+            'status' : Entities.Status.not_collect,
+            'cores_count' : 0,
+            'threads_count' : 0
+           }
 
+    #Идем по сенсорам
+    for hardware in c.Hardware:
+        hardware.Update()
+
+        for sensor in hardware.Sensors:
+            #Считаем ядра процессора
+            if str(sensor.SensorType) == 'Clock' and 'Core' in str(sensor.Name):
+                data['cores_count'] += 1
+                continue 
+
+            #Считаем потоки проца
+            if str(sensor.SensorType) == 'Load' and 'CPU Core' in str(sensor.Name):
+                data['threads_count'] += 1
+                continue
+                
+    if data['cores_count'] == 0:
+         data['status'] = Entities.Status.error
+    else:
+        data['status'] = Entities.Status.success
+    
+    return data
+
+def collectData(data_lists, cpu_cores, cpu_threads):
     data = {
             'status' : Entities.Status.not_collect,
             'all_load' : 0,
@@ -76,10 +102,10 @@ def collectData(data_lists):
             if str(sensor.SensorType) == 'Power' and str(sensor.Name) in ('Package', 'CPU Package') and type(sensor.Value) != NoneType:
                 new_data = round(sensor.Value, 2)
 
-                general_tdps = data_lists['general_tdp'][:1]
+                general_TDPs = data_lists['general_TDP'][:1]
 
-                if len(general_tdps):
-                    old_data = general_tdps[0]
+                if len(general_TDPs):
+                    old_data = general_TDPs[0]
                     data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
                 else:
                     data['cpu']['tdp'] = new_data
@@ -113,19 +139,11 @@ def collectData(data_lists):
 
                 all_load += core_load
                 continue
-                
-    cores_count = len(data['cpu']['cores'])
-    threads_count = len(data['cpu']['threads'])
-
-    if cores_count == 0:
-         data['status'] = Entities.Status.error
+                    
+    if cpu_threads != 0:
+        all_load = all_load/cpu_threads
     else:
-        data['status'] = Entities.Status.success
-    
-    if threads_count != 0:
-        all_load = all_load/threads_count
-    else:
-        all_load = all_load/cores_count
+        all_load = all_load/cpu_cores
 
     data['all_load'] = all_load
 
