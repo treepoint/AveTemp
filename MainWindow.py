@@ -40,8 +40,8 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                     }
 
         if self.config.getIsBackupNeeded():
-            if support.getRestoredData():
-                self.data_lists = support.getRestoredData()
+            if support.getRestoredData(self):
+                self.data_lists = support.getRestoredData(self)
 
             self.startBackupWorker()
 
@@ -274,7 +274,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
     #Обработка данных из backupWorker'а
     def saveData(self):
-        support.saveData(self.data_lists)
+        support.saveData(self)
 
     #Обработка данных из SystemMonitoringWorker'а
     def updateSystemStateConfig(self, data):

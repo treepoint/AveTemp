@@ -145,7 +145,11 @@ def getTrayImage(value, config):
 
     return pixmap
 
-def saveData(data):
+def saveData(self):
+    #Добавляем версию, чтобы проверять на совместимость
+    data = self.data_lists
+    data['version'] = self.config.getVersion()
+
     jsonStr = json.dumps(data)
 
     with open(stat_file, 'w') as bf:
@@ -154,16 +158,25 @@ def saveData(data):
 def removeStatFile():
     os.remove(stat_file)
 
-def getRestoredData():
-    data = False
+def getRestoredData(self):
 
     try:
         file = open(stat_file)
         data = json.load(file)
+        file.close()
     except:
-        return data
+        return False
 
-    return data
+    if 'version' not in data:
+        removeStatFile()
+        return False
+    
+    if data['version'] != self.config.getVersion():
+        removeStatFile()
+        return False
+    else:
+        data.pop('version')
+        return data
 
 def getCurrentPath():
     return os.getcwd()
