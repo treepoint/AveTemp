@@ -1,3 +1,8 @@
+# Intro
+
+- English description — https://github.com/treepoint/AveTemp#avetemp-eng
+- Русское описание — https://github.com/treepoint/AveTemp#avetemp-ru
+
 # AveTemp (ENG)
 AveTemp is software based on python and LibreHardwareMonitorLib for continuous monitoring temperature and TDP of CPU, and for auto setup the CPU performance state and CPU Turbo mode, depends on current load.
 
