@@ -4,7 +4,7 @@
 - Русское описание — https://github.com/treepoint/AveTemp#avetemp-ru
 
 # AveTemp (ENG)
-AveTemp is software based on python and LibreHardwareMonitorLib for continuous monitoring temperature and TDP of CPU, and for auto setup the CPU performance state and CPU Turbo mode, depends on current load.
+Free to use tool for continuous monitoring CPU temperature and TDP, also auto adjust CPU performance state and CPU Turbo mode depends on current workload.
 
 <img src="https://user-images.githubusercontent.com/25937222/210169684-56e2132d-5861-4124-ba07-c7d4c1f36c03.jpg" width="702">
 
@@ -17,13 +17,13 @@ It will be helpful to:
 - reduce noise from CPU cooler
 
 ## Features
-- Continuous monitoring temperature and TDP of CPU.
-- Collecting and showing min, max and current temps and TDP states.
-- Collecting and showing average scores for 1, 5, 15, 60 minutes and 24 hours.
+- Continuous monitoring temperature and TDP of CPU
+- Collecting and showing min, max and current temps and TDP states
+- Collecting and showing average scores for 1, 5, 15, 60 minutes and 24 hours
 - Automatic change CPU performance state and CPU Turbo mode. Also, you can setup preferred CPU load threshold, Turbo modes and CPU states or disable it at all.
-- Autostart on logon.
-- Automatic changing the color of tray font for dark and light Windows mode. It's checking on AveTemp restart and every 5 minutes.
-- Low CPU usage. For Ryzen 4600H it's < 1% on the peak, most of the time — 0.01%.
+- Autostart on logon
+- Automatic changing the color of tray font for dark and light Windows mode. It's checking on AveTemp restart and every 5 minutes
+- Low CPU usage. For Ryzen 4600H it's < 1% on the peak, most of the time — 0.01%
 
 Basically, it was developed for notebooks but may help with desktop CPUs too. Tested with:
 
@@ -83,10 +83,10 @@ AveTemp — программа на базе python и LibreHardwareMonitorLib �
 - Непрерывный мониторинг температуры и TDP процессора.
 - Сбор и отображение минимальных, максимальных и текущих значений температуры и TDP.
 - Сбор и отображение средних показателей за 1, 5, 15, 60 минут и 24 часа.
-- Автоматическое изменение состояния производительности процессора, режима турбо. Кроме того, все настраивается: порог загрузки процессора, целевые состояния процессора, турбо. Или управление процессором можно отключить вовсе.
-- Автозапуск при входе в систему.
+- Автоматическое изменение состояния производительности процессора, режима турбо. Кроме того, все настраивается: порог загрузки процессора, целевые состояния процессора, турбо. Или управление процессором можно отключить вовсе
+- Автозапуск при входе в систему
 - Автоматическое изменение цвета шрифта в трее для темного и светлого режима Windows. Проверяется при перезагрузке AveTemp и каждые 5 минут.
-- Низкое использование процессора. Для Ryzen 4600H это < 1% максимум, а большую часть времени - 0,01%.
+- Низкое использование процессора. Для Ryzen 4600H это < 1% максимум, а большую часть времени - 0,01%
 
 В основном разрабатывал для ноутбуков, однако может быть полезно и для настольных CPU. Протестировано с:
 
@@ -117,7 +117,7 @@ AveTemp — программа на базе python и LibreHardwareMonitorLib �
 + Запустите конвертацию
 
 ## Благодарности
-Я очень благодарен LibreHardwareMonitor и всем, кто над ней работает https://github.com/LibreHardwareMonitor/LibreHardwareMonitor. Без этой библиотеки разработка AveTemp будет невозможна. 
+Я очень благодарен LibreHardwareMonitor и всем, кто над ней работает https://github.com/LibreHardwareMonitor/LibreHardwareMonitor. Без этой библиотеки разработка AveTemp была невозможна. 
 
 ## Лицензия
 Лицензия MPL-2.0, так что вы можете использовать программу бесплатно везде где если захотите.
