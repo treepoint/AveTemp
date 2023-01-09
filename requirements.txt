@@ -5,3 +5,4 @@ Pillow
 auto-py-to-exe
 winregistry
 pywin32
+qt6-tools

@@ -23,6 +23,7 @@ class Config:
         self.store_period = store_period
         self.close_to_tray = close_to_tray
         self.open_minimized = open_minimized
+        self.current_language = 1
         #Управление процессором
         self.performance_CPU_mode_on = True
         self.CPU_idle_state_pause = 10
@@ -40,6 +41,13 @@ class Config:
         self.autostart_is_active = False
         self.name = 'AveTemp'
         self.version = '1.3.2'
+
+    #Локализация
+    def getCurrentLanguage(self):
+        return self.current_language
+
+    def setCurrentLanguage(self, value):
+        self.current_language = value
 
     #Общие
     def getCollectInterval(self):

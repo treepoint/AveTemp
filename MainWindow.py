@@ -1,4 +1,5 @@
 from math import inf
+from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QTableWidgetItem
 
@@ -15,6 +16,9 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setupUi(self)  # Дизайн
+
+        #Врубаем локализатор
+        self.trans = QtCore.QTranslator(self)
 
         #Прочитаем конфиг
         self.config = Entities.Config()
@@ -324,6 +328,17 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             else:
                 if self.config.getAutostartIsActive():
                     taskManager.removeFromAutostart(self)
+
+            #Локализация
+            if window.config.getCurrentLanguage() != self.config.getCurrentLanguage():
+                data = window.config.getCurrentLanguage()
+                if data:
+                    self.trans.load(data)
+                    QtCore.QCoreApplication.instance().installTranslator(self.trans)
+                else:
+                    QtCore.QCoreApplication.instance().removeTranslator(self.trans)
+
+                self.retranslateUi(window)
 
             #Обновим конфиг и перечитаем его
             support.writeToConfig(window.config)

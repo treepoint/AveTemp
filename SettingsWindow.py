@@ -16,7 +16,10 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
         
     def setData(self, config, turbo_statuses):
-        #self.config = config
+        #Селект локализации
+        #TODO: в конфиг
+        self.comboBoxLanguage.addItem('Русский', '')
+        self.comboBoxLanguage.addItem('English', 'ru-us')
 
         #Базовые настройки
         self.spinBoxLoggingInterval.setValue(config.getCollectInterval())
@@ -72,6 +75,9 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.comboBoxCPUTurboLoadState.setEnabled(new_state)
 
     def closeWindow(self):
+        #Локализация
+        self.config.setCurrentLanguage(self.comboBoxLanguage.currentData())
+
         #Базовые настройки
         self.config.setCollectInterval(float(self.spinBoxLoggingInterval.value()))
         self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())
