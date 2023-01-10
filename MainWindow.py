@@ -255,7 +255,11 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                 avg_tdp = support.toRoundStr(self.getAvgTDPForSeconds(60*minutes))
 
                 self.tableAverage.setItem(row, 0, QTableWidgetItem(avg_temp + ' С°'))
-                self.tableAverage.setItem(row, 1, QTableWidgetItem(avg_tdp + ' Вт'))
+                #TODO: fix this too
+                if support.getCurrentSystemLanguage() == 'ru':
+                    self.tableAverage.setItem(row, 1, QTableWidgetItem(avg_tdp + ' Вт'))
+                else:
+                    self.tableAverage.setItem(row, 1, QTableWidgetItem(avg_tdp + ' W'))
 
                 row += 1
 
@@ -290,7 +294,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.collect_worker.update(new_config)
 
     def showSettings(self):
-        window = SettingsWindow.Main()        
+        window = SettingsWindow.Main("en")        
         app_icon = support.getResourcePath('./images/icon.png')
 
         window.setWindowIcon(QIcon(app_icon))
@@ -330,15 +334,11 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                     taskManager.removeFromAutostart(self)
 
             #Локализация
-            if window.config.getCurrentLanguage() != self.config.getCurrentLanguage():
-                data = window.config.getCurrentLanguage()
-                if data:
-                    self.trans.load(data)
-                    QtCore.QCoreApplication.instance().installTranslator(self.trans)
-                else:
-                    QtCore.QCoreApplication.instance().removeTranslator(self.trans)
+            #TODO: fix
+            #if window.config.getCurrentLanguage() != self.config.getCurrentLanguage() and True == False:
+             #   locale = window.config.getCurrentLanguage()
 
-                self.retranslateUi(window)
+             #   self.retranslateUi(window, locale)
 
             #Обновим конфиг и перечитаем его
             support.writeToConfig(window.config)

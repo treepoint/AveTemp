@@ -4,6 +4,7 @@ import configparser  # Для чтения конфига
 import ctypes
 import os, sys
 import json
+import locale
 
 from pathlib import Path
 
@@ -167,3 +168,14 @@ def getRestoredData():
 
 def getCurrentPath():
     return os.getcwd()
+
+def getCurrentSystemLanguage():
+    loc = locale.getdefaultlocale()[0]
+
+    if 'ru' in loc:
+        return 'ru'
+    else:
+        return 'en'
+
+if __name__ == "__main__":
+    print(getCurrentSystemLanguage())

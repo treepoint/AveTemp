@@ -7,15 +7,22 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
+from pyi18n import PyI18n
+import support
 
+import localization
+loader = localization.Loader()
 
 class Ui_Dialog(object):
-    def setupUi(self, Dialog):
+    def setupUi(self, Dialog, locale):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.WindowModality.NonModal)
-        Dialog.resize(440, 556)
-        Dialog.setMinimumSize(QtCore.QSize(440, 556))
-        Dialog.setMaximumSize(QtCore.QSize(440, 556))
+        #TODO 556
+        Dialog.resize(440, 518)
+        #TODO 556
+        Dialog.setMinimumSize(QtCore.QSize(440, 518))
+        #TODO 556
+        Dialog.setMaximumSize(QtCore.QSize(440, 518))
         Dialog.setToolTip("")
         Dialog.setStyleSheet("background: #fff;")
         Dialog.setModal(True)
@@ -87,35 +94,38 @@ class Ui_Dialog(object):
         self.line.setObjectName("line")
         self.verticalLayout_7.addWidget(self.line)
         self.verticalLayout_8.addLayout(self.verticalLayout_7)
-        self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_8.setContentsMargins(-1, 0, -1, -1)
-        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.label_5 = QtWidgets.QLabel(Dialog)
-        self.label_5.setObjectName("label_5")
-        self.horizontalLayout_8.addWidget(self.label_5)
-        self.comboBoxLanguage = QtWidgets.QComboBox(Dialog)
-        self.comboBoxLanguage.setMaximumSize(QtCore.QSize(160, 16777215))
-        self.comboBoxLanguage.setStyleSheet("QWidget {\n"
-"    border: 1px solid #b6b6b6;\n"
-"    padding-left: 4px;\n"
-"    padding-right: 4px;\n"
-"    padding-bottom:2px;\n"
-"    border-radius: 2px;\n"
-"}\n"
-"\n"
-"QWidget:disabled{\n"
-"    border: 1px solid #a9a9a9;\n"
-"}\n"
-"\n"
-"QWidget:drop-down {\n"
-"    border-width: 0px;\n"
-"}")
-        self.comboBoxLanguage.setObjectName("comboBoxLanguage")
-        self.horizontalLayout_8.addWidget(self.comboBoxLanguage)
-        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_8.addItem(spacerItem1)
-        self.horizontalLayout_8.setStretch(1, 1)
-        self.verticalLayout_8.addLayout(self.horizontalLayout_8)
+        
+        #TODO: enable thing below
+
+        #self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
+        #self.horizontalLayout_8.setContentsMargins(-1, 0, -1, -1)
+        #self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+        #self.label_5 = QtWidgets.QLabel(Dialog)
+        #self.label_5.setObjectName("label_5")
+        #self.horizontalLayout_8.addWidget(self.label_5)
+        #self.comboBoxLanguage = QtWidgets.QComboBox(Dialog)
+        #self.comboBoxLanguage.setMaximumSize(QtCore.QSize(160, 16777215))
+        #self.comboBoxLanguage.setStyleSheet("QWidget {\n"
+#"    border: 1px solid #b6b6b6;\n"
+#"    padding-left: 4px;\n"
+#"    padding-right: 4px;\n"
+#"    padding-bottom:2px;\n"
+#"    border-radius: 2px;\n"
+#"}\n"
+#"\n"
+#"QWidget:disabled{\n"
+#"    border: 1px solid #a9a9a9;\n"
+#"}\n"
+#"\n"
+#"QWidget:drop-down {\n"
+#"    border-width: 0px;\n"
+#"}")
+        #self.comboBoxLanguage.setObjectName("comboBoxLanguage")
+        #self.horizontalLayout_8.addWidget(self.comboBoxLanguage)
+        #spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        #self.horizontalLayout_8.addItem(spacerItem1)
+        #self.horizontalLayout_8.setStretch(1, 1)
+#        self.verticalLayout_8.addLayout(self.horizontalLayout_8)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setSpacing(4)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -420,42 +430,48 @@ class Ui_Dialog(object):
         self.horizontalLayout_5.addLayout(self.verticalLayout_8)
         self.verticalLayout.addLayout(self.horizontalLayout_5)
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(Dialog, locale)
         self.comboBoxCPUTurboIdleState.setCurrentIndex(-1)
         self.comboBoxCPUTurboLoadState.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
-    def retranslateUi(self, Dialog):
-        _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Настройки"))
-        self.labelNameAndVersion.setText(_translate("Dialog", "AveTemp"))
-        self.label_5.setText(_translate("Dialog", "Язык:"))
-        self.label_11.setText(_translate("Dialog", "Интервал сбора данных, секунды: "))
-        self.checkBoxStoreStat.setText(_translate("Dialog", "Хранить и восстанавливать статистику за сутки"))
-        self.label.setText(_translate("Dialog", "При отключении все собранные данные будут удалены"))
-        self.checkBoxCloseToTray.setText(_translate("Dialog", "При закрытии сворачивать в трей"))
-        self.checkBoxOpenMinimized.setText(_translate("Dialog", "Запускать свернутым"))
-        self.checkBoxAutostartIsActive.setText(_translate("Dialog", "Добавить в автозагрузку"))
-        self.label_2.setText(_translate("Dialog", "Управление режимами работы процессора"))
-        self.label_3.setText(_translate("Dialog", "При отключении все настройки возвращаются к стандартным"))
-        self.checkBoxCPUManagment.setText(_translate("Dialog", "Автоматически изменять состояние процессора"))
-        self.label_4.setText(_translate("Dialog", "При нагрузке ниже порога, максимальное состояние процессора будет снижено, чтобы снизить использование турбо режима в простое "))
-        self.labelCPUThreshhold.setText(_translate("Dialog", "Порог нагрузки, %:"))
-        self.labelCPUTreshholdHint.setText(_translate("Dialog", "Считается как средняя нагрузка всех ядер"))
-        self.labelCPUIdleState.setText(_translate("Dialog", "Состояние в простое, %:"))
-        self.labelCPULoadState.setText(_translate("Dialog", "Состояние под нагрузкой, %:"))
-        self.labelCPULoadStateHint.setText(_translate("Dialog", "Значение ниже 100% снижает использование турбо буста в любых сценариях"))
-        self.checkBoxCPUTurboManagment.setText(_translate("Dialog", "Явно задавать состояние турбо режима"))
-        self.labelCPUTurboManagment.setText(_translate("Dialog", "Автоматически выставляется в зависимости от порога нагрузки"))
-        self.labelCPUTurboIdleState.setText(_translate("Dialog", "В простое:"))
-        self.labelCPUTurboLoadState.setText(_translate("Dialog", "Под нагрузкой:"))
+    def retranslateUi(self, Dialog, locale):
 
+        i18n = PyI18n(("en", "ru"), loader=loader)
+
+        trans = i18n.gettext
+
+        locale = support.getCurrentSystemLanguage()
+
+        Dialog.setWindowTitle(trans(locale,"settings"))
+        self.labelNameAndVersion.setText("AveTemp")
+        #TODO: enable
+#        self.label_5.setText(trans(locale,"language"))
+        self.label_11.setText(trans(locale,"collection_interval_text"))
+        self.checkBoxStoreStat.setText(trans(locale,"collect_and_restore_stat"))
+        self.label.setText(trans(locale,"all_data_will_be_removed_when_off"))
+        self.checkBoxCloseToTray.setText(trans(locale,"close_to_tray"))
+        self.checkBoxOpenMinimized.setText(trans(locale,"start_to_tray"))
+        self.checkBoxAutostartIsActive.setText(trans(locale,"add_to_autostart"))
+        self.label_2.setText(trans(locale,"cpu_modes_management"))
+        self.label_3.setText(trans(locale,"default_when_off"))
+        self.checkBoxCPUManagment.setText(trans(locale,"auto_change_cpu_state"))
+        self.label_4.setText(trans(locale,"when_load_less_then_then"))
+        self.labelCPUThreshhold.setText(trans(locale,"load_threshold"))
+        self.labelCPUTreshholdHint.setText(trans(locale,"collect_as_all_cores_load"))
+        self.labelCPUIdleState.setText(trans(locale,"idle_state"))
+        self.labelCPULoadState.setText(trans(locale,"load_state"))
+        self.labelCPULoadStateHint.setText(trans(locale,"state_less_than_100_will"))
+        self.checkBoxCPUTurboManagment.setText(trans(locale,"force_cpu_state"))
+        self.labelCPUTurboManagment.setText(trans(locale,"auto_change_depends_on_threshold"))
+        self.labelCPUTurboIdleState.setText(trans(locale,"in_idle"))
+        self.labelCPUTurboLoadState.setText(trans(locale,"on_load"))
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Dialog = QtWidgets.QDialog()
     ui = Ui_Dialog()
-    ui.setupUi(Dialog)
+    ui.setupUi(Dialog, "en")
     Dialog.show()
     sys.exit(app.exec())

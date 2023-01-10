@@ -2,11 +2,16 @@ from PyQt6 import QtWidgets
 import windows.settingsWindow
 
 import Entities
+import support
+import localization
+loader = localization.Loader()
+
+from pyi18n import PyI18n
 
 class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
-    def __init__(self, parent=None):
+    def __init__(self, locale, parent=None):
         super().__init__(parent)
-        self.setupUi(self)  # Дизайн
+        self.setupUi(self, locale)  # Дизайн
 
         self.config = Entities.Config()
 
@@ -18,8 +23,9 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
     def setData(self, config, turbo_statuses):
         #Селект локализации
         #TODO: в конфиг
-        self.comboBoxLanguage.addItem('Русский', '')
-        self.comboBoxLanguage.addItem('English', 'ru-us')
+
+        #self.comboBoxLanguage.addItem('Русский', 'ru')
+        #self.comboBoxLanguage.addItem('English', 'en')
 
         #Базовые настройки
         self.spinBoxLoggingInterval.setValue(config.getCollectInterval())
@@ -35,11 +41,18 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.spinBoxCPULoadState.setValue(config.getCPULoadState())
 
         #Инициализируем выпадающие селекты турбо    
-        self.comboBoxCPUTurboIdleState.addItem(turbo_statuses.getEco()['name'], turbo_statuses.getEco()['id'])
-        self.comboBoxCPUTurboIdleState.addItem(turbo_statuses.getBasic()['name'], turbo_statuses.getBasic()['id'])
+        #TODO: do better way and fix the locale for auto-py-to-exec
+        i18n = PyI18n(("en", "ru"), loader=loader)
 
-        self.comboBoxCPUTurboLoadState.addItem(turbo_statuses.getBasic()['name'], turbo_statuses.getBasic()['id'])
-        self.comboBoxCPUTurboLoadState.addItem(turbo_statuses.getTurbo()['name'], turbo_statuses.getTurbo()['id'])
+        trans = i18n.gettext
+
+        locale = support.getCurrentSystemLanguage()
+
+        self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getEco()['name']), turbo_statuses.getEco()['id'])
+        self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getBasic()['name']), turbo_statuses.getBasic()['id'])
+
+        self.comboBoxCPUTurboLoadState.addItem(trans(locale, turbo_statuses.getBasic()['name']), turbo_statuses.getBasic()['id'])
+        self.comboBoxCPUTurboLoadState.addItem(trans(locale, turbo_statuses.getTurbo()['name']), turbo_statuses.getTurbo()['id'])
 
         #Управление турбо режимом
         self.checkBoxCPUTurboManagment.setChecked(config.getIsTurboManagmentOn())
@@ -76,7 +89,8 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
 
     def closeWindow(self):
         #Локализация
-        self.config.setCurrentLanguage(self.comboBoxLanguage.currentData())
+        #TODO: get back
+        #self.config.setCurrentLanguage(self.comboBoxLanguage.currentData())
 
         #Базовые настройки
         self.config.setCollectInterval(float(self.spinBoxLoggingInterval.value()))

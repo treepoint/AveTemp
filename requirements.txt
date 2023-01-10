@@ -5,4 +5,5 @@ Pillow
 auto-py-to-exe
 winregistry
 pywin32
-qt6-tools
+pyi18n-v2
+pyyaml

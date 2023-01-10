@@ -1,0 +1,50 @@
+en:
+  #MainWindow
+  frequency: 'Frequency'
+  load: 'Load'
+  clear: 'Clear'
+  clear_all: 'Clear all'
+  averages: 'Average values'
+
+  minutes: 'min'
+  hour: 'hour'
+  24_hours: '24 hours'
+
+  current_she: 'Current'
+  current_he: 'Current'
+  min: 'Min'
+  max: 'Max'
+
+  temp: 'Temperature, C°'
+  TDP: 'Thermal Design Power, W'
+  watt: 'W'
+
+  settings: 'Settings'
+
+  admin_rights: 'Administrator rights are required for proper work'
+
+  #Settings
+  language: 'Language: '
+  collection_interval_text: 'Data collection interval, seconds: '
+  collect_and_restore_stat: 'Store and retrieve statistics for a day'
+  all_data_will_be_removed_when_off: 'When disabled, all collected data will be deleted'
+  close_to_tray: 'Minimize to tray when closing'
+  start_to_tray: 'At startup minimize to system tray'
+  add_to_autostart: 'Add to autostart'
+  cpu_modes_management: 'Processor mode control'
+  default_when_off: 'When disabled, all settings return to defaults'
+  auto_change_cpu_state: 'Automatically change processor state'
+  when_load_less_then_then: 'When the load is below the threshold, the maximum state of the processor will be reduced to reduce the use of turbo mode at idle '
+  load_threshold: 'Load threshold, %:'
+  collect_as_all_cores_load: 'Calculated as the average load of all cores'
+  idle_state: 'Condition at idle, %:'
+  load_state: 'Condition under load, %:'
+  state_less_than_100_will: 'A value below 100% reduces the use of turbo boost in all scenarios'
+  force_cpu_state: 'Explicitly set the state of turbo mode'
+  auto_change_depends_on_threshold: 'Automatically set depending on the load threshold'
+  in_idle: 'At idle:'
+  on_load: 'Under load:'
+
+  min_freq: 'Minimum frequencies (energy efficient)'
+  basic_freq: 'Base frequencies (balanced)'
+  max_freq: 'Maximum frequencies (productive)'
