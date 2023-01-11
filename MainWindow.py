@@ -1,4 +1,5 @@
 from math import inf
+from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QTableWidgetItem
 
@@ -10,19 +11,21 @@ import Entities
 import support
 import workers
 import taskManager
+import localization
+
+trans = localization.trans
+languages = Entities.Languages()
 
 class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setupUi(self)  # Дизайн
 
         #Прочитаем конфиг
         self.config = Entities.Config()
-
-        #Прочитаем статус турбо
-        self.turbo_statuses = Entities.TurboStatuses()
-
         support.readConfig(self)
+
+        #Дизайн
+        self.setupUi(self, self.config.getCurrentLanguageCode()) 
 
         #Листы для хранения данных
         self.data_lists = {
@@ -211,6 +214,9 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
     #Обработка данных из collectWorker'а
     def processData(self, result, CPU_performance_mode):
+        #TODO: fix this too
+        locale = self.config.getCurrentLanguageCode()
+        
         self.config.setPerformanceCPUModeOn(CPU_performance_mode)
 
         self.writeData(result)
@@ -250,8 +256,8 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                 avg_temp = support.toRoundStr(self.getAvgTempForSeconds(60*minutes))
                 avg_tdp = support.toRoundStr(self.getAvgTDPForSeconds(60*minutes))
 
-                self.tableAverage.setItem(row, 0, QTableWidgetItem(avg_temp + ' С°'))
-                self.tableAverage.setItem(row, 1, QTableWidgetItem(avg_tdp + ' Вт'))
+                self.tableAverage.setItem(row, 0, QTableWidgetItem(avg_temp + ' С°'))            
+                self.tableAverage.setItem(row, 1, QTableWidgetItem(avg_tdp + ' ' + trans(locale, 'watt')))
 
                 row += 1
 
@@ -286,12 +292,16 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.collect_worker.update(new_config)
 
     def showSettings(self):
-        window = SettingsWindow.Main()        
+        #TODO: fix this too
+        locale = self.config.getCurrentLanguageCode()
+
+        window = SettingsWindow.Main(locale)
+                
         app_icon = support.getResourcePath('./images/icon.png')
 
         window.setWindowIcon(QIcon(app_icon))
 
-        window.setData(self.config, self.turbo_statuses)
+        window.setData(self.config)
 
         if window.exec():
             #Обновим воркеры, пока мы еще можем сравнивать состояния
@@ -325,8 +335,14 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                 if self.config.getAutostartIsActive():
                     taskManager.removeFromAutostart(self)
 
+            #Обновим локализацию если надо
+            if window.config.getCurrentLanguageCode() != self.config.getCurrentLanguageCode():
+                self.retranslateUi(window, window.config.getCurrentLanguageCode())
+
             #Обновим конфиг и перечитаем его
             support.writeToConfig(window.config)
             new_config = support.readConfig(self)
 
             self.collect_worker.update(new_config)
+
+            window.destroy()

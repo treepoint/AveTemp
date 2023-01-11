@@ -2,21 +2,28 @@ from PyQt6 import QtWidgets
 import windows.settingsWindow
 
 import Entities
+languages = Entities.Languages()
 
 class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
-    def __init__(self, parent=None):
+    def __init__(self, locale, parent=None):
         super().__init__(parent)
-        self.setupUi(self)  # Дизайн
-
         self.config = Entities.Config()
+
+        self.setupUi(self, locale)
 
         self.buttonSaveSettings.clicked.connect(self.closeWindow)
         self.checkBoxCPUManagment.toggled.connect(self.enableCPUManagmentBlock)
 
         self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
         
-    def setData(self, config, turbo_statuses):
-        #self.config = config
+    def setData(self, config):
+        #Селект локализации
+        self.comboBoxLanguage.addItem(languages.getRussian()['name'], languages.getRussian()['code'])
+        self.comboBoxLanguage.addItem(languages.getEnglish()['name'], languages.getEnglish()['code'])
+        #Зададим выбранный сейчас
+        currentLanguageIndex = self.comboBoxLanguage.findData(config.getCurrentLanguageCode())
+
+        self.comboBoxLanguage.setCurrentIndex(currentLanguageIndex)
 
         #Базовые настройки
         self.spinBoxLoggingInterval.setValue(config.getCollectInterval())
@@ -30,13 +37,6 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.spinBoxCPUThreshhold.setValue(config.getCPUThreshhold())
         self.spinBoxCPUIdleState.setValue(config.getCPUIdleState())
         self.spinBoxCPULoadState.setValue(config.getCPULoadState())
-
-        #Инициализируем выпадающие селекты турбо    
-        self.comboBoxCPUTurboIdleState.addItem(turbo_statuses.getEco()['name'], turbo_statuses.getEco()['id'])
-        self.comboBoxCPUTurboIdleState.addItem(turbo_statuses.getBasic()['name'], turbo_statuses.getBasic()['id'])
-
-        self.comboBoxCPUTurboLoadState.addItem(turbo_statuses.getBasic()['name'], turbo_statuses.getBasic()['id'])
-        self.comboBoxCPUTurboLoadState.addItem(turbo_statuses.getTurbo()['name'], turbo_statuses.getTurbo()['id'])
 
         #Управление турбо режимом
         self.checkBoxCPUTurboManagment.setChecked(config.getIsTurboManagmentOn())
@@ -72,6 +72,9 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.comboBoxCPUTurboLoadState.setEnabled(new_state)
 
     def closeWindow(self):
+        #Локализация
+        self.config.setCurrentLanguageCode(self.comboBoxLanguage.currentData())
+
         #Базовые настройки
         self.config.setCollectInterval(float(self.spinBoxLoggingInterval.value()))
         self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())

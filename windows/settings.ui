@@ -10,19 +10,19 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>518</height>
+    <height>556</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>440</width>
-    <height>518</height>
+    <height>556</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>440</width>
-    <height>518</height>
+    <height>556</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -203,6 +203,60 @@ QPushButton:pressed
             <enum>Qt::Horizontal</enum>
            </property>
           </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="0,1,0">
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Язык:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBoxLanguage">
+           <property name="maximumSize">
+            <size>
+             <width>160</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QWidget {
+	border: 1px solid #b6b6b6;
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-bottom:2px;
+	border-radius: 2px;
+}
+
+QWidget:disabled{
+	border: 1px solid #a9a9a9;
+}
+
+QWidget:drop-down {
+	border-width: 0px;
+}</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_7">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </item>

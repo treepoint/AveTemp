@@ -8,10 +8,14 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 import support
+import localization
+import Entities
 
+languages = Entities.Languages()
+trans = localization.trans
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow, locale):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(342, 346)
@@ -521,52 +525,50 @@ class Ui_MainWindow(object):
         self.actionResetAll = QtGui.QAction(MainWindow)
         self.actionResetAll.setObjectName("actionResetAll")
 
-        self.retranslateUi(MainWindow)
+        self.retranslateUi(MainWindow, locale)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
+    def retranslateUi(self, MainWindow, locale):
         self.CPUinfoTable.setSortingEnabled(False)
         item = self.CPUinfoTable.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Частота"))
+        item.setText(trans(locale, "frequency"))
         item = self.CPUinfoTable.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Загрузка"))
-        self.label_3.setText(_translate("MainWindow", "Средние показатели"))
+        item.setText(trans(locale, "load"))
+        self.label_3.setText(trans(locale, "averages"))
         item = self.tableAverage.verticalHeaderItem(0)
-        item.setText(_translate("MainWindow", "1 мин."))
+        item.setText("1 " + trans(locale, "minutes") + ".")
         item = self.tableAverage.verticalHeaderItem(1)
-        item.setText(_translate("MainWindow", "5 мин."))
+        item.setText("5 " + trans(locale, "minutes") + ".")
         item = self.tableAverage.verticalHeaderItem(2)
-        item.setText(_translate("MainWindow", "15 мин."))
+        item.setText("15 " + trans(locale, "minutes") + ".")
         item = self.tableAverage.verticalHeaderItem(3)
-        item.setText(_translate("MainWindow", "1 час"))
+        item.setText("1 " + trans(locale, "hour"))
         item = self.tableAverage.verticalHeaderItem(4)
-        item.setText(_translate("MainWindow", "24 часа"))
+        item.setText(trans(locale, "24_hours"))
         item = self.tableAverage.horizontalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Температура, С°"))
+        item.setText(trans(locale, "temp"))
         item = self.tableAverage.horizontalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Теплопакет, Вт"))
-        self.buttonResetAverageTemps.setText(_translate("MainWindow", "Сбросить"))
-        self.label_9.setText(_translate("MainWindow", "Температура, С°"))
-        self.label.setText(_translate("MainWindow", "Мин."))
-        self.lineEditCpuMinTemp.setText(_translate("MainWindow", "0"))
-        self.label_8.setText(_translate("MainWindow", "Текущая"))
-        self.lineEditCpuCurrentTemp.setText(_translate("MainWindow", "0"))
-        self.label_2.setText(_translate("MainWindow", "Макс."))
-        self.lineEditCpuMaxTemp.setText(_translate("MainWindow", "0"))
-        self.buttonResetGeneralTemps.setText(_translate("MainWindow", "Сбросить"))
-        self.label_10.setText(_translate("MainWindow", "Теплопакет, Вт"))
-        self.label_11.setText(_translate("MainWindow", "Мин."))
-        self.lineEditCpuMinTDP.setText(_translate("MainWindow", "0"))
-        self.label_15.setText(_translate("MainWindow", "Текущий"))
-        self.lineEditCpuCurrentTDP.setText(_translate("MainWindow", "0"))
-        self.label_16.setText(_translate("MainWindow", "Макс."))
-        self.lineEditCpuMaxTDP.setText(_translate("MainWindow", "0"))
-        self.buttonResetTDP.setText(_translate("MainWindow", "Сбросить"))
-        self.labelAdminRights.setText(_translate("MainWindow", "Для корректной работы нужны права администратора"))
-        self.actionShowSettings.setText(_translate("MainWindow", "Настройки"))
-        self.actionResetAll.setText(_translate("MainWindow", "Сбросить все"))
-
+        item.setText(trans(locale, "TDP"))
+        self.buttonResetAverageTemps.setText(trans(locale, "clear"))
+        self.label_9.setText(trans(locale, "temp"))
+        self.label.setText(trans(locale, "min") + ".")
+        self.lineEditCpuMinTemp.setText("0")
+        self.label_8.setText(trans(locale, "current_she"))
+        self.lineEditCpuCurrentTemp.setText("0")
+        self.label_2.setText(trans(locale, "max") + ".")
+        self.lineEditCpuMaxTemp.setText("0")
+        self.buttonResetGeneralTemps.setText(trans(locale, "clear"))
+        self.label_10.setText(trans(locale, "TDP"))
+        self.label_11.setText(trans(locale, "min") + ".")
+        self.lineEditCpuMinTDP.setText("0")
+        self.label_15.setText(trans(locale, "current_he"))
+        self.lineEditCpuCurrentTDP.setText("0")
+        self.label_16.setText(trans(locale, "max") + ".")
+        self.lineEditCpuMaxTDP.setText("0")
+        self.buttonResetTDP.setText(trans(locale, "clear"))
+        self.labelAdminRights.setText(trans(locale, "admin_rights"))
+        self.actionShowSettings.setText(trans(locale, "settings"))
+        self.actionResetAll.setText(trans(locale, "clear_all"))
 
 if __name__ == "__main__":
     import sys
