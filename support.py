@@ -4,13 +4,13 @@ import configparser  # Для чтения конфига
 import ctypes
 import os, sys
 import json
-import locale
 
 from pathlib import Path
 
 import Entities 
 import registry
 import taskManager
+import localization
 
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
@@ -85,7 +85,6 @@ def readConfig(self):
 
     try:
         #Заберем настройки из файла
-
         #Общие
         self.config.setCollectInterval(float(config['main']['collect_interval']))
         self.config.setStorePeriod(int(config['main']['store_period']))
@@ -108,6 +107,13 @@ def readConfig(self):
 
         #И из системных данных windows
         self.config.setAutostartIsActive(taskManager.checkThatAutostartIsActive(self))
+        
+        try:
+            language_code = config['main']['current_language_code']
+        except:
+            language_code = localization.getCurrentSystemLanguage()['code']
+
+        self.config.setCurrentLanguageCode(language_code)
     except:
         print('Settings file is corrupted, makes new one')
         createEmptyConfigFile()
@@ -169,13 +175,5 @@ def getRestoredData():
 def getCurrentPath():
     return os.getcwd()
 
-def getCurrentSystemLanguage():
-    loc = locale.getdefaultlocale()[0]
-
-    if 'ru' in loc:
-        return 'ru'
-    else:
-        return 'en'
-
 if __name__ == "__main__":
-    print(getCurrentSystemLanguage())
+    print(getCurrentPath())

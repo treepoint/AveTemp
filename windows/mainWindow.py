@@ -8,13 +8,14 @@
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 import support
-from pyi18n import PyI18n
-
 import localization
-loader = localization.Loader()
+import Entities
+
+languages = Entities.Languages()
+trans = localization.trans
 
 class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
+    def setupUi(self, MainWindow, locale):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.resize(342, 346)
@@ -524,58 +525,50 @@ class Ui_MainWindow(object):
         self.actionResetAll = QtGui.QAction(MainWindow)
         self.actionResetAll.setObjectName("actionResetAll")
 
-        #TODO: fix code above
-        self.retranslateUi(MainWindow, "en")
+        self.retranslateUi(MainWindow, locale)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow, locale):
-        
-        i18n = PyI18n(("en", "ru"), loader=loader)
-
-        trans = i18n.gettext
-
-        locale = support.getCurrentSystemLanguage()
-
         self.CPUinfoTable.setSortingEnabled(False)
         item = self.CPUinfoTable.horizontalHeaderItem(0)
-        item.setText(trans(locale,"frequency"))
+        item.setText(trans(locale, "frequency"))
         item = self.CPUinfoTable.horizontalHeaderItem(1)
-        item.setText(trans(locale,"load"))
-        self.label_3.setText(trans(locale,"averages"))
+        item.setText(trans(locale, "load"))
+        self.label_3.setText(trans(locale, "averages"))
         item = self.tableAverage.verticalHeaderItem(0)
-        item.setText("1 " + trans(locale,"minutes") + ".")
+        item.setText("1 " + trans(locale, "minutes") + ".")
         item = self.tableAverage.verticalHeaderItem(1)
-        item.setText("5 " + trans(locale,"minutes") + ".")
+        item.setText("5 " + trans(locale, "minutes") + ".")
         item = self.tableAverage.verticalHeaderItem(2)
-        item.setText("15 " + trans(locale,"minutes") + ".")
+        item.setText("15 " + trans(locale, "minutes") + ".")
         item = self.tableAverage.verticalHeaderItem(3)
-        item.setText("1 " + trans(locale,"hour"))
+        item.setText("1 " + trans(locale, "hour"))
         item = self.tableAverage.verticalHeaderItem(4)
-        item.setText(trans(locale,"24_hours"))
+        item.setText(trans(locale, "24_hours"))
         item = self.tableAverage.horizontalHeaderItem(0)
-        item.setText(trans(locale,"temp"))
+        item.setText(trans(locale, "temp"))
         item = self.tableAverage.horizontalHeaderItem(1)
-        item.setText(trans(locale,"TDP"))
-        self.buttonResetAverageTemps.setText(trans(locale,"clear"))
-        self.label_9.setText(trans(locale,"temp"))
-        self.label.setText(trans(locale,"min") + ".")
+        item.setText(trans(locale, "TDP"))
+        self.buttonResetAverageTemps.setText(trans(locale, "clear"))
+        self.label_9.setText(trans(locale, "temp"))
+        self.label.setText(trans(locale, "min") + ".")
         self.lineEditCpuMinTemp.setText("0")
-        self.label_8.setText(trans(locale,"current_she"))
+        self.label_8.setText(trans(locale, "current_she"))
         self.lineEditCpuCurrentTemp.setText("0")
-        self.label_2.setText(trans(locale,"max") + ".")
+        self.label_2.setText(trans(locale, "max") + ".")
         self.lineEditCpuMaxTemp.setText("0")
-        self.buttonResetGeneralTemps.setText(trans(locale,"clear"))
-        self.label_10.setText(trans(locale,"TDP"))
-        self.label_11.setText(trans(locale,"min") + ".")
+        self.buttonResetGeneralTemps.setText(trans(locale, "clear"))
+        self.label_10.setText(trans(locale, "TDP"))
+        self.label_11.setText(trans(locale, "min") + ".")
         self.lineEditCpuMinTDP.setText("0")
-        self.label_15.setText(trans(locale,"current_he"))
+        self.label_15.setText(trans(locale, "current_he"))
         self.lineEditCpuCurrentTDP.setText("0")
-        self.label_16.setText(trans(locale,"max") + ".")
+        self.label_16.setText(trans(locale, "max") + ".")
         self.lineEditCpuMaxTDP.setText("0")
-        self.buttonResetTDP.setText(trans(locale,"clear"))
-        self.labelAdminRights.setText(trans(locale,"admin_rights"))
-        self.actionShowSettings.setText(trans(locale,"settings"))
-        self.actionResetAll.setText(trans(locale,"clear_all"))
+        self.buttonResetTDP.setText(trans(locale, "clear"))
+        self.labelAdminRights.setText(trans(locale, "admin_rights"))
+        self.actionShowSettings.setText(trans(locale, "settings"))
+        self.actionResetAll.setText(trans(locale, "clear_all"))
 
 if __name__ == "__main__":
     import sys

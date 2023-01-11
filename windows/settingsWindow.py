@@ -7,11 +7,13 @@
 
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-from pyi18n import PyI18n
-import support
-
 import localization
-loader = localization.Loader()
+import Entities
+
+turbo_statuses = Entities.TurboStatuses()
+
+languages = Entities.Languages()
+trans = localization.trans
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog, locale):
@@ -94,38 +96,35 @@ class Ui_Dialog(object):
         self.line.setObjectName("line")
         self.verticalLayout_7.addWidget(self.line)
         self.verticalLayout_8.addLayout(self.verticalLayout_7)
-        
-        #TODO: enable thing below
-
-        #self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
-        #self.horizontalLayout_8.setContentsMargins(-1, 0, -1, -1)
-        #self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        #self.label_5 = QtWidgets.QLabel(Dialog)
-        #self.label_5.setObjectName("label_5")
-        #self.horizontalLayout_8.addWidget(self.label_5)
-        #self.comboBoxLanguage = QtWidgets.QComboBox(Dialog)
-        #self.comboBoxLanguage.setMaximumSize(QtCore.QSize(160, 16777215))
-        #self.comboBoxLanguage.setStyleSheet("QWidget {\n"
-#"    border: 1px solid #b6b6b6;\n"
-#"    padding-left: 4px;\n"
-#"    padding-right: 4px;\n"
-#"    padding-bottom:2px;\n"
-#"    border-radius: 2px;\n"
-#"}\n"
-#"\n"
-#"QWidget:disabled{\n"
-#"    border: 1px solid #a9a9a9;\n"
-#"}\n"
-#"\n"
-#"QWidget:drop-down {\n"
-#"    border-width: 0px;\n"
-#"}")
-        #self.comboBoxLanguage.setObjectName("comboBoxLanguage")
-        #self.horizontalLayout_8.addWidget(self.comboBoxLanguage)
-        #spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        #self.horizontalLayout_8.addItem(spacerItem1)
-        #self.horizontalLayout_8.setStretch(1, 1)
-#        self.verticalLayout_8.addLayout(self.horizontalLayout_8)
+        self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_8.setContentsMargins(-1, 0, -1, -1)
+        self.horizontalLayout_8.setObjectName("horizontalLayout_8")
+        self.label_5 = QtWidgets.QLabel(Dialog)
+        self.label_5.setObjectName("label_5")
+        self.horizontalLayout_8.addWidget(self.label_5)
+        self.comboBoxLanguage = QtWidgets.QComboBox(Dialog)
+        self.comboBoxLanguage.setMaximumSize(QtCore.QSize(160, 16777215))
+        self.comboBoxLanguage.setStyleSheet("QWidget {\n"
+"    border: 1px solid #b6b6b6;\n"
+"    padding-left: 4px;\n"
+"    padding-right: 4px;\n"
+"    padding-bottom:2px;\n"
+"    border-radius: 2px;\n"
+"}\n"
+"\n"
+"QWidget:disabled{\n"
+"    border: 1px solid #a9a9a9;\n"
+"}\n"
+"\n"
+"QWidget:drop-down {\n"
+"    border-width: 0px;\n"
+"}")
+        self.comboBoxLanguage.setObjectName("comboBoxLanguage")
+        self.horizontalLayout_8.addWidget(self.comboBoxLanguage)
+        spacerItem1 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_8.addItem(spacerItem1)
+        self.horizontalLayout_8.setStretch(1, 1)
+        self.verticalLayout_8.addLayout(self.horizontalLayout_8)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setSpacing(4)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
@@ -436,36 +435,32 @@ class Ui_Dialog(object):
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog, locale):
-
-        i18n = PyI18n(("en", "ru"), loader=loader)
-
-        trans = i18n.gettext
-
-        locale = support.getCurrentSystemLanguage()
-
-        Dialog.setWindowTitle(trans(locale,"settings"))
+        Dialog.setWindowTitle(trans(locale, "settings"))
         self.labelNameAndVersion.setText("AveTemp")
-        #TODO: enable
-#        self.label_5.setText(trans(locale,"language"))
-        self.label_11.setText(trans(locale,"collection_interval_text"))
-        self.checkBoxStoreStat.setText(trans(locale,"collect_and_restore_stat"))
-        self.label.setText(trans(locale,"all_data_will_be_removed_when_off"))
-        self.checkBoxCloseToTray.setText(trans(locale,"close_to_tray"))
-        self.checkBoxOpenMinimized.setText(trans(locale,"start_to_tray"))
-        self.checkBoxAutostartIsActive.setText(trans(locale,"add_to_autostart"))
-        self.label_2.setText(trans(locale,"cpu_modes_management"))
-        self.label_3.setText(trans(locale,"default_when_off"))
-        self.checkBoxCPUManagment.setText(trans(locale,"auto_change_cpu_state"))
-        self.label_4.setText(trans(locale,"when_load_less_then_then"))
-        self.labelCPUThreshhold.setText(trans(locale,"load_threshold"))
-        self.labelCPUTreshholdHint.setText(trans(locale,"collect_as_all_cores_load"))
-        self.labelCPUIdleState.setText(trans(locale,"idle_state"))
-        self.labelCPULoadState.setText(trans(locale,"load_state"))
-        self.labelCPULoadStateHint.setText(trans(locale,"state_less_than_100_will"))
-        self.checkBoxCPUTurboManagment.setText(trans(locale,"force_cpu_state"))
-        self.labelCPUTurboManagment.setText(trans(locale,"auto_change_depends_on_threshold"))
-        self.labelCPUTurboIdleState.setText(trans(locale,"in_idle"))
-        self.labelCPUTurboLoadState.setText(trans(locale,"on_load"))
+        self.label_5.setText(trans(locale, "language"))
+        self.label_11.setText(trans(locale, "collection_interval_text"))
+        self.checkBoxStoreStat.setText(trans(locale, "collect_and_restore_stat"))
+        self.label.setText(trans(locale, "all_data_will_be_removed_when_off"))
+        self.checkBoxCloseToTray.setText(trans(locale, "close_to_tray"))
+        self.checkBoxOpenMinimized.setText(trans(locale, "start_to_tray"))
+        self.checkBoxAutostartIsActive.setText(trans(locale, "add_to_autostart"))
+        self.label_2.setText(trans(locale, "cpu_modes_management"))
+        self.label_3.setText(trans(locale, "default_when_off"))
+        self.checkBoxCPUManagment.setText(trans(locale, "auto_change_cpu_state"))
+        self.label_4.setText(trans(locale, "when_load_less_then_then"))
+        self.labelCPUThreshhold.setText(trans(locale, "load_threshold"))
+        self.labelCPUTreshholdHint.setText(trans(locale, "collect_as_all_cores_load"))
+        self.labelCPUIdleState.setText(trans(locale, "idle_state"))
+        self.labelCPULoadState.setText(trans(locale, "load_state"))
+        self.labelCPULoadStateHint.setText(trans(locale, "state_less_than_100_will"))
+        self.checkBoxCPUTurboManagment.setText(trans(locale, "force_cpu_state"))
+        self.labelCPUTurboManagment.setText(trans(locale, "auto_change_depends_on_threshold"))
+        self.labelCPUTurboIdleState.setText(trans(locale, "in_idle"))
+        self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getEco()['name']), turbo_statuses.getEco()['id'])
+        self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getBasic()['name']), turbo_statuses.getBasic()['id'])
+        self.labelCPUTurboLoadState.setText(trans(locale, "on_load"))
+        self.comboBoxCPUTurboLoadState.addItem(trans(locale, turbo_statuses.getBasic()['name']), turbo_statuses.getBasic()['id'])
+        self.comboBoxCPUTurboLoadState.addItem(trans(locale, turbo_statuses.getTurbo()['name']), turbo_statuses.getTurbo()['id'])
 
 if __name__ == "__main__":
     import sys

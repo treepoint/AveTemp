@@ -16,6 +16,9 @@ class Config:
                  CPU_turbo_idle_id = 0,
                  CPU_turbo_load_id = 2
                  ):
+        #Локализация
+        self.current_language_code = 'en'
+        
         #Общие
         self.collect_interval = collect_interval
         self.backup_interval = backup_interval
@@ -23,7 +26,7 @@ class Config:
         self.store_period = store_period
         self.close_to_tray = close_to_tray
         self.open_minimized = open_minimized
-        self.current_language = 1
+
         #Управление процессором
         self.performance_CPU_mode_on = True
         self.CPU_idle_state_pause = 10
@@ -31,23 +34,25 @@ class Config:
         self.CPU_threshhold = CPU_threshhold
         self.CPU_idle_state = CPU_idle_state
         self.CPU_load_state = CPU_load_state
+
         #Управление турбо режимом
         self.is_turbo_managment_on = is_turbo_managment_on
         self.CPU_turbo_idle_id = CPU_turbo_idle_id
         self.CPU_turbo_load_id = CPU_turbo_load_id
+
         #Служебные
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
         self.autostart_is_active = False
         self.name = 'AveTemp'
-        self.version = '1.3.2'
+        self.version = '1.4.0'
 
     #Локализация
-    def getCurrentLanguage(self):
-        return self.current_language
+    def getCurrentLanguageCode(self):
+        return self.current_language_code
 
-    def setCurrentLanguage(self, value):
-        self.current_language = value
+    def setCurrentLanguageCode(self, value):
+        self.current_language_code = value
 
     #Общие
     def getCollectInterval(self):
@@ -162,6 +167,8 @@ class ConfigParser:
     def getMain(config):
         #Описание парсера
         return  {
+                    #Локализация
+                    'current_language_code': config.current_language_code,
                     #Общие
                     'collect_interval': config.collect_interval, 
                     'store_period' : config.store_period,
@@ -207,8 +214,19 @@ class TurboStatuses:
         elif id == 2:
             return self.turbo['index']
 
+class Languages:
+    def __init__(self):
+        self.en = {'code' : 'en', 'name': 'English'}
+        self.ru = {'code' : 'ru', 'name': 'Русский'}
+
+    def getEnglish(self):
+        return self.en
+
+    def getRussian(self):
+        return self.ru
+
 class Localizations:
-    def getDictionary():
+    def getDictionary(self):
         dictionary = {
                             "en": {
                                 "frequency": "Frequency",
