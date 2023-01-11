@@ -6,7 +6,7 @@
 # AveTemp (ENG)
 Free to use tool for continuous monitoring CPU temperature and TDP, also auto adjust CPU performance state and CPU Turbo mode depends on current workload.
 
-<img src="https://user-images.githubusercontent.com/25937222/210169684-56e2132d-5861-4124-ba07-c7d4c1f36c03.jpg" width="702">
+<img src="https://user-images.githubusercontent.com/25937222/211909670-5e78b891-b0e9-4d24-b32f-c19c8f285768.png" width="860">
 
 It will be helpful to:
 
@@ -24,6 +24,7 @@ It will be helpful to:
 - Autostart on logon
 - Automatic changing the color of tray font for dark and light Windows mode. It's checking on AveTemp restart and every 5 minutes
 - Low CPU usage. For Ryzen 4600H it's < 1% on the peak, most of the time — 0.01%
+- English and Russian localization
 
 Basically, it was developed for notebooks but may help with desktop CPUs too. Tested with:
 
@@ -69,7 +70,7 @@ I will be happy if you will send me money for a coffee cup:
 # AveTemp (RU)
 AveTemp — программа на базе python и LibreHardwareMonitorLib для непрерывного мониторинга температуры и TDP процессора, а также для автоматической настройки производительности процессора и режима турбо  в зависимости от текущей нагрузки.
 
-<img src="https://user-images.githubusercontent.com/25937222/210169684-56e2132d-5861-4124-ba07-c7d4c1f36c03.jpg" width="702">
+<img src="https://user-images.githubusercontent.com/25937222/211910133-7a7eabac-0bf5-4319-8a05-e5ede7c7ab0b.png" width="860">
 
 Будет полезная если хочется:
 
@@ -87,6 +88,7 @@ AveTemp — программа на базе python и LibreHardwareMonitorLib �
 - Автозапуск при входе в систему
 - Автоматическое изменение цвета шрифта в трее для темного и светлого режима Windows. Проверяется при перезагрузке AveTemp и каждые 5 минут.
 - Низкое использование процессора. Для Ryzen 4600H это < 1% максимум, а большую часть времени - 0,01%
+- Русская и английская локализация
 
 В основном разрабатывал для ноутбуков, однако может быть полезно и для настольных CPU. Протестировано с:
 
