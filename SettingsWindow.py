@@ -15,7 +15,10 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.checkBoxCPUManagment.toggled.connect(self.enableCPUManagmentBlock)
 
         self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
-        
+
+    def reloadUi(self):
+        self.retranslateUi(self, self.comboBoxLanguage.currentData())
+
     def setData(self, config):
         #Селект локализации
         self.comboBoxLanguage.addItem(languages.getRussian()['name'], languages.getRussian()['code'])
@@ -24,6 +27,9 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         currentLanguageIndex = self.comboBoxLanguage.findData(config.getCurrentLanguageCode())
 
         self.comboBoxLanguage.setCurrentIndex(currentLanguageIndex)
+
+        #Повесим на смену чекбокса перевод UI
+        self.comboBoxLanguage.currentIndexChanged.connect(self.reloadUi)
 
         #Базовые настройки
         self.spinBoxLoggingInterval.setValue(config.getCollectSlowDataInterval())

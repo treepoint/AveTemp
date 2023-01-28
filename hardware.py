@@ -207,13 +207,14 @@ def setCpuPerformanceState(config, data_lists):
     data = data_lists['all_load'][:config.getCPUIdleStatePause()]
 
     idle_ticks_count = len(list(filter(lambda all_load: (all_load < config.getCPUThreshhold()), data)))
+    turbo_ticks_count = len(list(filter(lambda all_load: (all_load >= config.getCPUThreshhold()), data[:2])))
 
     if idle_ticks_count == config.getCPUIdleStatePause():
         percentage = config.getCPUIdleState()
         turbo_id = config.getCPUTurboIdleId()
         CPU_performance_mode = False
     else:
-        if len(data) > 0:
+        if turbo_ticks_count >= 2:
             if int(data[0]) > int(config.getCPUThreshhold()):
                 percentage = config.getCPULoadState()
                 turbo_id = config.getCPUTurboLoadId()
