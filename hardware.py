@@ -17,15 +17,21 @@ startupinfo = subprocess.STARTUPINFO()
 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 startupinfo.wShowWindow = subprocess.SW_HIDE
 
-#Подрубаем общий мониторинг на всю сессию
-c = Computer()
-#Включаем сбор информации по процу
-c.IsCpuEnabled = True 
-c.Open()
+def initHardware():
+    #Подрубаем общий мониторинг на всю сессию
+    computer = Computer()
+    #Включаем сбор информации по процу
+    computer.IsCpuEnabled = True 
+    computer.Open()
 
-def getCpuName():
+    return computer
+
+def closeHardware(computer):
+    computer.Close()
+
+def getCpuName(computer):
     #Идем по сенсорам и забираем название проца
-    for hardware in c.Hardware:
+    for hardware in computer.Hardware:
         if 'LibreHardwareMonitor.Hardware.CPU' in str(hardware.GetType()):
             name = str(hardware.Name)
             if 'with' not in name:
@@ -35,7 +41,7 @@ def getCpuName():
             
             return cpu_name
 
-def getCoresAndThreadsCount():
+def getCoresAndThreadsCount(computer):
     data = {
             'status' : Entities.Status.not_collect,
             'cores_count' : 0,
@@ -43,7 +49,7 @@ def getCoresAndThreadsCount():
            }
 
     #Идем по сенсорам
-    for hardware in c.Hardware:
+    for hardware in computer.Hardware:
         hardware.Update()
 
         for sensor in hardware.Sensors:
@@ -64,24 +70,81 @@ def getCoresAndThreadsCount():
     
     return data
 
-def collectData(data_lists, cpu_cores, cpu_threads):
+def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
     data = {
             'status' : Entities.Status.not_collect,
             'all_load' : 0,
-            'cpu': 
-                {
-                 'temp' : 0, 
-                 'tdp' : 0, 
-                 'cores' : [],
-                 'threads' : [],
-                }
+            'max_load' : 0,
+            'cpu' : 
+                    {
+                    'threads' : [],
+                    }
+           }
+
+    all_load = 0
+    max_load = 0
+
+    for hardware in computer.Hardware:
+        hardware.Update()
+
+        for sensor in hardware.Sensors:
+
+            #Добавляем загрузку в рамках логических ядер проца
+            if str(sensor.SensorType) == 'Load' and 'CPU Core' in str(sensor.Name):
+                sensors = str(sensor.Name).split('#')
+
+                if len(sensors) == 3:
+                    number = sensors[2]
+                else:
+                    number = sensors[1]
+
+                core_load = round(sensor.Value,2)
+                
+                data['cpu']['threads'] += [{'id' : int(number), 'load' : core_load}]
+
+                all_load += core_load
+
+                if core_load > max_load:
+                    max_load = core_load
+    
+    if cpu_threads != 0:
+        all_load = all_load/cpu_threads
+    else:
+        all_load = all_load/cpu_cores
+
+    #Усредним значение нагрузки, чтобы единичные скачки не приводили к преждевременному бустоизвержению
+    loads = data_lists['all_load'][:1]
+
+    new_data = round(all_load, 2)
+
+    if len(loads) > 0:
+        old_data = loads[0]
+        data['all_load'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, 1.5, 3.5)
+    else:
+        data['all_load'] = new_data
+
+    if data['all_load'] == 0:
+         data['status'] = Entities.Status.error
+    else:
+        data['status'] = Entities.Status.success
+
+    return data
+
+def collectSlowData(computer, data_lists):
+    data = {
+            'status' : Entities.Status.not_collect,
+            'all_load' : 0,
+            'cpu' : 
+                    {
+                    'temp' : 0, 
+                    'tdp' : 0, 
+                    'cores' : [],
+                    }
            }
 
     #Идем по сенсорам
-    for hardware in c.Hardware:
+    for hardware in computer.Hardware:
         hardware.Update()
-
-        all_load = 0
 
         for sensor in hardware.Sensors:
             #Добавляем общую температуру проца
@@ -92,7 +155,7 @@ def collectData(data_lists, cpu_cores, cpu_threads):
 
                 if len(general_temps) > 0:
                     old_data = general_temps[0]
-                    data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
+                    data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, 1.5)
                 else:
                     data['cpu']['temp'] = new_data
 
@@ -106,7 +169,7 @@ def collectData(data_lists, cpu_cores, cpu_threads):
 
                 if len(general_TDPs):
                     old_data = general_TDPs[0]
-                    data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
+                    data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, 1.5)
                 else:
                     data['cpu']['tdp'] = new_data
 
@@ -123,40 +186,28 @@ def collectData(data_lists, cpu_cores, cpu_threads):
 
                 data['cpu']['cores'] += [{'id' : int(number), 'clock' : value }]
                 continue 
-
-            #Добавляем загрузку в рамках логических ядер проца
-            if str(sensor.SensorType) == 'Load' and 'CPU Core' in str(sensor.Name):
-                sensors = str(sensor.Name).split('#')
-
-                if len(sensors) == 3:
-                    number = sensors[2]
-                else:
-                    number = sensors[1]
-
-                core_load = round(sensor.Value,2)
-                
-                data['cpu']['threads'] += [{'id' : int(number), 'load' : core_load}]
-
-                all_load += core_load
-                continue
                     
-    if cpu_threads != 0:
-        all_load = all_load/cpu_threads
+    if len(general_temps) == 0:
+         data['status'] = Entities.Status.error
     else:
-        all_load = all_load/cpu_cores
-
-    data['all_load'] = all_load
+        data['status'] = Entities.Status.success
 
     return data
 
-def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data):
-    if new_data > old_data*3:
-        return old_data*1.5
+def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, smoothing_factor, theshold = 3):
+    if old_data == 0:
+        return new_data
+
+    if new_data > old_data*theshold:
+        return old_data*smoothing_factor
+
+    if new_data*theshold < old_data:
+        return old_data/smoothing_factor
+
+    if new_data >= 0.1:
+        return new_data
     else:
-        if new_data >= 0.1:
-            return new_data
-        else:
-            return old_data
+        return old_data
 
 def setCpuPerformanceState(config, data_lists):
     if not config.getIsCPUManagmentOn():
@@ -181,6 +232,7 @@ def setCpuPerformanceState(config, data_lists):
         else:
                 CPU_performance_mode = config.getPerformanceCPUModeOn()
 
+    #Если мы уже в производительном режиме или режиме простоя — не переключаем
     if config.getPerformanceCPUModeOn() == CPU_performance_mode:
         return CPU_performance_mode
 
@@ -229,4 +281,4 @@ def applyPowerPlanScheme():
     subprocess.run('powercfg.exe -S SCHEME_CURRENT', startupinfo=startupinfo)
 
 if __name__ == "__main__":
-    print(applyPowerPlanScheme())
+    collectFastData()

@@ -29,7 +29,6 @@ def getCurrentSystemLanguage():
 
 def initTrans():
     #Инициализируем и адаптируем
-    #TODO: поправить с конфигом
     i18n = PyI18n(('en', 'ru'), loader=loader)
     trans = i18n.gettext
 

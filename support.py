@@ -86,7 +86,7 @@ def readConfig(self):
     try:
         #Заберем настройки из файла
         #Общие
-        self.config.setCollectInterval(float(config['main']['collect_interval']))
+        self.config.setCollectSlowDataInterval(float(config['main']['collect_slow_data_interval']))
         self.config.setStorePeriod(int(config['main']['store_period']))
         self.config.setIsBackupNeeded(toBool(config['main']['is_backup_needed']))
         self.config.setCloseToTray(toBool(config['main']['close_to_tray']))

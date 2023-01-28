@@ -29,7 +29,7 @@ class TrayWrapper:
         else:
             self.window.show()
 
-        self.collect_interval = self.window.config.getCollectInterval()
+        self.collect_slow_data_interval = self.window.config.getCollectSlowDataInterval()
 
         #Меню
         menu = QMenu()
@@ -53,7 +53,7 @@ class TrayWrapper:
         self.tray.activated.connect(self.onTrayIconActivated)
 
         #Создаем поток для обновления информации в трее
-        self.app_worker = workers.AppWorker(self.app, self.collect_interval)
+        self.app_worker = workers.TrayWorker(self)
         self.app_worker.result.connect(self.updateIcon)
         self.app_worker.start()
 

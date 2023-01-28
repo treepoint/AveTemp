@@ -4,19 +4,20 @@ import time
 import registry
 import hardware
 
-class AppWorker(QThread):
-    def __init__(self, app, collect_interval):
+# Воркер для обновления информации в трее
+class TrayWorker(QThread):
+    def __init__(self, app_self):
         super().__init__()
 
-        self.collect_interval = collect_interval
-        self.app = app
+        self.collect_slow_data_interval = app_self.collect_slow_data_interval
+        self.app = app_self.app
 
     result = pyqtSignal(bool)
 
     def run(self):
         self.keepRunning = True
         while self.keepRunning:
-            time.sleep(self.collect_interval)
+            time.sleep(self.collect_slow_data_interval)
 
             if self.app.lastWindowClosed:
                 self.result.emit(True)
@@ -27,33 +28,53 @@ class AppWorker(QThread):
         self.keepRunning = False
 
 # Воркер для сбора данных
-class CollectWorker(QThread):
-    def __init__(self, config, data_lists, cpu_cores, cpu_threads):
+class CollectSlowDataWorker(QThread):
+    def __init__(self, app_self):
         super().__init__()
 
-        self.collect_interval = config.getCollectInterval()
-        self.config = config
-        self.data_lists = data_lists
-        self.cpu_cores = cpu_cores
-        self.cpu_threads = cpu_threads
+        self.collect_slow_data_interval = app_self.config.getCollectSlowDataInterval()
+        self.computer = app_self.computer
+        self.data_lists = app_self.data_lists
 
-    result = pyqtSignal(dict, bool)
+    result = pyqtSignal(dict)
 
     def run(self):
         self.keepRunning = True
         while self.keepRunning:
-            data = hardware.collectData(self.data_lists, self.cpu_cores, self.cpu_threads)
-
-            if not self.config.getIsCPUManagmentOn():
-                CPU_performance_mode = True
-            else:
-                CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
-
-            self.result.emit(data, CPU_performance_mode)
-            time.sleep(self.collect_interval)
+            data = hardware.collectSlowData(self.computer, self.data_lists)
+            self.result.emit(data)
+            time.sleep(self.collect_slow_data_interval)
 
     def update(self, config):
-        self.collect_interval = config.getCollectInterval()
+        self.collect_slow_data_interval = config.getCollectSlowDataInterval()
+        self.config = config
+
+    def stop(self):
+        self.keepRunning = False
+
+# Воркер для мониторинга нагрузки на CPU
+class CollectFastDataWorker(QThread):
+    def __init__(self, app_self):
+        super().__init__()
+
+        self.config = app_self.config
+        self.collect_fast_data_interval = self.config.getCollectFastDataInterval()
+        self.computer = app_self.computer
+        self.cpu_cores = app_self.cpu_cores
+        self.cpu_threads = app_self.cpu_threads
+        self.data_lists = app_self.data_lists
+
+    result = pyqtSignal(dict)
+
+    def run(self):
+        self.keepRunning = True
+        while self.keepRunning:
+            data = hardware.collectFastData(self.computer, self.data_lists, self.cpu_cores, self.cpu_threads)
+            self.result.emit(data)
+            time.sleep(self.collect_fast_data_interval)
+
+    def update(self, config):
+        self.collect_fast_data_interval = config.getCollectFastDataInterval()
         self.config = config
 
     def stop(self):
@@ -61,10 +82,10 @@ class CollectWorker(QThread):
 
 # Воркер для бэкапа данных
 class BackupWorker(QThread):
-    def __init__(self, backup_interval):
+    def __init__(self, app_self):
         super().__init__()
 
-        self.backup_interval = backup_interval
+        self.backup_interval = app_self.config.getBackupInterval()
 
     result = pyqtSignal(bool)
 
@@ -82,10 +103,10 @@ class BackupWorker(QThread):
 
 # Воркер для мониторинга системных параметров
 class SystemMonitoringWorker(QThread):
-    def __init__(self, system_data_collect_interval):
+    def __init__(self, app_self):
         super().__init__()
 
-        self.system_data_collect_interval = system_data_collect_interval
+        self.system_data_collect_interval = app_self.config.getSystemDataCollectIntreval()
 
     result = pyqtSignal(dict)
 
@@ -102,6 +123,28 @@ class SystemMonitoringWorker(QThread):
 
     def update(self, system_data_collect_interval):
         self.system_data_collect_interval = system_data_collect_interval
+
+    def stop(self):
+        self.keepRunning = False
+
+# Воркер для обновления показателей в интерфейсе
+class UpdateUiScoresWorker(QThread):
+    def __init__(self, app_self):
+        super().__init__()
+
+        self.collect_slow_data_interval = app_self.config.getCollectSlowDataInterval()
+
+    result = pyqtSignal(bool)
+
+    def run(self):
+        self.keepRunning = True
+        while self.keepRunning:
+            self.result.emit(True)
+            time.sleep(self.collect_slow_data_interval)
+
+    def update(self, config):
+        self.collect_slow_data_interval = config.getCollectSlowDataInterval()
+        self.config = config
 
     def stop(self):
         self.keepRunning = False
