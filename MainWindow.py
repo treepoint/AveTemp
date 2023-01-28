@@ -43,8 +43,11 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                             'current_TDP' : 0,
                             'min_TDP' : 0,
                             'max_TDP' : 0,
-                            'cores' : [],
-                            'threads' : [],
+                            'cpu' : 
+                                    { 
+                                        'cores' : [],
+                                        'threads' : [],
+                                    }
                          }
 
         if self.config.getIsBackupNeeded():
@@ -59,10 +62,10 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
             self.config.setPerformanceCPUModeOn(CPU_performance_mode)
         
-        coresAndThreads = hardware.getCoresAndThreadsCount(self.computer)
+        cores_and_threads = hardware.getCoresAndThreadsCount(self.computer)
 
-        self.cpu_cores = coresAndThreads['cores_count']
-        self.cpu_threads = coresAndThreads['threads_count']
+        self.cpu_cores = cores_and_threads['cores_count']
+        self.cpu_threads = cores_and_threads['threads_count']
 
         #Есть ли HT/SMT
         if self.cpu_cores != self.cpu_threads:
@@ -239,29 +242,22 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.data_lists['average_TDP'] = self.data_lists['average_TDP'][:self.store_period]
 
     #Записываем данные по ядрам
-    def writeCoresData(self, result):     
+    def writeCoresData(self, result):  
+        cores = []   
         for core in result['cpu']['cores']:
-            self.data_lists['cores'].append({'id': int(core['id'])-1, 'clock' : str(core['clock'])})
+            cores.append({'id': int(core['id'])-1, 'clock' : str(core['clock'])})
+
+        self.data_lists['cpu']['cores'] = cores
 
     #Записываем данные по потокам
     def writeThreadsData(self, result):
-        #Идем по физическим ядрам, потому что нам надо сопоставить нагрузку между потоками и ядрами     
-        threads_count = len(result['cpu']['threads'])
+        threads = []
 
-        for index, thread in enumerate(result['cpu']['threads']):
-            if self.SMT:
-                avg_load_by_core = support.toRoundStr((
-                                                    result['cpu']['threads'][(thread['id']-1)*2]['load'] + 
-                                                    result['cpu']['threads'][(thread['id']-1)*2-1]['load']
-                                                    )/2)
-            else:
-                avg_load_by_core = support.toRoundStr(result['cpu']['threads'][(thread['id']-1)])
+        for thread in result['cpu']['threads']:
+            load = support.toRoundStr(thread['load'])
+            threads.append({'id': int(thread['id'])-1, 'load' : load})
 
-            self.data_lists['threads'].append({'id': int(thread['id'])-1, 'avg_load' : avg_load_by_core})
-
-            #Выходим на половине потоков, так как SMT
-            if index + 1 == (threads_count/2):
-                break
+        self.data_lists['cpu']['threads'] = threads
 
         if round(result['all_load'], 1) > 0 and result['all_load'] != inf:
             self.data_lists['all_load'].insert(0, result['all_load'])
@@ -277,7 +273,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
     #Обработка данных из CpuLoadMonitoringWorker'а
     def processFastData(self, result):
         if not self.config.getIsCPUManagmentOn():
-            CPU_performance_mode = True
+            CPU_performance_mode = False
         else:
             CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
 
@@ -291,11 +287,13 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         locale = self.config.getCurrentLanguageCode()
         
         if len(self.data_lists['general_temps']) > 0:
+            #Сформируем новое изображения трея
+            self.image = support.getTrayImage(self.data_lists['current_temp'], self.config)
+
             #Минимальная
             self.lineEditCpuMinTemp.setText(str(self.data_lists['min_temp']))
             #Текущая
             self.lineEditCpuCurrentTemp.setText(str(self.data_lists['current_temp']))
-            self.image = support.getTrayImage(self.data_lists['current_temp'], self.config)
             #Максимальная
             self.lineEditCpuMaxTemp.setText(str(self.data_lists['max_temp']))
 
@@ -315,16 +313,28 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                 avg_temp = support.toRoundStr(self.getAvgTempForSeconds(60*minutes))
                 avg_tdp = support.toRoundStr(self.getAvgTDPForSeconds(60*minutes))
 
-                self.tableAverage.setItem(row, 0, QTableWidgetItem(f"{ avg_temp }  С°"))            
+                self.tableAverage.setItem(row, 0, QTableWidgetItem(f"{ avg_temp } С°"))            
                 self.tableAverage.setItem(row, 1, QTableWidgetItem(f"{ avg_tdp } { trans(locale, 'watt') }"))
 
                 row += 1
 
-        for core in self.data_lists['cores']:
+        for core in self.data_lists['cpu']['cores']:
             self.CPUinfoTable.setItem(core['id'], 0, QTableWidgetItem(core['clock']))
 
-        for thread in self.data_lists['threads']:
-            self.CPUinfoTable.setItem(thread['id'], 1, QTableWidgetItem(f"{ thread['avg_load'] } %"))
+        #Идем по физическим ядрам, потому что нам надо сопоставить нагрузку между потоками и ядрами   
+        for index, thread in enumerate(self.data_lists['cpu']['threads']):
+            if self.SMT:
+                load = support.toRoundStr((
+                                            float(self.data_lists['cpu']['threads'][(thread['id']-1)*2]['load']) + 
+                                            float(self.data_lists['cpu']['threads'][(thread['id']-1)*2-1]['load'])
+                                            )/2)
+            else:
+                load = str(thread['load'])
+
+            self.CPUinfoTable.setItem(thread['id'], 1, QTableWidgetItem(f"{ load }%"))
+
+            if self.SMT and index + 1 == (self.cpu_threads/2):
+                break
 
     #Обработка данных из backupWorker'а
     def saveData(self):

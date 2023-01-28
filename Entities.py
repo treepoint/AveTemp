@@ -3,12 +3,13 @@ import enum
 class Config:
     def __init__(self, 
                  collect_slow_data_interval = 1, 
-                 collect_fast_data_interval = 0.1,
+                 collect_fast_data_interval = 0.2,
                  backup_interval = 15, 
                  is_backup_needed = True, 
                  store_period = 86400, 
                  close_to_tray = False, 
                  open_minimized = False,
+                 CPU_idle_state_pause = 50,
                  is_CPU_managment_on = False,
                  CPU_threshhold = 20,
                  CPU_idle_state = 99,
@@ -31,7 +32,7 @@ class Config:
         #Управление процессором
         self.collect_fast_data_interval = collect_fast_data_interval
         self.performance_CPU_mode_on = True
-        self.CPU_idle_state_pause = 100
+        self.CPU_idle_state_pause = CPU_idle_state_pause
         self.is_CPU_managment_on = is_CPU_managment_on
         self.CPU_threshhold = CPU_threshhold
         self.CPU_idle_state = CPU_idle_state
@@ -105,6 +106,9 @@ class Config:
 
     def getCPUIdleStatePause(self):
         return self.CPU_idle_state_pause
+
+    def setCPUIdleStatePause(self, value):
+        self.CPU_idle_state_pause = value
 
     def getIsCPUManagmentOn(self):
         return self.is_CPU_managment_on

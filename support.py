@@ -93,10 +93,13 @@ def readConfig(self):
         self.config.setOpenMinimized(toBool(config['main']['open_minimized']))
 
         #Управление процессором
+        self.config.setCollectFastDataInterval(float(config['main']['collect_fast_data_interval']))
+        self.config.setCPUIdleStatePause(int(config['main']['cpu_idle_state_pause']))
         self.config.setIsCPUManagmentOn(toBool(config['main']['is_CPU_managment_on']))
         self.config.setCPUThreshhold(int(config['main']['CPU_threshhold']))
         self.config.setCPUIdleState(int(config['main']['CPU_idle_state']))
         self.config.setCPULoadState(int(config['main']['CPU_load_state']))
+
         #Управление турбо режимом
         self.config.setIsTurboManagmentOn(toBool(config['main']['is_turbo_managment_on']))
         self.config.setCPUTurboIdleId(int(config['main']['CPU_turbo_idle_id']))

@@ -74,7 +74,6 @@ def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
     data = {
             'status' : Entities.Status.not_collect,
             'all_load' : 0,
-            'max_load' : 0,
             'cpu' : 
                     {
                     'threads' : [],
@@ -82,7 +81,6 @@ def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
            }
 
     all_load = 0
-    max_load = 0
 
     for hardware in computer.Hardware:
         hardware.Update()
@@ -93,35 +91,33 @@ def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
             if str(sensor.SensorType) == 'Load' and 'CPU Core' in str(sensor.Name):
                 sensors = str(sensor.Name).split('#')
 
+                #костыль для Intel
                 if len(sensors) == 3:
                     number = sensors[2]
                 else:
                     number = sensors[1]
 
-                core_load = round(sensor.Value,2)
-                
-                data['cpu']['threads'] += [{'id' : int(number), 'load' : core_load}]
+                #Усредним значение нагрузки, чтобы единичные скачки не приводили к преждевременному бустоизвержению
+                threads = data_lists['cpu']['threads']
+
+                new_data = sensor.Value
+
+                if len(threads) > 0:
+                    old_data = float(threads[int(number)-1]['load'])
+                    core_load = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
+                else:
+                    core_load = new_data
+
+                core_load = round(core_load, 2)
 
                 all_load += core_load
-
-                if core_load > max_load:
-                    max_load = core_load
+                
+                data['cpu']['threads'] += [{'id' : int(number), 'load' : core_load}]
     
     if cpu_threads != 0:
-        all_load = all_load/cpu_threads
+        data['all_load'] = round(all_load/cpu_threads, 2)
     else:
-        all_load = all_load/cpu_cores
-
-    #Усредним значение нагрузки, чтобы единичные скачки не приводили к преждевременному бустоизвержению
-    loads = data_lists['all_load'][:1]
-
-    new_data = round(all_load, 2)
-
-    if len(loads) > 0:
-        old_data = loads[0]
-        data['all_load'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, 1.5, 3.5)
-    else:
-        data['all_load'] = new_data
+        data['all_load'] = round(all_load/cpu_cores, 2)
 
     if data['all_load'] == 0:
          data['status'] = Entities.Status.error
@@ -133,7 +129,6 @@ def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
 def collectSlowData(computer, data_lists):
     data = {
             'status' : Entities.Status.not_collect,
-            'all_load' : 0,
             'cpu' : 
                     {
                     'temp' : 0, 
@@ -155,7 +150,7 @@ def collectSlowData(computer, data_lists):
 
                 if len(general_temps) > 0:
                     old_data = general_temps[0]
-                    data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, 1.5)
+                    data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
                 else:
                     data['cpu']['temp'] = new_data
 
@@ -169,7 +164,7 @@ def collectSlowData(computer, data_lists):
 
                 if len(general_TDPs):
                     old_data = general_TDPs[0]
-                    data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, 1.5)
+                    data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
                 else:
                     data['cpu']['tdp'] = new_data
 
@@ -194,15 +189,9 @@ def collectSlowData(computer, data_lists):
 
     return data
 
-def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, smoothing_factor, theshold = 3):
-    if old_data == 0:
-        return new_data
-
+def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, smoothing_factor = 1.5, theshold = 3):
     if new_data > old_data*theshold:
-        return old_data*smoothing_factor
-
-    if new_data*theshold < old_data:
-        return old_data/smoothing_factor
+        return new_data/smoothing_factor
 
     if new_data >= 0.1:
         return new_data
@@ -217,7 +206,9 @@ def setCpuPerformanceState(config, data_lists):
     #Это надо, чтобы процессор туда-сюда не дергать постоянно
     data = data_lists['all_load'][:config.getCPUIdleStatePause()]
 
-    if len(list(filter(lambda all_load: (all_load < config.getCPUThreshhold()), data))) == config.getCPUIdleStatePause():
+    idle_ticks_count = len(list(filter(lambda all_load: (all_load < config.getCPUThreshhold()), data)))
+
+    if idle_ticks_count == config.getCPUIdleStatePause():
         percentage = config.getCPUIdleState()
         turbo_id = config.getCPUTurboIdleId()
         CPU_performance_mode = False
