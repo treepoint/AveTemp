@@ -4,6 +4,7 @@ import configparser  # Для чтения конфига
 import ctypes
 import os, sys
 import json
+import io
 
 from pathlib import Path
 
@@ -57,7 +58,6 @@ def writeToConfig(config):
 
 def createEmptyConfigFile():
     config = Entities.Config()
-
     writeToConfig(config)
 
 def toBool(value):
@@ -75,35 +75,54 @@ def toBool(value):
     
     return False
 
+# Если есть нормальный конфиг — читаем из него
+# Если нет — читаем из дефолтного, чтобы при изменении конфига не перезаписывать старые настройки
+def getValueFromConfigs(value_name):
+    #Обычный конфиг
+    config = configparser.ConfigParser()
+    config.read(config_file)
+
+    #Дефолтный, откуда будем брать значения, если записанного нет
+    default_config = configparser.ConfigParser()
+    default_config['main'] = Entities.ConfigParser.getMain(Entities.Config())
+
+    value_name = str(value_name)
+
+    if value_name in config['main']:
+        return config['main'][value_name]
+    else:
+        return default_config['main'][value_name]
+
 def readConfig(self):
+    #Прочитанный конфиг
     config = configparser.ConfigParser()
 
     #Проверяем, что файл в наличии
     if len(config.read(config_file)) != 1:
         createEmptyConfigFile()
         config.read(config_file)
-
+        
     try:
         #Заберем настройки из файла
         #Общие
-        self.config.setCollectSlowDataInterval(float(config['main']['collect_slow_data_interval']))
-        self.config.setStorePeriod(int(config['main']['store_period']))
-        self.config.setIsBackupNeeded(toBool(config['main']['is_backup_needed']))
-        self.config.setCloseToTray(toBool(config['main']['close_to_tray']))
-        self.config.setOpenMinimized(toBool(config['main']['open_minimized']))
+        self.config.setCollectSlowDataInterval(float(getValueFromConfigs('collect_slow_data_interval')))
+        self.config.setStorePeriod(int(getValueFromConfigs('store_period')))
+        self.config.setIsBackupNeeded(toBool(getValueFromConfigs('is_backup_needed')))
+        self.config.setCloseToTray(toBool(getValueFromConfigs('close_to_tray')))
+        self.config.setOpenMinimized(toBool(getValueFromConfigs('open_minimized')))
 
         #Управление процессором
-        self.config.setCollectFastDataInterval(float(config['main']['collect_fast_data_interval']))
-        self.config.setCPUIdleStatePause(int(config['main']['cpu_idle_state_pause']))
-        self.config.setIsCPUManagmentOn(toBool(config['main']['is_CPU_managment_on']))
-        self.config.setCPUThreshhold(int(config['main']['CPU_threshhold']))
-        self.config.setCPUIdleState(int(config['main']['CPU_idle_state']))
-        self.config.setCPULoadState(int(config['main']['CPU_load_state']))
+        self.config.setCollectFastDataInterval(float(getValueFromConfigs('collect_fast_data_interval')))
+        self.config.setCPUIdleStatePause(int(getValueFromConfigs('cpu_idle_state_pause')))
+        self.config.setIsCPUManagmentOn(toBool(getValueFromConfigs('is_CPU_managment_on')))
+        self.config.setCPUThreshhold(int(getValueFromConfigs('CPU_threshhold')))
+        self.config.setCPUIdleState(int(getValueFromConfigs('CPU_idle_state')))
+        self.config.setCPULoadState(int(getValueFromConfigs('CPU_load_state')))
 
         #Управление турбо режимом
-        self.config.setIsTurboManagmentOn(toBool(config['main']['is_turbo_managment_on']))
-        self.config.setCPUTurboIdleId(int(config['main']['CPU_turbo_idle_id']))
-        self.config.setCPUTurboLoadId(int(config['main']['CPU_turbo_load_id']))
+        self.config.setIsTurboManagmentOn(toBool(getValueFromConfigs('is_turbo_managment_on')))
+        self.config.setCPUTurboIdleId(int(getValueFromConfigs('CPU_turbo_idle_id')))
+        self.config.setCPUTurboLoadId(int(getValueFromConfigs('CPU_turbo_load_id')))
 
         #И, заодно, прочитаем нужные параметры реестра
         self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight())
@@ -117,6 +136,10 @@ def readConfig(self):
             language_code = localization.getCurrentSystemLanguage()['code']
 
         self.config.setCurrentLanguageCode(language_code)
+
+        #Запишем конфиг какой собрали. Он может быть таким же, если начальный конфиг полный,
+        #или дополненным, если какие-то параметры отсутствовали
+        writeToConfig(self.config)
     except:
         print('Settings file is corrupted, makes new one')
         createEmptyConfigFile()
