@@ -4,7 +4,7 @@ class Config:
     def __init__(self, 
                  collect_slow_data_interval = 1, 
                  collect_fast_data_interval = 0.1,
-                 backup_interval = 15, 
+                 backup_interval = 60, 
                  is_backup_needed = True, 
                  store_period = 86400, 
                  close_to_tray = False, 
