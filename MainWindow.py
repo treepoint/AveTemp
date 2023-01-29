@@ -110,18 +110,23 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.startCollectSlowDataWorker()
         self.startCollectFastDataWorker()
 
-        #И для обновления интерфейса
-        self.startUpdateUiScoresWorker()
+        #Для обновления иконки трея
+        self.startUpdateTrayIconWorker()
 
         #Плашка если нет админских прав
         if support.isThereAdminRight():
             self.frameAdminRight.setVisible(False)
+
+    def showEvent(self, event):
+        #Как появилось окно — запустим воркер обновления интерфейса
+        self.startUpdateUiScoresWorker()
 
     #Перезаписываем событие не закрытие, чтобы скрывать в трей если это надо
     def closeEvent(self, event):
         if self.config.getCloseToTray():
             event.ignore()
             self.hide()
+            self.update_ui_scores_worker.stop()
         else:
             #Иначе стопнем воркеры
             self.collect_fast_worker.stop()
@@ -161,11 +166,17 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.system_monitoring_worker.start()
 
     def startUpdateUiScoresWorker(self):
-        #Создаем воркер обновления показателей интерфейса.
+        #Создаем воркер обновления показателей интерфейса
         #У нас теперь данные стекаются с разных воркеров, так что обновлять надо централизовано
         self.update_ui_scores_worker = workers.UpdateUiScoresWorker(self)
         self.update_ui_scores_worker.result.connect(self.updateUiScores)
         self.update_ui_scores_worker.start()
+
+    def startUpdateTrayIconWorker(self):
+        #Создаем воркер обновления иконки в трее
+        self.update_tray_icon_worker = workers.UpdateTrayIconWorker(self)
+        self.update_tray_icon_worker.result.connect(self.updateTrayIcon)
+        self.update_tray_icon_worker.start()
 
     #Функции для сбора записанных данных
     def resetGeneralTemps(self):
@@ -292,15 +303,17 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         self.writeThreadsData(result)
 
+    def updateTrayIcon(self, result):
+        if len(self.data_lists['general_temps']) > 0:
+            #Сформируем новое изображения трея
+            self.image = support.getTrayImage(self.data_lists['current_temp'], self.config)
+
     #Обновляем показатели в интерфейсе
     def updateUiScores(self, result):
 
         locale = self.config.getCurrentLanguageCode()
         
         if len(self.data_lists['general_temps']) > 0:
-            #Сформируем новое изображения трея
-            self.image = support.getTrayImage(self.data_lists['current_temp'], self.config)
-
             #Минимальная
             self.lineEditCpuMinTemp.setText(str(self.data_lists['min_temp']))
             #Текущая
@@ -414,5 +427,6 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             #Обновим время обновления данных
             self.collect_slow_worker.update(new_config)
             self.update_ui_scores_worker.update(new_config)
+            self.update_tray_icon_worker.update(new_config)
 
             window.destroy()

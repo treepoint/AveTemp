@@ -152,3 +152,25 @@ class UpdateUiScoresWorker(QThread):
 
     def stop(self):
         self.keepRunning = False
+
+# Воркер для обновления изображения в трее
+class UpdateTrayIconWorker(QThread):
+    def __init__(self, app_self):
+        super().__init__()
+
+        self.collect_slow_data_interval = app_self.config.getCollectSlowDataInterval()
+
+    result = pyqtSignal(bool)
+
+    def run(self):
+        self.keepRunning = True
+        while self.keepRunning:
+            self.result.emit(True)
+            time.sleep(self.collect_slow_data_interval)
+
+    def update(self, config):
+        self.collect_slow_data_interval = config.getCollectSlowDataInterval()
+        self.config = config
+
+    def stop(self):
+        self.keepRunning = False
