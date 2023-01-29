@@ -45,7 +45,7 @@ class TrayWrapper:
         #Набор пунктов
         action = QAction('Закрыть')
         menu.addAction(action)
-        action.triggered.connect(quit)
+        action.triggered.connect(self.properQuit)
 
         self.tray.setContextMenu(menu)
 
@@ -60,8 +60,9 @@ class TrayWrapper:
         #Ну и запускаем
         self.app.exec()
 
-    def quit(self):
-        self.app.quit
+    def properQuit(self):
+        self.tray.setVisible(False)
+        exit(0)
 
     def updateIcon(self, result):
         if result:

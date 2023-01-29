@@ -12,6 +12,7 @@ import support
 import workers
 import taskManager
 import localization
+import system
 
 trans = localization.trans
 languages = Entities.Languages()
@@ -19,6 +20,9 @@ languages = Entities.Languages()
 class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+
+        #Задаем самый высокий приоритет, чтобы меньше пролагов было
+        system.increase_current_process_priority()
 
         #Прочитаем конфиг
         self.config = Entities.Config()

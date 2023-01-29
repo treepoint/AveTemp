@@ -3,6 +3,7 @@ from PyQt6.QtCore import QThread, pyqtSignal
 import time
 import registry
 import hardware
+import system
 
 # Воркер для обновления информации в трее
 class TrayWorker(QThread):
@@ -56,6 +57,9 @@ class CollectSlowDataWorker(QThread):
 class CollectFastDataWorker(QThread):
     def __init__(self, app_self):
         super().__init__()
+
+        #Задаем самый высокий приоритет, чтобы меньше пролагов было
+        system.increase_current_process_priority()
 
         self.config = app_self.config
         self.collect_fast_data_interval = self.config.getCollectFastDataInterval()
