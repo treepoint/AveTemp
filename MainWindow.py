@@ -119,11 +119,18 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             event.ignore()
             self.hide()
         else:
-            #Иначе вернем лимиты проца по умолчанию — 100
+            #Иначе стопнем воркеры
+            self.collect_fast_worker.stop()
+            self.collect_slow_worker.stop()
+            self.update_ui_scores_worker.stop()
+            self.backup_worker.stop()
+
+            #вернем лимиты проца по умолчанию — 100
             hardware.setCPUStatetoDefault()
             hardware.setTurboToDefault()
+
             #Закроем мониторинг оборудования
-            hardware.closeHardware()
+            hardware.closeHardware(self.computer)
 
     def startCollectSlowDataWorker(self):
         #Создаем воркер для сбора и обновления информации

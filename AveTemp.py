@@ -45,7 +45,7 @@ class TrayWrapper:
         #Набор пунктов
         action = QAction('Закрыть')
         menu.addAction(action)
-        action.triggered.connect(self.app.quit)
+        action.triggered.connect(quit)
 
         self.tray.setContextMenu(menu)
 
@@ -60,12 +60,15 @@ class TrayWrapper:
         #Ну и запускаем
         self.app.exec()
 
+    def quit(self):
+        self.app.quit
+
     def updateIcon(self, result):
         if result:
             icon = QIcon(self.window.image)
             self.tray.setIcon(icon)
         else:
-            #Если из воркера не пришло результат — значит приложение закрыли, дропаем
+            #Если из воркера не пришел результат — значит приложение закрыли, дропаем
             self.tray.setVisible(False)
             exit(0)
 
