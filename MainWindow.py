@@ -113,13 +113,19 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         #Для обновления иконки трея
         self.startUpdateTrayIconWorker()
 
+        #Для обновления GUI
+        self.startUpdateUiScoresWorker()
+
+        if self.config.getOpenMinimized:
+            self.update_ui_scores_worker.stop()
+
         #Плашка если нет админских прав
         if support.isThereAdminRight():
             self.frameAdminRight.setVisible(False)
 
     def showEvent(self, event):
         #Как появилось окно — запустим воркер обновления интерфейса
-        self.startUpdateUiScoresWorker()
+        self.update_ui_scores_worker.start()
 
     #Перезаписываем событие не закрытие, чтобы скрывать в трей если это надо
     def closeEvent(self, event):
@@ -304,32 +310,36 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.writeThreadsData(result)
 
     def updateTrayIcon(self, result):
-        if len(self.data_lists['general_temps']) > 0:
+        data_lists = self.data_lists
+
+        if len(data_lists['general_temps']) > 0:
             #Сформируем новое изображения трея
-            self.image = support.getTrayImage(self.data_lists['current_temp'], self.config)
+            self.image = support.getTrayImage(data_lists['current_temp'], self.config)
 
     #Обновляем показатели в интерфейсе
     def updateUiScores(self, result):
 
         locale = self.config.getCurrentLanguageCode()
+
+        data_lists = self.data_lists
         
-        if len(self.data_lists['general_temps']) > 0:
+        if len(data_lists['general_temps']) > 0:
             #Минимальная
-            self.lineEditCpuMinTemp.setText(str(self.data_lists['min_temp']))
+            self.lineEditCpuMinTemp.setText(str(data_lists['min_temp']))
             #Текущая
-            self.lineEditCpuCurrentTemp.setText(str(self.data_lists['current_temp']))
+            self.lineEditCpuCurrentTemp.setText(str(data_lists['current_temp']))
             #Максимальная
-            self.lineEditCpuMaxTemp.setText(str(self.data_lists['max_temp']))
+            self.lineEditCpuMaxTemp.setText(str(data_lists['max_temp']))
 
-        if len(self.data_lists['general_TDP']) > 0:
+        if len(data_lists['general_TDP']) > 0:
             #Минимальный
-            self.lineEditCpuMinTDP.setText(str(self.data_lists['min_TDP']))
+            self.lineEditCpuMinTDP.setText(str(data_lists['min_TDP']))
             #Текущий
-            self.lineEditCpuCurrentTDP.setText(str(self.data_lists['current_TDP']))
+            self.lineEditCpuCurrentTDP.setText(str(data_lists['current_TDP']))
             #Максимальный
-            self.lineEditCpuMaxTDP.setText(str(self.data_lists['max_TDP']))
+            self.lineEditCpuMaxTDP.setText(str(data_lists['max_TDP']))
 
-        if len(self.data_lists['average_temps']) > 0:
+        if len(data_lists['average_temps']) > 0:
 
             row = 0
 
@@ -346,11 +356,11 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             self.CPUinfoTable.setItem(core['id'], 0, QTableWidgetItem(core['clock']))
 
         #Идем по физическим ядрам, потому что нам надо сопоставить нагрузку между потоками и ядрами   
-        for index, thread in enumerate(self.data_lists['cpu']['threads']):
+        for index, thread in enumerate(data_lists['cpu']['threads']):
             if self.SMT:
                 load = support.toRoundStr((
-                                            float(self.data_lists['cpu']['threads'][(thread['id']-1)*2]['load']) + 
-                                            float(self.data_lists['cpu']['threads'][(thread['id']-1)*2-1]['load'])
+                                            float(data_lists['cpu']['threads'][(thread['id']-1)*2]['load']) + 
+                                            float(data_lists['cpu']['threads'][(thread['id']-1)*2-1]['load'])
                                             )/2)
             else:
                 load = str(thread['load'])
