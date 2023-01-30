@@ -110,14 +110,12 @@ def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
 
                 core_load = round(core_load, 2)
 
+
                 all_load += core_load
                 
                 data['cpu']['threads'] += [{'id' : int(number), 'load' : core_load}]
     
-    if cpu_threads != 0:
-        data['all_load'] = round(all_load/cpu_threads, 2)
-    else:
-        data['all_load'] = round(all_load/cpu_cores, 2)
+    data['all_load'] = round(all_load/cpu_threads, 2)
 
     if data['all_load'] == 0:
          data['status'] = Entities.Status.error
@@ -207,31 +205,40 @@ def setCpuPerformanceState(config, data_lists):
     data = data_lists['all_load'][:config.getCPUIdleStatePause()]
 
     idle_ticks_count = len(list(filter(lambda all_load: (all_load < config.getCPUThreshhold()), data)))
-    turbo_ticks_count = len(list(filter(lambda all_load: (all_load >= config.getCPUThreshhold()), data[:2])))
+    turbo_ticks = list(filter(lambda all_load: (all_load >= config.getCPUThreshhold()), data[:3]))[::-1]
 
     if idle_ticks_count == config.getCPUIdleStatePause():
         percentage = config.getCPUIdleState()
         turbo_id = config.getCPUTurboIdleId()
-        CPU_performance_mode = False
+        CPU_performance_mode_on = False
     else:
-        if turbo_ticks_count >= 2:
-            if int(data[0]) > int(config.getCPUThreshhold()):
-                percentage = config.getCPULoadState()
-                turbo_id = config.getCPUTurboLoadId()
-                CPU_performance_mode = True
-            else:
-                CPU_performance_mode = config.getPerformanceCPUModeOn()
-        else:
-                CPU_performance_mode = config.getPerformanceCPUModeOn()
+        if (len(turbo_ticks) >= 2):
+            #Врубаем турбо или если прошло 3 турбо тика или если второй тик больше первого на 15%
+            #Так пытаемся минимизировать лишнее включение турбо когда не надо
+            if (len(turbo_ticks) >= 3) or (turbo_ticks[1] >= turbo_ticks[0] + 15):
+                if int(data[0]) > int(config.getCPUThreshhold()):
+                    percentage = config.getCPULoadState()
+                    turbo_id = config.getCPUTurboLoadId()
+                    CPU_performance_mode_on = True
 
-    #Если мы уже в производительном режиме или режиме простоя — не переключаем
-    if config.getPerformanceCPUModeOn() == CPU_performance_mode:
-        return CPU_performance_mode
+                #Во всех других случаях ничего не меняем и возвращаем как есть
+                else:
+                    CPU_performance_mode_on = config.getPerformanceCPUModeOn()
+            else:
+                CPU_performance_mode_on = config.getPerformanceCPUModeOn()
+        else:
+            CPU_performance_mode_on = config.getPerformanceCPUModeOn()
+
+    #Если мы уже в нужном режиме — не переключаем
+    if config.getPerformanceCPUModeOn() == CPU_performance_mode_on:
+        return CPU_performance_mode_on
 
     setCPULimits(percentage)
-    setCPUTurbo(turbo_id)
 
-    return CPU_performance_mode
+    if config.getIsTurboManagmentOn():
+        setCPUTurbo(turbo_id)
+
+    return CPU_performance_mode_on
 
 def setCPUStatetoDefault():
     setCPULimits(100)
