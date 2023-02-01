@@ -453,12 +453,21 @@ class Ui_Dialog(object):
         self.labelCPULoadStateHint.setText(trans(locale, "state_less_than_100_will"))
         self.checkBoxCPUTurboManagment.setText(trans(locale, "force_cpu_state"))
         self.labelCPUTurboManagment.setText(trans(locale, "auto_change_depends_on_threshold"))
+
+        #Комбобоксы режимов турбо
         self.labelCPUTurboIdleState.setText(trans(locale, "in_idle"))
+        comboBox_CPU_Turbo_Idle_State_Index = self.comboBoxCPUTurboIdleState.currentIndex()
+        self.comboBoxCPUTurboIdleState.clear()
         self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getEco()['name']), turbo_statuses.getEco()['id'])
         self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getBasic()['name']), turbo_statuses.getBasic()['id'])
+        self.comboBoxCPUTurboIdleState.setCurrentIndex(comboBox_CPU_Turbo_Idle_State_Index)
+
         self.labelCPUTurboLoadState.setText(trans(locale, "on_load"))
+        comboBox_CPU_Turbo_Load_State_Index = self.comboBoxCPUTurboLoadState.currentIndex()
+        self.comboBoxCPUTurboLoadState.clear()
         self.comboBoxCPUTurboLoadState.addItem(trans(locale, turbo_statuses.getBasic()['name']), turbo_statuses.getBasic()['id'])
         self.comboBoxCPUTurboLoadState.addItem(trans(locale, turbo_statuses.getTurbo()['name']), turbo_statuses.getTurbo()['id'])
+        self.comboBoxCPUTurboLoadState.setCurrentIndex(comboBox_CPU_Turbo_Load_State_Index)
 
 if __name__ == "__main__":
     import sys

@@ -15,6 +15,7 @@ def addToAutostart(self):
     trigger = task_def.Triggers.Create(TASK_TRIGGER_LOGON)
     trigger.Id = "LogonTriggerId"
     trigger.UserId = os.environ.get('USERNAME') # получаем имя текущего пользователя
+    trigger.Delay = 'PT3S'
     
     # Добавляем к нему действие
     TASK_ACTION_EXEC = 0

@@ -29,7 +29,7 @@ class TrayWrapper:
         else:
             self.window.show()
 
-        self.collect_interval = self.window.config.getCollectInterval()
+        self.collect_slow_data_interval = self.window.config.getCollectSlowDataInterval()
 
         #Меню
         menu = QMenu()
@@ -45,7 +45,7 @@ class TrayWrapper:
         #Набор пунктов
         action = QAction('Закрыть')
         menu.addAction(action)
-        action.triggered.connect(self.app.quit)
+        action.triggered.connect(self.properQuit)
 
         self.tray.setContextMenu(menu)
 
@@ -53,19 +53,23 @@ class TrayWrapper:
         self.tray.activated.connect(self.onTrayIconActivated)
 
         #Создаем поток для обновления информации в трее
-        self.app_worker = workers.AppWorker(self.app, self.collect_interval)
+        self.app_worker = workers.TrayWorker(self)
         self.app_worker.result.connect(self.updateIcon)
         self.app_worker.start()
 
         #Ну и запускаем
         self.app.exec()
 
+    def properQuit(self):
+        self.tray.setVisible(False)
+        exit(0)
+
     def updateIcon(self, result):
         if result:
             icon = QIcon(self.window.image)
             self.tray.setIcon(icon)
         else:
-            #Если из воркера не пришло результат — значит приложение закрыли, дропаем
+            #Если из воркера не пришел результат — значит приложение закрыли, дропаем
             self.tray.setVisible(False)
             exit(0)
 

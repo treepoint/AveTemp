@@ -2,12 +2,14 @@ import enum
 
 class Config:
     def __init__(self, 
-                 collect_interval = 1, 
-                 backup_interval = 15, 
+                 collect_slow_data_interval = 1, 
+                 collect_fast_data_interval = 0.1,
+                 backup_interval = 60, 
                  is_backup_needed = True, 
                  store_period = 86400, 
                  close_to_tray = False, 
                  open_minimized = False,
+                 CPU_idle_state_pause = 50,
                  is_CPU_managment_on = False,
                  CPU_threshhold = 20,
                  CPU_idle_state = 99,
@@ -20,7 +22,7 @@ class Config:
         self.current_language_code = 'en'
         
         #Общие
-        self.collect_interval = collect_interval
+        self.collect_slow_data_interval = collect_slow_data_interval
         self.backup_interval = backup_interval
         self.is_backup_needed = is_backup_needed
         self.store_period = store_period
@@ -28,8 +30,9 @@ class Config:
         self.open_minimized = open_minimized
 
         #Управление процессором
+        self.collect_fast_data_interval = collect_fast_data_interval
         self.performance_CPU_mode_on = True
-        self.CPU_idle_state_pause = 10
+        self.CPU_idle_state_pause = CPU_idle_state_pause
         self.is_CPU_managment_on = is_CPU_managment_on
         self.CPU_threshhold = CPU_threshhold
         self.CPU_idle_state = CPU_idle_state
@@ -45,7 +48,7 @@ class Config:
         self.system_data_collect_interval = 300
         self.autostart_is_active = False
         self.name = 'AveTemp'
-        self.version = '1.4.0'
+        self.version = '1.4.1'
 
     #Локализация
     def getCurrentLanguageCode(self):
@@ -55,11 +58,11 @@ class Config:
         self.current_language_code = value
 
     #Общие
-    def getCollectInterval(self):
-        return self.collect_interval
+    def getCollectSlowDataInterval(self):
+        return self.collect_slow_data_interval
 
-    def setCollectInterval(self, value):
-        self.collect_interval = value
+    def setCollectSlowDataInterval(self, value):
+        self.collect_slow_data_interval = value
 
     def getBackupInterval(self):
         return self.backup_interval
@@ -89,6 +92,12 @@ class Config:
         self.open_minimized = value
 
     #Управление процессором
+    def getCollectFastDataInterval(self):
+        return self.collect_fast_data_interval
+
+    def setCollectFastDataInterval(self, value):
+        self.collect_fast_data_interval = value
+
     def setPerformanceCPUModeOn(self, value):
         self.performance_CPU_mode_on = value
 
@@ -97,6 +106,9 @@ class Config:
 
     def getCPUIdleStatePause(self):
         return self.CPU_idle_state_pause
+
+    def setCPUIdleStatePause(self, value):
+        self.CPU_idle_state_pause = value
 
     def getIsCPUManagmentOn(self):
         return self.is_CPU_managment_on
@@ -170,12 +182,14 @@ class ConfigParser:
                     #Локализация
                     'current_language_code': config.current_language_code,
                     #Общие
-                    'collect_interval': config.collect_interval, 
+                    'collect_slow_data_interval': config.collect_slow_data_interval, 
                     'store_period' : config.store_period,
                     'is_backup_needed' : config.is_backup_needed,
                     'close_to_tray' : config.close_to_tray,
                     'open_minimized' : config.open_minimized,
                     #Управление процессором
+                    'CPU_idle_state_pause' : config.CPU_idle_state_pause,
+                    'collect_fast_data_interval' : config.collect_fast_data_interval,
                     'is_CPU_managment_on': config.is_CPU_managment_on,
                     'CPU_threshhold': config.CPU_threshhold,
                     'CPU_idle_state': config.CPU_idle_state,
