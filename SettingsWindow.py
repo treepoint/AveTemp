@@ -61,7 +61,6 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
 
         self.labelCPUThreshhold.setEnabled(new_state)
         self.spinBoxCPUThreshhold.setEnabled(new_state)
-        self.labelCPUTreshholdHint.setEnabled(new_state)
 
         self.labelCPUIdleState.setEnabled(new_state)
         self.spinBoxCPUIdleState.setEnabled(new_state)
