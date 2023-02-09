@@ -9,20 +9,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>735</height>
+    <width>444</width>
+    <height>672</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>440</width>
-    <height>556</height>
+    <width>444</width>
+    <height>672</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>500</width>
-    <height>735</height>
+    <width>444</width>
+    <height>672</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -222,7 +222,7 @@ QPushButton:pressed
           <widget class="QComboBox" name="comboBoxLanguage">
            <property name="maximumSize">
             <size>
-             <width>160</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
            </property>
@@ -347,7 +347,7 @@ QWidget:drop-down {
          <property name="sizeHint" stdset="0">
           <size>
            <width>0</width>
-           <height>8</height>
+           <height>4</height>
           </size>
          </property>
         </spacer>
@@ -366,7 +366,7 @@ QWidget:drop-down {
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_20">
            <property name="spacing">
-            <number>0</number>
+            <number>4</number>
            </property>
            <property name="topMargin">
             <number>0</number>
@@ -375,19 +375,19 @@ QWidget:drop-down {
             <number>0</number>
            </property>
            <item>
-            <widget class="Line" name="line_4">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="QLabel" name="label_12">
              <property name="styleSheet">
               <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
              </property>
              <property name="text">
               <string>Автозагрузка</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
@@ -471,13 +471,13 @@ QWidget:drop-down {
            </item>
            <item>
             <widget class="QLabel" name="labelAutostartDelayHint">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="font">
               <font>
                <pointsize>7</pointsize>
               </font>
-             </property>
-             <property name="enabled">
-              <bool>false</bool>
              </property>
              <property name="styleSheet">
               <string notr="true">QWidget {
@@ -501,23 +501,23 @@ QWidget:drop-down {
            </item>
           </layout>
          </item>
-         <item>
-          <spacer name="verticalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>0</width>
-             <height>8</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -536,19 +536,50 @@ QWidget:drop-down {
             <number>0</number>
            </property>
            <item>
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+            <layout class="QVBoxLayout" name="verticalLayout_22">
+             <property name="spacing">
+              <number>4</number>
              </property>
-            </widget>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="styleSheet">
+                <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+               </property>
+               <property name="text">
+                <string>Статистика</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
-            <widget class="QLabel" name="label_9">
+            <widget class="QLabel" name="label">
+             <property name="font">
+              <font>
+               <pointsize>7</pointsize>
+              </font>
+             </property>
              <property name="styleSheet">
-              <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+              <string notr="true">color: #444;</string>
              </property>
              <property name="text">
-              <string>Статистика</string>
+              <string>При отключении все собранные данные будут удалены</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -580,28 +611,6 @@ QWidget:drop-down {
               <string>Хранить и восстанавливать статистику за сутки</string>
              </property>
              <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label">
-             <property name="font">
-              <font>
-               <pointsize>7</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">color: #444;
-                margin-left:16px;</string>
-             </property>
-             <property name="text">
-              <string>При отключении все собранные данные будут удалены</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-             </property>
-             <property name="wordWrap">
               <bool>true</bool>
              </property>
             </widget>
@@ -641,7 +650,7 @@ QWidget:drop-down {
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBoxBackupInterval">
+              <widget class="QDoubleSpinBox" name="spinBoxBackupInterval">
                <property name="minimumSize">
                 <size>
                  <width>60</width>
@@ -649,8 +658,11 @@ QWidget:drop-down {
                 </size>
                </property>
                <property name="singleStep">
-                <number>0</number>
+                 <double>0.100000000000000</double>
                </property>
+                <property name="value">
+                 <double>0.500000000000000</double>
+                </property>
               </widget>
              </item>
              <item>
@@ -673,11 +685,6 @@ QWidget:drop-down {
              <property name="font">
               <font>
                <pointsize>7</pointsize>
-              </font>
-             </property>
-             <property name="font">
-              <font>
-               <kerning>true</kerning>
               </font>
              </property>
              <property name="styleSheet">
@@ -724,7 +731,7 @@ QWidget:drop-down {
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>8</height>
+           <height>4</height>
           </size>
          </property>
         </spacer>
@@ -746,27 +753,40 @@ QWidget:drop-down {
             <number>0</number>
            </property>
            <item>
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+            <layout class="QVBoxLayout" name="verticalLayout_23">
+             <property name="spacing">
+              <number>4</number>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16</height>
-              </size>
+             <property name="topMargin">
+              <number>0</number>
              </property>
-             <property name="styleSheet">
-              <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+             <property name="bottomMargin">
+              <number>0</number>
              </property>
-             <property name="text">
-              <string>Управление режимами работы процессора</string>
-             </property>
-            </widget>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+               </property>
+               <property name="text">
+                <string>Управление режимами работы процессора</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QLabel" name="label_3">
@@ -837,7 +857,7 @@ margin-left:16px;
 margin-top:2px;</string>
              </property>
              <property name="text">
-              <string>При нагрузке ниже порога, максимальное состояние процессора будет снижено, чтобы снизить использование турбо режима в простое </string>
+              <string>При нагрузке ниже порога, максимальное состояние процессора будет ограничено, чтобы снизить использование турбо режима в простое </string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -1131,33 +1151,6 @@ margin-top:2px;</string>
                </property>
                <property name="text">
                 <string>Явно задавать состояние турбо режима</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="labelCPUTurboManagment">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>7</pointsize>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QWidget {
-                    color: #444;
-                    margin-left:16px;
-                    margin-top:2px;
-                    }
-
-                    QWidget:disabled{color: #999;}</string>
-               </property>
-               <property name="text">
-                <string>Если управление процентами не работает. Автоматически выставляется в зависимости от порога нагрузки</string>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
                </property>
               </widget>
              </item>

@@ -70,7 +70,6 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.labelCPULoadStateHint.setEnabled(new_state)
 
         self.checkBoxCPUTurboManagment.setEnabled(new_state)
-        self.labelCPUTurboManagment.setEnabled(new_state)
         self.labelCPUTurboIdleState.setEnabled(new_state)
         self.comboBoxCPUTurboIdleState.setEnabled(new_state)
         self.labelCPUTurboLoadState.setEnabled(new_state)
