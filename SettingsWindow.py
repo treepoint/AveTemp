@@ -12,7 +12,8 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.setupUi(self, locale)
 
         self.buttonSaveSettings.clicked.connect(self.closeWindow)
-        self.checkBoxCPUManagment.toggled.connect(self.enableCPUManagmentBlock)
+        self.checkBoxCPUManagment.toggled.connect(self.switchCPUManagmentBlock)
+        self.checkBoxAutostartIsActive.toggled.connect(self.switchAutostartBlock)
 
         self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
 
@@ -36,7 +37,10 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.checkBoxStoreStat.setChecked(config.getIsBackupNeeded())
         self.checkBoxCloseToTray.setChecked(config.getCloseToTray())
         self.checkBoxOpenMinimized.setChecked(config.getOpenMinimized())
+
+        #Автозагрузка
         self.checkBoxAutostartIsActive.setChecked(config.getAutostartIsActive())
+        self.spinBoxAutostartDelay.setValue(config.getAutostartDelay())
 
         #Управление процессором
         self.checkBoxCPUManagment.setChecked(config.getIsCPUManagmentOn())
@@ -53,7 +57,17 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.comboBoxCPUTurboIdleState.setCurrentIndex(idleComboboxIndex)
         self.comboBoxCPUTurboLoadState.setCurrentIndex(loadComboboxIndex)
 
-    def enableCPUManagmentBlock(self):
+    def switchAutostartBlock(self):
+        if self.checkBoxAutostartIsActive.isChecked():
+            new_state = True
+        else:
+            new_state = False
+
+        self.labelAutostartDelay.setEnabled(new_state)
+        self.labelAutostartDelayHint.setEnabled(new_state)
+        self.spinBoxAutostartDelay.setEnabled(new_state)
+
+    def switchCPUManagmentBlock(self):
         if self.checkBoxCPUManagment.isChecked():
             new_state = True
         else:
@@ -84,7 +98,10 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())
         self.config.setCloseToTray(self.checkBoxCloseToTray.isChecked())
         self.config.setOpenMinimized(self.checkBoxOpenMinimized.isChecked())
+
+        #Автозагрузка
         self.config.setAutostartIsActive(self.checkBoxAutostartIsActive.isChecked())
+        self.config.setAutostartDelay(int(self.spinBoxAutostartDelay.value()))
         
         #Управление процессором
         self.config.setIsCPUManagmentOn(self.checkBoxCPUManagment.isChecked())

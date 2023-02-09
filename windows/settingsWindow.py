@@ -72,6 +72,7 @@ class Ui_Dialog(object):
 "    background-repeat: no-repeat;\n"
 "}")
         self.buttonSaveSettings.setText("")
+        self.buttonSaveSettings.setAutoDefault(False)
         self.buttonSaveSettings.setObjectName("buttonSaveSettings")
         self.verticalLayout_10.addWidget(self.buttonSaveSettings)
         self.verticalLayout_9.addWidget(self.frame)

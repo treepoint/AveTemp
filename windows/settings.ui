@@ -158,6 +158,9 @@ QPushButton:pressed
             <property name="text">
              <string/>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -658,11 +661,11 @@ QWidget:drop-down {
                 </size>
                </property>
                <property name="singleStep">
-                 <double>0.100000000000000</double>
+                <double>0.100000000000000</double>
                </property>
-                <property name="value">
-                 <double>0.500000000000000</double>
-                </property>
+               <property name="value">
+                <double>0.500000000000000</double>
+               </property>
               </widget>
              </item>
              <item>

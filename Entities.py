@@ -4,6 +4,7 @@ class Config:
     def __init__(self, 
                  collect_slow_data_interval = 1, 
                  collect_fast_data_interval = 0.1,
+                 autostart_delay = 3,
                  backup_interval = 60, 
                  is_backup_needed = True, 
                  store_period = 86400, 
@@ -11,8 +12,8 @@ class Config:
                  open_minimized = False,
                  CPU_idle_state_pause = 50,
                  is_CPU_managment_on = False,
-                 CPU_threshhold = 20,
-                 CPU_idle_state = 99,
+                 CPU_threshhold = 45,
+                 CPU_idle_state = 60,
                  CPU_load_state = 100,
                  is_turbo_managment_on = False,
                  CPU_turbo_idle_id = 0,
@@ -28,6 +29,10 @@ class Config:
         self.store_period = store_period
         self.close_to_tray = close_to_tray
         self.open_minimized = open_minimized
+
+        #Автозагрузка
+        self.autostart_is_active = False
+        self.autostart_delay = autostart_delay
 
         #Управление процессором
         self.collect_fast_data_interval = collect_fast_data_interval
@@ -46,7 +51,6 @@ class Config:
         #Служебные
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
-        self.autostart_is_active = False
         self.name = 'AveTemp'
         self.version = '1.4.1'
 
@@ -90,6 +94,19 @@ class Config:
 
     def setOpenMinimized(self, value):
         self.open_minimized = value
+
+    #Автозагрузка
+    def setAutostartIsActive(self, value):
+        self.autostart_is_active = value
+
+    def getAutostartIsActive(self):
+        return self.autostart_is_active
+
+    def setAutostartDelay(self, value):
+        self.autostart_delay = value
+
+    def getAutostartDelay(self):
+        return self.autostart_delay
 
     #Управление процессором
     def getCollectFastDataInterval(self):
@@ -163,12 +180,6 @@ class Config:
     def getSystemUsesLightTheme(self):
         return self.system_uses_light_theme
 
-    def setAutostartIsActive(self, value):
-        self.autostart_is_active = value
-
-    def getAutostartIsActive(self):
-        return self.autostart_is_active
-
     def getName(self):
         return self.name
 
@@ -187,6 +198,8 @@ class ConfigParser:
                     'is_backup_needed' : config.is_backup_needed,
                     'close_to_tray' : config.close_to_tray,
                     'open_minimized' : config.open_minimized,
+                    #Автозагрузка
+                    'autostart_delay': config.autostart_delay,
                     #Управление процессором
                     'CPU_idle_state_pause' : config.CPU_idle_state_pause,
                     'collect_fast_data_interval' : config.collect_fast_data_interval,

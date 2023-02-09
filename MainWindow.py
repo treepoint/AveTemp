@@ -2,6 +2,7 @@ from math import inf
 from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtGui import QIcon
 from PyQt6.QtWidgets import QMainWindow, QTableWidgetItem
+import copy
 
 import SettingsWindow
 import windows.mainWindow
@@ -395,44 +396,50 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         window.setData(self.config)
 
         if window.exec():
-            #Обновим воркеры, пока мы еще можем сравнивать состояния
-            if self.config.getIsBackupNeeded() and not window.config.getIsBackupNeeded():
+            #Временно запишем старый конфиг, чтобы было что с чем сравнивать
+            current_config = copy.copy(self.config)
+
+            #Обновим и перечитаем новый конфиг
+            support.writeToConfig(window.config)
+            new_config = support.readConfig(self)
+
+            if current_config.getIsBackupNeeded() and not new_config.getIsBackupNeeded():
                 self.backup_worker.stop()
                 support.removeStatFile()
             
-            if not self.config.getIsBackupNeeded() and window.config.getIsBackupNeeded():
+            if not current_config.getIsBackupNeeded() and new_config.getIsBackupNeeded():
                 self.startBackupWorker()
 
             #Позаботимся обновить ограничения процессора если они поменялись
-            if self.config.getIsCPUManagmentOn():
-                hardware.updateCPUParameters(self.config, 
-                                             window.config.getCPUIdleState(), 
-                                             window.config.getCPULoadState(),
-                                             window.config.getCPUTurboIdleId(),
-                                             window.config.getCPUTurboLoadId()
+            if current_config.getIsCPUManagmentOn():
+                hardware.updateCPUParameters(current_config, 
+                                             new_config.getCPUIdleState(), 
+                                             new_config.getCPULoadState(),
+                                             new_config.getCPUTurboIdleId(),
+                                             new_config.getCPUTurboLoadId()
                                              )
             
             #И если пользователь отключил управление процом — выставим все в сотку и турбо без ограничений, обычно это дефолт
-            if window.config.getIsCPUManagmentOn() == False and (window.config.getIsCPUManagmentOn() != self.config.getIsCPUManagmentOn()):
+            if new_config.getIsCPUManagmentOn() == False and (new_config.getIsCPUManagmentOn() != current_config.getIsCPUManagmentOn()):
                 hardware.setCPUStatetoDefault()
                 hardware.setTurboToDefault()
 
+            #Обновим локализацию если надо
+            if new_config.getCurrentLanguageCode() != current_config.getCurrentLanguageCode():
+                self.retranslateUi(window, window.config.getCurrentLanguageCode())
+
             #Управление автостартом
-            if window.config.getAutostartIsActive():
-                if not self.config.getAutostartIsActive():
+            if new_config.getAutostartIsActive():
+                if not current_config.getAutostartIsActive():
+                    #Добавим, если только включили
+                    taskManager.addToAutostart(self)
+                elif int(new_config.getAutostartDelay()) != int(current_config.getAutostartDelay()):
+                    #Обновим, если изменили значение паузы
                     taskManager.addToAutostart(self)
 
             else:
-                if self.config.getAutostartIsActive():
+                if current_config.getAutostartIsActive():
                     taskManager.removeFromAutostart(self)
-
-            #Обновим локализацию если надо
-            if window.config.getCurrentLanguageCode() != self.config.getCurrentLanguageCode():
-                self.retranslateUi(window, window.config.getCurrentLanguageCode())
-
-            #Обновим конфиг и перечитаем его
-            support.writeToConfig(window.config)
-            new_config = support.readConfig(self)
 
             #Обновим время обновления данных
             self.collect_slow_worker.update(new_config)
