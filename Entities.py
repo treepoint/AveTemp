@@ -5,7 +5,7 @@ class Config:
                  collect_slow_data_interval = 1, 
                  collect_fast_data_interval = 0.1,
                  autostart_delay = 3,
-                 backup_interval = 60, 
+                 backup_interval = 1, 
                  is_backup_needed = True, 
                  store_period = 86400, 
                  close_to_tray = False, 
@@ -24,15 +24,17 @@ class Config:
         
         #Общие
         self.collect_slow_data_interval = collect_slow_data_interval
-        self.backup_interval = backup_interval
-        self.is_backup_needed = is_backup_needed
-        self.store_period = store_period
         self.close_to_tray = close_to_tray
         self.open_minimized = open_minimized
 
         #Автозагрузка
         self.autostart_is_active = False
         self.autostart_delay = autostart_delay
+
+        #Статистика
+        self.is_backup_needed = is_backup_needed
+        self.store_period = store_period
+        self.backup_interval = backup_interval
 
         #Управление процессором
         self.collect_fast_data_interval = collect_fast_data_interval
@@ -52,7 +54,7 @@ class Config:
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
         self.name = 'AveTemp'
-        self.version = '1.4.1'
+        self.version = '1.4.2'
 
     #Локализация
     def getCurrentLanguageCode(self):
@@ -67,21 +69,6 @@ class Config:
 
     def setCollectSlowDataInterval(self, value):
         self.collect_slow_data_interval = value
-
-    def getBackupInterval(self):
-        return self.backup_interval
-
-    def getStorePeriod(self):
-        return self.store_period
-
-    def setStorePeriod(self, value):
-        self.store_period = value
-
-    def getIsBackupNeeded(self):
-        return self.is_backup_needed
-
-    def setIsBackupNeeded(self, value):
-        self.is_backup_needed = value
 
     def getCloseToTray(self):
         return self.close_to_tray
@@ -107,6 +94,25 @@ class Config:
 
     def getAutostartDelay(self):
         return self.autostart_delay
+
+    #Статистика
+    def getIsBackupNeeded(self):
+        return self.is_backup_needed
+
+    def setIsBackupNeeded(self, value):
+        self.is_backup_needed = value
+
+    def getStorePeriod(self):
+        return self.store_period
+
+    def setStorePeriod(self, value):
+        self.store_period = value
+
+    def getBackupInterval(self):
+        return self.backup_interval
+
+    def setBackupInterval(self, value):
+        self.backup_interval = value
 
     #Управление процессором
     def getCollectFastDataInterval(self):
@@ -194,12 +200,14 @@ class ConfigParser:
                     'current_language_code': config.current_language_code,
                     #Общие
                     'collect_slow_data_interval': config.collect_slow_data_interval, 
-                    'store_period' : config.store_period,
-                    'is_backup_needed' : config.is_backup_needed,
                     'close_to_tray' : config.close_to_tray,
                     'open_minimized' : config.open_minimized,
                     #Автозагрузка
                     'autostart_delay': config.autostart_delay,
+                    #Статистика
+                    'is_backup_needed' : config.is_backup_needed,
+                    'store_period' : config.store_period,
+                    'backup_interval': config.backup_interval,
                     #Управление процессором
                     'CPU_idle_state_pause' : config.CPU_idle_state_pause,
                     'collect_fast_data_interval' : config.collect_fast_data_interval,

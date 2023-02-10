@@ -14,6 +14,7 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.buttonSaveSettings.clicked.connect(self.closeWindow)
         self.checkBoxCPUManagment.toggled.connect(self.switchCPUManagmentBlock)
         self.checkBoxAutostartIsActive.toggled.connect(self.switchAutostartBlock)
+        self.checkBoxStoreStat.toggled.connect(self.switchStatisticsBlock)
 
         self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
 
@@ -34,13 +35,16 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
 
         #Базовые настройки
         self.spinBoxLoggingInterval.setValue(config.getCollectSlowDataInterval())
-        self.checkBoxStoreStat.setChecked(config.getIsBackupNeeded())
         self.checkBoxCloseToTray.setChecked(config.getCloseToTray())
         self.checkBoxOpenMinimized.setChecked(config.getOpenMinimized())
 
         #Автозагрузка
         self.checkBoxAutostartIsActive.setChecked(config.getAutostartIsActive())
         self.spinBoxAutostartDelay.setValue(config.getAutostartDelay())
+
+        #Статистика
+        self.checkBoxStoreStat.setChecked(config.getIsBackupNeeded())
+        self.spinBoxBackupInterval.setValue(config.getBackupInterval())
 
         #Управление процессором
         self.checkBoxCPUManagment.setChecked(config.getIsCPUManagmentOn())
@@ -56,6 +60,16 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
 
         self.comboBoxCPUTurboIdleState.setCurrentIndex(idleComboboxIndex)
         self.comboBoxCPUTurboLoadState.setCurrentIndex(loadComboboxIndex)
+
+    def switchStatisticsBlock(self):
+        if self.checkBoxStoreStat.isChecked():
+            new_state = True
+        else:
+            new_state = False
+
+        self.labelBackupInterval.setEnabled(new_state)
+        self.labelBackupIntervalHint.setEnabled(new_state)
+        self.spinBoxBackupInterval.setEnabled(new_state)
 
     def switchAutostartBlock(self):
         if self.checkBoxAutostartIsActive.isChecked():
@@ -95,13 +109,16 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
 
         #Базовые настройки
         self.config.setCollectSlowDataInterval(float(self.spinBoxLoggingInterval.value()))
-        self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())
         self.config.setCloseToTray(self.checkBoxCloseToTray.isChecked())
         self.config.setOpenMinimized(self.checkBoxOpenMinimized.isChecked())
 
         #Автозагрузка
         self.config.setAutostartIsActive(self.checkBoxAutostartIsActive.isChecked())
         self.config.setAutostartDelay(int(self.spinBoxAutostartDelay.value()))
+
+        #Статистика
+        self.config.setIsBackupNeeded(self.checkBoxStoreStat.isChecked())
+        self.config.setBackupInterval(float(self.spinBoxBackupInterval.value()))
         
         #Управление процессором
         self.config.setIsCPUManagmentOn(self.checkBoxCPUManagment.isChecked())

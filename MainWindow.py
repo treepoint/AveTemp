@@ -445,5 +445,6 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             self.collect_slow_worker.update(new_config)
             self.update_ui_scores_worker.update(new_config)
             self.update_tray_icon_worker.update(new_config)
+            self.backup_worker.update(new_config)
 
             window.destroy()

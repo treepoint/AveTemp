@@ -286,6 +286,9 @@ QWidget:drop-down {
            <property name="singleStep">
             <double>0.100000000000000</double>
            </property>
+            <property name="minimum">
+              <double>0.300000000000000</double>
+            </property>
            <property name="value">
             <double>1.000000000000000</double>
            </property>
@@ -661,6 +664,9 @@ QWidget:drop-down {
                 </size>
                </property>
                <property name="singleStep">
+                <double>0.100000000000000</double>
+               </property>
+               <property name="minimum">
                 <double>0.100000000000000</double>
                </property>
                <property name="value">
