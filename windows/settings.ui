@@ -9,20 +9,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>440</width>
-    <height>556</height>
+    <width>444</width>
+    <height>672</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>440</width>
-    <height>556</height>
+    <width>444</width>
+    <height>672</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>440</width>
-    <height>556</height>
+    <width>444</width>
+    <height>672</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -158,6 +158,9 @@ QPushButton:pressed
             <property name="text">
              <string/>
             </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
          </layout>
@@ -222,7 +225,7 @@ QPushButton:pressed
           <widget class="QComboBox" name="comboBoxLanguage">
            <property name="maximumSize">
             <size>
-             <width>160</width>
+             <width>120</width>
              <height>16777215</height>
             </size>
            </property>
@@ -283,6 +286,9 @@ QWidget:drop-down {
            <property name="singleStep">
             <double>0.100000000000000</double>
            </property>
+            <property name="minimum">
+              <double>0.300000000000000</double>
+            </property>
            <property name="value">
             <double>1.000000000000000</double>
            </property>
@@ -300,51 +306,6 @@ QWidget:drop-down {
             </size>
            </property>
           </spacer>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
-         <property name="spacing">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QCheckBox" name="checkBoxStoreStat">
-           <property name="toolTip">
-            <string/>
-           </property>
-           <property name="toolTipDuration">
-            <number>-1</number>
-           </property>
-           <property name="whatsThis">
-            <string/>
-           </property>
-           <property name="text">
-            <string>Хранить и восстанавливать статистику за сутки</string>
-           </property>
-           <property name="checked">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label">
-           <property name="font">
-            <font>
-             <pointsize>7</pointsize>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">color: #444;
-margin-left:16px;</string>
-           </property>
-           <property name="text">
-            <string>При отключении все собранные данные будут удалены</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
@@ -369,11 +330,404 @@ margin-left:16px;</string>
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="checkBoxAutostartIsActive">
-         <property name="text">
-          <string>Добавить в автозагрузку</string>
+        <spacer name="verticalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-        </widget>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_7">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_14">
+         <property name="spacing">
+          <number>8</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_20">
+           <property name="spacing">
+            <number>4</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QLabel" name="label_12">
+             <property name="styleSheet">
+              <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+             </property>
+             <property name="text">
+              <string>Автозагрузка</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxAutostartIsActive">
+           <property name="text">
+            <string>Добавить в автозагрузку</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_21">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_10">
+             <property name="spacing">
+              <number>4</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="labelAutostartDelay">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>Пауза перед запуском, секунды:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QSpinBox" name="spinBoxAutostartDelay">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximum">
+                <number>120</number>
+               </property>
+               <property name="value">
+                <number>3</number>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_9">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelAutostartDelayHint">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>7</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QWidget {
+                color: #444;
+                margin-left: 16px;
+                margin-top: 2px;
+                }
+
+                QWidget:disabled{color: #999;}</string>
+             </property>
+             <property name="text">
+              <string>Задержка перед автозапуском, чтобы дать другим программам загрузится без ограничений</string>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+             <property name="indent">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="verticalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>4</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>8</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_18">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayout_22">
+             <property name="spacing">
+              <number>4</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="label_9">
+               <property name="styleSheet">
+                <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+               </property>
+               <property name="text">
+                <string>Статистика</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_3">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="font">
+              <font>
+               <pointsize>7</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color: #444;</string>
+             </property>
+             <property name="text">
+              <string>При отключении все собранные данные будут удалены</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_15">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QCheckBox" name="checkBoxStoreStat">
+             <property name="toolTip">
+              <string/>
+             </property>
+             <property name="toolTipDuration">
+              <number>-1</number>
+             </property>
+             <property name="whatsThis">
+              <string/>
+             </property>
+             <property name="text">
+              <string>Хранить и восстанавливать статистику за сутки</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_19">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_9">
+             <property name="spacing">
+              <number>4</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QLabel" name="labelBackupInterval">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="text">
+                <string>Интервал сохранения, минуты:</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDoubleSpinBox" name="spinBoxBackupInterval">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="singleStep">
+                <double>0.100000000000000</double>
+               </property>
+               <property name="minimum">
+                <double>0.100000000000000</double>
+               </property>
+               <property name="value">
+                <double>0.500000000000000</double>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_8">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelBackupIntervalHint">
+             <property name="font">
+              <font>
+               <pointsize>7</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QWidget {
+                color: #444;
+                margin-left: 16px;
+                margin-top: 2px;
+                }
+
+                QWidget:disabled{color: #999;}</string>
+             </property>
+             <property name="frameShape">
+              <enum>QFrame::NoFrame</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Plain</enum>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="text">
+              <string>Чем меньше интервал, тем меньше фоновое потребление ресурсов</string>
+             </property>
+             <property name="margin">
+              <number>0</number>
+             </property>
+             <property name="indent">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
        <item>
         <spacer name="verticalSpacer">
@@ -386,7 +740,7 @@ margin-left:16px;</string>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>8</height>
+           <height>4</height>
           </size>
          </property>
         </spacer>
@@ -408,27 +762,40 @@ margin-left:16px;</string>
             <number>0</number>
            </property>
            <item>
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+            <layout class="QVBoxLayout" name="verticalLayout_23">
+             <property name="spacing">
+              <number>4</number>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>16</height>
-              </size>
+             <property name="topMargin">
+              <number>0</number>
              </property>
-             <property name="styleSheet">
-              <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+             <property name="bottomMargin">
+              <number>0</number>
              </property>
-             <property name="text">
-              <string>Управление режимами работы процессора</string>
-             </property>
-            </widget>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>16</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+               </property>
+               <property name="text">
+                <string>Управление режимами работы процессора</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line_2">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QLabel" name="label_3">
@@ -438,11 +805,18 @@ margin-left:16px;</string>
               </font>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: #444;
-margin-top:4px;</string>
+              <string notr="true">QWidget {
+                color: #444;
+                margin-top:2px;
+                }
+
+                QWidget:disabled{color: #999;}</string>
              </property>
              <property name="text">
               <string>При отключении все настройки возвращаются к стандартным</string>
+             </property>
+             <property name="indent">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -492,7 +866,7 @@ margin-left:16px;
 margin-top:2px;</string>
              </property>
              <property name="text">
-              <string>При нагрузке ниже порога, максимальное состояние процессора будет снижено, чтобы снизить использование турбо режима в простое </string>
+              <string>При нагрузке ниже порога, максимальное состояние процессора будет ограничено, чтобы снизить использование турбо режима в простое </string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
@@ -529,7 +903,7 @@ margin-top:2px;</string>
                 <bool>false</bool>
                </property>
                <property name="text">
-                <string>Порог нагрузки, %:</string>
+                <string>Порог нагрузки по всем ядрам, %:</string>
                </property>
               </widget>
              </item>
@@ -569,30 +943,6 @@ margin-top:2px;</string>
               </spacer>
              </item>
             </layout>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelCPUTreshholdHint">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="font">
-              <font>
-               <pointsize>7</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QWidget {
-color: #444;
-margin-left:16px;
-margin-top:2px;
-}
-
-QWidget:disabled{color: #999;}</string>
-             </property>
-             <property name="text">
-              <string>Считается как средняя нагрузка всех ядер</string>
-             </property>
-            </widget>
            </item>
           </layout>
          </item>
@@ -732,18 +1082,21 @@ QWidget:disabled{color: #999;}</string>
              </property>
              <property name="styleSheet">
               <string notr="true">QWidget {
-color: #444;
-margin-left:16px;
-margin-top:2px;
-}
+                color: #444;
+                margin-left: 16px;
+                margin-top: 2px;
+                }
 
-QWidget:disabled{color: #999;}</string>
+                QWidget:disabled{color: #999;}</string>
              </property>
              <property name="text">
               <string>Значение ниже 100% снижает использование турбо буста в любых сценариях</string>
              </property>
              <property name="wordWrap">
               <bool>true</bool>
+             </property>
+             <property name="indent">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -810,33 +1163,6 @@ QWidget:disabled{color: #999;}</string>
                </property>
               </widget>
              </item>
-             <item>
-              <widget class="QLabel" name="labelCPUTurboManagment">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>7</pointsize>
-                </font>
-               </property>
-               <property name="styleSheet">
-                <string notr="true">QWidget {
-color: #444;
-margin-left:16px;
-margin-top:2px;
-}
-
-QWidget:disabled{color: #999;}</string>
-               </property>
-               <property name="text">
-                <string>Автоматически выставляется в зависимости от порога нагрузки</string>
-               </property>
-               <property name="wordWrap">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
             </layout>
            </item>
            <item>
@@ -886,20 +1212,20 @@ QWidget:disabled{color: #999;}</string>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">QWidget {
-	border: 1px solid #b6b6b6;
-	padding-left: 4px;
-	padding-right: 4px;
-	padding-bottom:2px;
-	border-radius: 2px;
-}
+                        border: 1px solid #b6b6b6;
+                        padding-left: 4px;
+                        padding-right: 4px;
+                        padding-bottom:2px;
+                        border-radius: 2px;
+                    }
 
-QWidget:disabled{
-	border: 1px solid #a9a9a9;
-}
+                    QWidget:disabled{
+                        border: 1px solid #a9a9a9;
+                    }
 
-QWidget:drop-down {
-	border-width: 0px;
-}</string>
+                    QWidget:drop-down {
+                        border-width: 0px;
+                    }</string>
                  </property>
                  <property name="currentIndex">
                   <number>-1</number>
@@ -965,20 +1291,20 @@ QWidget:drop-down {
                </property>
                <property name="styleSheet">
                 <string notr="true">QWidget {
-	border: 1px solid #b6b6b6;
-	padding-left: 4px;
-	padding-right: 4px;
-	padding-bottom:2px;
-	border-radius: 2px;
-}
+                        border: 1px solid #b6b6b6;
+                        padding-left: 4px;
+                        padding-right: 4px;
+                        padding-bottom:2px;
+                        border-radius: 2px;
+                    }
 
-QWidget:disabled{
-	border: 1px solid #a9a9a9;
-}
+                    QWidget:disabled{
+                        border: 1px solid #a9a9a9;
+                    }
 
-QWidget:drop-down {
-	border-width: 0px;
-}</string>
+                    QWidget:drop-down {
+                        border-width: 0px;
+                    }</string>
                </property>
                <property name="currentIndex">
                 <number>-1</number>

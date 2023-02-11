@@ -4,15 +4,16 @@ class Config:
     def __init__(self, 
                  collect_slow_data_interval = 1, 
                  collect_fast_data_interval = 0.1,
-                 backup_interval = 60, 
+                 autostart_delay = 3,
+                 backup_interval = 1, 
                  is_backup_needed = True, 
                  store_period = 86400, 
                  close_to_tray = False, 
                  open_minimized = False,
                  CPU_idle_state_pause = 50,
                  is_CPU_managment_on = False,
-                 CPU_threshhold = 20,
-                 CPU_idle_state = 99,
+                 CPU_threshhold = 45,
+                 CPU_idle_state = 60,
                  CPU_load_state = 100,
                  is_turbo_managment_on = False,
                  CPU_turbo_idle_id = 0,
@@ -23,11 +24,17 @@ class Config:
         
         #Общие
         self.collect_slow_data_interval = collect_slow_data_interval
-        self.backup_interval = backup_interval
-        self.is_backup_needed = is_backup_needed
-        self.store_period = store_period
         self.close_to_tray = close_to_tray
         self.open_minimized = open_minimized
+
+        #Автозагрузка
+        self.autostart_is_active = False
+        self.autostart_delay = autostart_delay
+
+        #Статистика
+        self.is_backup_needed = is_backup_needed
+        self.store_period = store_period
+        self.backup_interval = backup_interval
 
         #Управление процессором
         self.collect_fast_data_interval = collect_fast_data_interval
@@ -46,9 +53,8 @@ class Config:
         #Служебные
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
-        self.autostart_is_active = False
         self.name = 'AveTemp'
-        self.version = '1.4.1'
+        self.version = '1.4.2'
 
     #Локализация
     def getCurrentLanguageCode(self):
@@ -64,21 +70,6 @@ class Config:
     def setCollectSlowDataInterval(self, value):
         self.collect_slow_data_interval = value
 
-    def getBackupInterval(self):
-        return self.backup_interval
-
-    def getStorePeriod(self):
-        return self.store_period
-
-    def setStorePeriod(self, value):
-        self.store_period = value
-
-    def getIsBackupNeeded(self):
-        return self.is_backup_needed
-
-    def setIsBackupNeeded(self, value):
-        self.is_backup_needed = value
-
     def getCloseToTray(self):
         return self.close_to_tray
 
@@ -90,6 +81,38 @@ class Config:
 
     def setOpenMinimized(self, value):
         self.open_minimized = value
+
+    #Автозагрузка
+    def setAutostartIsActive(self, value):
+        self.autostart_is_active = value
+
+    def getAutostartIsActive(self):
+        return self.autostart_is_active
+
+    def setAutostartDelay(self, value):
+        self.autostart_delay = value
+
+    def getAutostartDelay(self):
+        return self.autostart_delay
+
+    #Статистика
+    def getIsBackupNeeded(self):
+        return self.is_backup_needed
+
+    def setIsBackupNeeded(self, value):
+        self.is_backup_needed = value
+
+    def getStorePeriod(self):
+        return self.store_period
+
+    def setStorePeriod(self, value):
+        self.store_period = value
+
+    def getBackupInterval(self):
+        return self.backup_interval
+
+    def setBackupInterval(self, value):
+        self.backup_interval = value
 
     #Управление процессором
     def getCollectFastDataInterval(self):
@@ -163,12 +186,6 @@ class Config:
     def getSystemUsesLightTheme(self):
         return self.system_uses_light_theme
 
-    def setAutostartIsActive(self, value):
-        self.autostart_is_active = value
-
-    def getAutostartIsActive(self):
-        return self.autostart_is_active
-
     def getName(self):
         return self.name
 
@@ -183,10 +200,14 @@ class ConfigParser:
                     'current_language_code': config.current_language_code,
                     #Общие
                     'collect_slow_data_interval': config.collect_slow_data_interval, 
-                    'store_period' : config.store_period,
-                    'is_backup_needed' : config.is_backup_needed,
                     'close_to_tray' : config.close_to_tray,
                     'open_minimized' : config.open_minimized,
+                    #Автозагрузка
+                    'autostart_delay': config.autostart_delay,
+                    #Статистика
+                    'is_backup_needed' : config.is_backup_needed,
+                    'store_period' : config.store_period,
+                    'backup_interval': config.backup_interval,
                     #Управление процессором
                     'CPU_idle_state_pause' : config.CPU_idle_state_pause,
                     'collect_fast_data_interval' : config.collect_fast_data_interval,
@@ -266,18 +287,22 @@ class Localizations:
                                 "all_data_will_be_removed_when_off": "When disabled, all collected data will be deleted",
                                 "close_to_tray": "Minimize to tray when closing",
                                 "start_to_tray": "At startup minimize to system tray",
-                                "add_to_autostart": "Add to autostart",
+                                "autostart": "Autostart",
+                                "add_to_autostart": "Run at startup",
+                                "delay_before_start_sec_text": "Pause before startup, seconds:",
+                                "autostart_delay_hint": "Delay to allow other programs to load without restriction",
+                                "statistics": "Statistics",
+                                "backup_interval_text": "Backup interval, minutes:",
+                                "less_backup_interval_less_consumption_text": "The smaller the interval, the lower the consumption of resources in the background",
                                 "cpu_modes_management": "Processor mode control",
                                 "default_when_off": "When disabled, all settings return to defaults",
                                 "auto_change_cpu_state": "Automatically change processor state",
                                 "when_load_less_then_then": "When the load is below the threshold, the maximum state of the processor will be reduced to reduce the use of turbo mode at idle ",
-                                "load_threshold": "Load threshold, %:",
-                                "collect_as_all_cores_load": "Calculated as the average load of all cores",
+                                "load_threshold": "Load threshold, all cores %:",
                                 "idle_state": "Condition at idle, %:",
                                 "load_state": "Condition under load, %:",
                                 "state_less_than_100_will": "A value below 100% reduces the use of turbo boost in all scenarios",
                                 "force_cpu_state": "Explicitly set the state of turbo mode",
-                                "auto_change_depends_on_threshold": "Automatically set depending on the load threshold",
                                 "in_idle": "At idle:",
                                 "on_load": "Under load:",
                                 "min_freq": "Minimum frequencies (energy efficient)",
@@ -308,23 +333,27 @@ class Localizations:
                                 "all_data_will_be_removed_when_off": "При отключении все собранные данные будут удалены",
                                 "close_to_tray": "При закрытии сворачивать в трей",
                                 "start_to_tray": "Запускать свернутым",
+                                "autostart": "Автозагрузка",
+                                "delay_before_start_sec_text": "Пауза перед запуском, секунды:",
+                                "autostart_delay_hint": "Задержка, чтобы дать другим программам загрузится без ограничений",
                                 "add_to_autostart": "Добавить в автозагрузку",
+                                "statistics": "Статистика",
+                                "backup_interval_text": "Интервал сохранения, минуты:",
+                                "less_backup_interval_less_consumption_text": "Чем меньше интервал, тем меньше фоновое потребление ресурсов",
                                 "cpu_modes_management": "Управление режимами работы процессора",
                                 "default_when_off": "При отключении все настройки возвращаются к стандартным",
                                 "auto_change_cpu_state": "Автоматически изменять состояние процессора",
-                                "when_load_less_then_then": "При нагрузке ниже порога, максимальное состояние процессора будет снижено, чтобы снизить использование турбо режима в простое ",
-                                "load_threshold": "Порог нагрузки, %:",
-                                "collect_as_all_cores_load": "Считается как средняя нагрузка всех ядер",
+                                "when_load_less_then_then": "При нагрузке ниже порога, максимальное состояние процессора будет ограничено, чтобы снизить использование турбо режима в простое ",
+                                "load_threshold": "Порог нагрузки, все ядра %:",
                                 "idle_state": "Состояние в простое, %:",
                                 "load_state": "Состояние под нагрузкой, %:",
                                 "state_less_than_100_will": "Значение ниже 100% снижает использование турбо буста в любых сценариях",
-                                "force_cpu_state": "Явно задавать состояние турбо режима",
-                                "auto_change_depends_on_threshold": "Автоматически выставляется в зависимости от порога нагрузки",
+                                "force_cpu_state": "Явно задавать состояние турбо режима",                            
                                 "in_idle": "В простое:",
                                 "on_load": "Под нагрузкой:",
                                 "min_freq": "Минимальные частоты (энергоэффективно)",
                                 "basic_freq": "Базовые частоты (сбалансировано)",
-                                "max_freq": "Максимальные частоты (производительно)"
+                                "max_freq": "Максимальные частоты (производительно)"                        
                                 }
                             }
 

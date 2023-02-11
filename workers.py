@@ -17,6 +17,7 @@ class TrayWorker(QThread):
 
     def run(self):
         self.keepRunning = True
+
         while self.keepRunning:
             time.sleep(self.collect_slow_data_interval)
 
@@ -41,6 +42,7 @@ class CollectSlowDataWorker(QThread):
 
     def run(self):
         self.keepRunning = True
+
         while self.keepRunning:
             data = hardware.collectSlowData(self.computer, self.data_lists)
             self.result.emit(data)
@@ -48,7 +50,6 @@ class CollectSlowDataWorker(QThread):
 
     def update(self, config):
         self.collect_slow_data_interval = config.getCollectSlowDataInterval()
-        self.config = config
 
     def stop(self):
         self.keepRunning = False
@@ -72,14 +73,11 @@ class CollectFastDataWorker(QThread):
 
     def run(self):
         self.keepRunning = True
+
         while self.keepRunning:
             data = hardware.collectFastData(self.computer, self.data_lists, self.cpu_cores, self.cpu_threads)
             self.result.emit(data)
             time.sleep(self.collect_fast_data_interval)
-
-    def update(self, config):
-        self.collect_fast_data_interval = config.getCollectFastDataInterval()
-        self.config = config
 
     def stop(self):
         self.keepRunning = False
@@ -89,18 +87,26 @@ class BackupWorker(QThread):
     def __init__(self, app_self):
         super().__init__()
 
-        self.backup_interval = app_self.config.getBackupInterval()
+        self.backup_interval = int((app_self.config.getBackupInterval())*60)
 
     result = pyqtSignal(bool)
 
     def run(self):
         self.keepRunning = True
+
         while self.keepRunning:
-            time.sleep(self.backup_interval)
+            current_interval = self.backup_interval
+
+            for i in range(current_interval):
+                if current_interval != self.backup_interval:
+                    break
+                else:
+                    time.sleep(1)
+                    
             self.result.emit(True)
 
-    def update(self, backup_interval):
-        self.backup_interval = backup_interval
+    def update(self, config):
+        self.backup_interval = int((config.getBackupInterval())*60)
 
     def stop(self):
         self.keepRunning = False
@@ -116,8 +122,8 @@ class SystemMonitoringWorker(QThread):
 
     def run(self):
         self.keepRunning = True
-        while self.keepRunning:
 
+        while self.keepRunning:
             time.sleep(self.system_data_collect_interval)
             data = {
                     'system_uses_light_theme' : registry.getCurrentThemeIsLight()
@@ -127,7 +133,7 @@ class SystemMonitoringWorker(QThread):
 
     def update(self, system_data_collect_interval):
         self.system_data_collect_interval = system_data_collect_interval
-
+        
     def stop(self):
         self.keepRunning = False
 
@@ -142,13 +148,13 @@ class UpdateUiScoresWorker(QThread):
 
     def run(self):
         self.keepRunning = True
+
         while self.keepRunning:
             self.result.emit(True)
             time.sleep(self.collect_slow_data_interval)
 
     def update(self, config):
         self.collect_slow_data_interval = config.getCollectSlowDataInterval()
-        self.config = config
 
     def stop(self):
         self.keepRunning = False
@@ -164,13 +170,13 @@ class UpdateTrayIconWorker(QThread):
 
     def run(self):
         self.keepRunning = True
+
         while self.keepRunning:
             self.result.emit(True)
             time.sleep(self.collect_slow_data_interval)
 
     def update(self, config):
         self.collect_slow_data_interval = config.getCollectSlowDataInterval()
-        self.config = config
 
     def stop(self):
         self.keepRunning = False

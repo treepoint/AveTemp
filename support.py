@@ -106,10 +106,18 @@ def readConfig(self):
         #Заберем настройки из файла
         #Общие
         self.config.setCollectSlowDataInterval(float(getValueFromConfigs('collect_slow_data_interval')))
-        self.config.setStorePeriod(int(getValueFromConfigs('store_period')))
-        self.config.setIsBackupNeeded(toBool(getValueFromConfigs('is_backup_needed')))
         self.config.setCloseToTray(toBool(getValueFromConfigs('close_to_tray')))
         self.config.setOpenMinimized(toBool(getValueFromConfigs('open_minimized')))
+
+        #Автозагрузка
+        #Состояние — из системных данных windows
+        self.config.setAutostartIsActive(taskManager.checkThatAutostartIsActive(self))
+        self.config.setAutostartDelay(int(getValueFromConfigs('autostart_delay')))
+
+        #Статистика
+        self.config.setStorePeriod(int(getValueFromConfigs('store_period')))
+        self.config.setIsBackupNeeded(toBool(getValueFromConfigs('is_backup_needed')))
+        self.config.setBackupInterval(float(getValueFromConfigs('backup_interval')))
 
         #Управление процессором
         self.config.setCollectFastDataInterval(float(getValueFromConfigs('collect_fast_data_interval')))
@@ -126,9 +134,6 @@ def readConfig(self):
 
         #И, заодно, прочитаем нужные параметры реестра
         self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight())
-
-        #И из системных данных windows
-        self.config.setAutostartIsActive(taskManager.checkThatAutostartIsActive(self))
         
         try:
             language_code = config['main']['current_language_code']

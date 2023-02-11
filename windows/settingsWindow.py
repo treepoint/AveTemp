@@ -20,9 +20,9 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog, locale):
         Dialog.setObjectName("Dialog")
         Dialog.setWindowModality(QtCore.Qt.WindowModality.NonModal)
-        Dialog.resize(440, 556)
-        Dialog.setMinimumSize(QtCore.QSize(440, 556))
-        Dialog.setMaximumSize(QtCore.QSize(440, 556))
+        Dialog.resize(444, 672)
+        Dialog.setMinimumSize(QtCore.QSize(444, 672))
+        Dialog.setMaximumSize(QtCore.QSize(444, 672))
         Dialog.setToolTip("")
         Dialog.setStyleSheet("background: #fff;")
         Dialog.setModal(True)
@@ -72,6 +72,7 @@ class Ui_Dialog(object):
 "    background-repeat: no-repeat;\n"
 "}")
         self.buttonSaveSettings.setText("")
+        self.buttonSaveSettings.setAutoDefault(False)
         self.buttonSaveSettings.setObjectName("buttonSaveSettings")
         self.verticalLayout_10.addWidget(self.buttonSaveSettings)
         self.verticalLayout_9.addWidget(self.frame)
@@ -101,7 +102,7 @@ class Ui_Dialog(object):
         self.label_5.setObjectName("label_5")
         self.horizontalLayout_8.addWidget(self.label_5)
         self.comboBoxLanguage = QtWidgets.QComboBox(Dialog)
-        self.comboBoxLanguage.setMaximumSize(QtCore.QSize(160, 16777215))
+        self.comboBoxLanguage.setMaximumSize(QtCore.QSize(120, 16777215))
         self.comboBoxLanguage.setStyleSheet("QWidget {\n"
 "    border: 1px solid #b6b6b6;\n"
 "    padding-left: 4px;\n"
@@ -132,32 +133,13 @@ class Ui_Dialog(object):
         self.spinBoxLoggingInterval = QtWidgets.QDoubleSpinBox(Dialog)
         self.spinBoxLoggingInterval.setMinimumSize(QtCore.QSize(60, 0))
         self.spinBoxLoggingInterval.setSingleStep(0.1)
+        self.spinBoxLoggingInterval.setMinimum(0.3)
         self.spinBoxLoggingInterval.setProperty("value", 1.0)
         self.spinBoxLoggingInterval.setObjectName("spinBoxLoggingInterval")
         self.horizontalLayout_2.addWidget(self.spinBoxLoggingInterval)
         spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem2)
         self.verticalLayout_8.addLayout(self.horizontalLayout_2)
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_2.setSpacing(0)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.checkBoxStoreStat = QtWidgets.QCheckBox(Dialog)
-        self.checkBoxStoreStat.setToolTip("")
-        self.checkBoxStoreStat.setToolTipDuration(-1)
-        self.checkBoxStoreStat.setWhatsThis("")
-        self.checkBoxStoreStat.setChecked(True)
-        self.checkBoxStoreStat.setObjectName("checkBoxStoreStat")
-        self.verticalLayout_2.addWidget(self.checkBoxStoreStat)
-        self.label = QtWidgets.QLabel(Dialog)
-        font = QtGui.QFont()
-        font.setPointSize(7)
-        self.label.setFont(font)
-        self.label.setStyleSheet("color: #444;\n"
-"margin-left:16px;")
-        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
-        self.label.setObjectName("label")
-        self.verticalLayout_2.addWidget(self.label)
-        self.verticalLayout_8.addLayout(self.verticalLayout_2)
         self.checkBoxCloseToTray = QtWidgets.QCheckBox(Dialog)
         self.checkBoxCloseToTray.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
         self.checkBoxCloseToTray.setChecked(False)
@@ -166,11 +148,160 @@ class Ui_Dialog(object):
         self.checkBoxOpenMinimized = QtWidgets.QCheckBox(Dialog)
         self.checkBoxOpenMinimized.setObjectName("checkBoxOpenMinimized")
         self.verticalLayout_8.addWidget(self.checkBoxOpenMinimized)
+        spacerItem3 = QtWidgets.QSpacerItem(0, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.verticalLayout_8.addItem(spacerItem3)
+        spacerItem4 = QtWidgets.QSpacerItem(0, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        self.verticalLayout_8.addItem(spacerItem4)
+        self.verticalLayout_14 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_14.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_14.setSpacing(8)
+        self.verticalLayout_14.setObjectName("verticalLayout_14")
+        self.verticalLayout_20 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_20.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_20.setSpacing(4)
+        self.verticalLayout_20.setObjectName("verticalLayout_20")
+        self.label_12 = QtWidgets.QLabel(Dialog)
+        self.label_12.setStyleSheet("font-weight: bold; color: #222; font-size:12px;")
+        self.label_12.setObjectName("label_12")
+        self.verticalLayout_20.addWidget(self.label_12)
+        self.line_4 = QtWidgets.QFrame(Dialog)
+        self.line_4.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line_4.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_4.setObjectName("line_4")
+        self.verticalLayout_20.addWidget(self.line_4)
+        self.verticalLayout_14.addLayout(self.verticalLayout_20)
         self.checkBoxAutostartIsActive = QtWidgets.QCheckBox(Dialog)
         self.checkBoxAutostartIsActive.setObjectName("checkBoxAutostartIsActive")
-        self.verticalLayout_8.addWidget(self.checkBoxAutostartIsActive)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 8, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
-        self.verticalLayout_8.addItem(spacerItem3)
+        self.verticalLayout_14.addWidget(self.checkBoxAutostartIsActive)
+        self.verticalLayout_21 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_21.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_21.setSpacing(0)
+        self.verticalLayout_21.setObjectName("verticalLayout_21")
+        self.horizontalLayout_10 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_10.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalLayout_10.setSpacing(4)
+        self.horizontalLayout_10.setObjectName("horizontalLayout_10")
+        self.labelAutostartDelay = QtWidgets.QLabel(Dialog)
+        self.labelAutostartDelay.setEnabled(False)
+        self.labelAutostartDelay.setStyleSheet("")
+        self.labelAutostartDelay.setObjectName("labelAutostartDelay")
+        self.horizontalLayout_10.addWidget(self.labelAutostartDelay)
+        self.spinBoxAutostartDelay = QtWidgets.QSpinBox(Dialog)
+        self.spinBoxAutostartDelay.setEnabled(False)
+        self.spinBoxAutostartDelay.setMinimumSize(QtCore.QSize(60, 0))
+        self.spinBoxAutostartDelay.setMaximum(120)
+        self.spinBoxAutostartDelay.setProperty("value", 3)
+        self.spinBoxAutostartDelay.setObjectName("spinBoxAutostartDelay")
+        self.horizontalLayout_10.addWidget(self.spinBoxAutostartDelay)
+        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_10.addItem(spacerItem5)
+        self.verticalLayout_21.addLayout(self.horizontalLayout_10)
+        self.labelAutostartDelayHint = QtWidgets.QLabel(Dialog)
+        self.labelAutostartDelayHint.setEnabled(False)
+        font = QtGui.QFont()
+        font.setPointSize(7)
+        self.labelAutostartDelayHint.setFont(font)
+        self.labelAutostartDelayHint.setStyleSheet("QWidget {\n"
+"                color: #444;\n"
+"                margin-left: 16px;\n"
+"                margin-top: 2px;\n"
+"                }\n"
+"\n"
+"                QWidget:disabled{color: #999;}")
+        self.labelAutostartDelayHint.setWordWrap(True)
+        self.labelAutostartDelayHint.setIndent(0)
+        self.labelAutostartDelayHint.setObjectName("labelAutostartDelayHint")
+        self.verticalLayout_21.addWidget(self.labelAutostartDelayHint)
+        self.verticalLayout_14.addLayout(self.verticalLayout_21)
+        self.verticalLayout_8.addLayout(self.verticalLayout_14)
+        spacerItem6 = QtWidgets.QSpacerItem(0, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        self.verticalLayout_8.addItem(spacerItem6)
+        self.verticalLayout_2 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_2.setSpacing(8)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
+        self.verticalLayout_18 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_18.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_18.setSpacing(0)
+        self.verticalLayout_18.setObjectName("verticalLayout_18")
+        self.verticalLayout_22 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_22.setContentsMargins(-1, 0, -1, -1)
+        self.verticalLayout_22.setSpacing(4)
+        self.verticalLayout_22.setObjectName("verticalLayout_22")
+        self.label_9 = QtWidgets.QLabel(Dialog)
+        self.label_9.setStyleSheet("font-weight: bold; color: #222; font-size:12px;")
+        self.label_9.setObjectName("label_9")
+        self.verticalLayout_22.addWidget(self.label_9)
+        self.line_3 = QtWidgets.QFrame(Dialog)
+        self.line_3.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line_3.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_3.setObjectName("line_3")
+        self.verticalLayout_22.addWidget(self.line_3)
+        self.verticalLayout_18.addLayout(self.verticalLayout_22)
+        self.label = QtWidgets.QLabel(Dialog)
+        font = QtGui.QFont()
+        font.setPointSize(7)
+        self.label.setFont(font)
+        self.label.setStyleSheet("color: #444;")
+        self.label.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.label.setWordWrap(True)
+        self.label.setObjectName("label")
+        self.verticalLayout_18.addWidget(self.label)
+        self.verticalLayout_2.addLayout(self.verticalLayout_18)
+        self.verticalLayout_15 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_15.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_15.setSpacing(0)
+        self.verticalLayout_15.setObjectName("verticalLayout_15")
+        self.checkBoxStoreStat = QtWidgets.QCheckBox(Dialog)
+        self.checkBoxStoreStat.setToolTip("")
+        self.checkBoxStoreStat.setToolTipDuration(-1)
+        self.checkBoxStoreStat.setWhatsThis("")
+        self.checkBoxStoreStat.setChecked(True)
+        self.checkBoxStoreStat.setObjectName("checkBoxStoreStat")
+        self.verticalLayout_15.addWidget(self.checkBoxStoreStat)
+        self.verticalLayout_2.addLayout(self.verticalLayout_15)
+        self.verticalLayout_19 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_19.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_19.setSpacing(0)
+        self.verticalLayout_19.setObjectName("verticalLayout_19")
+        self.horizontalLayout_9 = QtWidgets.QHBoxLayout()
+        self.horizontalLayout_9.setContentsMargins(-1, 0, -1, 0)
+        self.horizontalLayout_9.setSpacing(4)
+        self.horizontalLayout_9.setObjectName("horizontalLayout_9")
+        self.labelBackupInterval = QtWidgets.QLabel(Dialog)
+        self.labelBackupInterval.setStyleSheet("")
+        self.labelBackupInterval.setObjectName("labelBackupInterval")
+        self.horizontalLayout_9.addWidget(self.labelBackupInterval)
+        self.spinBoxBackupInterval = QtWidgets.QDoubleSpinBox(Dialog)
+        self.spinBoxBackupInterval.setMinimumSize(QtCore.QSize(60, 0))
+        self.spinBoxBackupInterval.setSingleStep(0.1)
+        self.spinBoxBackupInterval.setMinimum(0.1)
+        self.spinBoxBackupInterval.setProperty("value", 0.5)
+        self.spinBoxBackupInterval.setObjectName("spinBoxBackupInterval")
+        self.horizontalLayout_9.addWidget(self.spinBoxBackupInterval)
+        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_9.addItem(spacerItem7)
+        self.verticalLayout_19.addLayout(self.horizontalLayout_9)
+        self.labelBackupIntervalHint = QtWidgets.QLabel(Dialog)
+        font = QtGui.QFont()
+        font.setPointSize(7)
+        self.labelBackupIntervalHint.setFont(font)
+        self.labelBackupIntervalHint.setStyleSheet("QWidget {\n"
+"                color: #444;\n"
+"                margin-left: 16px;\n"
+"                margin-top: 2px;\n"
+"                }\n"
+"\n"
+"                QWidget:disabled{color: #999;}")
+        self.labelBackupIntervalHint.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.labelBackupIntervalHint.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
+        self.labelBackupIntervalHint.setLineWidth(1)
+        self.labelBackupIntervalHint.setIndent(0)
+        self.labelBackupIntervalHint.setObjectName("labelBackupIntervalHint")
+        self.verticalLayout_19.addWidget(self.labelBackupIntervalHint)
+        self.verticalLayout_2.addLayout(self.verticalLayout_19)
+        self.verticalLayout_8.addLayout(self.verticalLayout_2)
+        spacerItem8 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        self.verticalLayout_8.addItem(spacerItem8)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
         self.verticalLayout_3.setSpacing(8)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -178,22 +309,32 @@ class Ui_Dialog(object):
         self.verticalLayout_17.setContentsMargins(-1, 0, -1, 0)
         self.verticalLayout_17.setSpacing(0)
         self.verticalLayout_17.setObjectName("verticalLayout_17")
-        self.line_2 = QtWidgets.QFrame(Dialog)
-        self.line_2.setFrameShape(QtWidgets.QFrame.Shape.HLine)
-        self.line_2.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
-        self.line_2.setObjectName("line_2")
-        self.verticalLayout_17.addWidget(self.line_2)
+        self.verticalLayout_23 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_23.setContentsMargins(-1, 0, -1, 0)
+        self.verticalLayout_23.setSpacing(4)
+        self.verticalLayout_23.setObjectName("verticalLayout_23")
         self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setMaximumSize(QtCore.QSize(16777215, 16))
         self.label_2.setStyleSheet("font-weight: bold; color: #222; font-size:12px;")
         self.label_2.setObjectName("label_2")
-        self.verticalLayout_17.addWidget(self.label_2)
+        self.verticalLayout_23.addWidget(self.label_2)
+        self.line_2 = QtWidgets.QFrame(Dialog)
+        self.line_2.setFrameShape(QtWidgets.QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
+        self.line_2.setObjectName("line_2")
+        self.verticalLayout_23.addWidget(self.line_2)
+        self.verticalLayout_17.addLayout(self.verticalLayout_23)
         self.label_3 = QtWidgets.QLabel(Dialog)
         font = QtGui.QFont()
         font.setPointSize(7)
         self.label_3.setFont(font)
-        self.label_3.setStyleSheet("color: #444;\n"
-"margin-top:4px;")
+        self.label_3.setStyleSheet("QWidget {\n"
+"                color: #444;\n"
+"                margin-top:2px;\n"
+"                }\n"
+"\n"
+"                QWidget:disabled{color: #999;}")
+        self.label_3.setIndent(0)
         self.label_3.setObjectName("label_3")
         self.verticalLayout_17.addWidget(self.label_3)
         self.verticalLayout_3.addLayout(self.verticalLayout_17)
@@ -201,8 +342,8 @@ class Ui_Dialog(object):
         self.verticalLayout_5.setContentsMargins(-1, 0, -1, -1)
         self.verticalLayout_5.setSpacing(0)
         self.verticalLayout_5.setObjectName("verticalLayout_5")
-        spacerItem4 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
-        self.verticalLayout_5.addItem(spacerItem4)
+        spacerItem9 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        self.verticalLayout_5.addItem(spacerItem9)
         self.checkBoxCPUManagment = QtWidgets.QCheckBox(Dialog)
         self.checkBoxCPUManagment.setObjectName("checkBoxCPUManagment")
         self.verticalLayout_5.addWidget(self.checkBoxCPUManagment)
@@ -236,23 +377,9 @@ class Ui_Dialog(object):
         self.spinBoxCPUThreshhold.setProperty("value", 50)
         self.spinBoxCPUThreshhold.setObjectName("spinBoxCPUThreshhold")
         self.horizontalLayout.addWidget(self.spinBoxCPUThreshhold)
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout.addItem(spacerItem5)
+        spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout.addItem(spacerItem10)
         self.verticalLayout_4.addLayout(self.horizontalLayout)
-        self.labelCPUTreshholdHint = QtWidgets.QLabel(Dialog)
-        self.labelCPUTreshholdHint.setEnabled(False)
-        font = QtGui.QFont()
-        font.setPointSize(7)
-        self.labelCPUTreshholdHint.setFont(font)
-        self.labelCPUTreshholdHint.setStyleSheet("QWidget {\n"
-"color: #444;\n"
-"margin-left:16px;\n"
-"margin-top:2px;\n"
-"}\n"
-"\n"
-"QWidget:disabled{color: #999;}")
-        self.labelCPUTreshholdHint.setObjectName("labelCPUTreshholdHint")
-        self.verticalLayout_4.addWidget(self.labelCPUTreshholdHint)
         self.verticalLayout_3.addLayout(self.verticalLayout_4)
         self.horizontalLayout_3 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_3.setContentsMargins(16, -1, -1, -1)
@@ -269,8 +396,8 @@ class Ui_Dialog(object):
         self.spinBoxCPUIdleState.setProperty("value", 99)
         self.spinBoxCPUIdleState.setObjectName("spinBoxCPUIdleState")
         self.horizontalLayout_3.addWidget(self.spinBoxCPUIdleState)
-        spacerItem6 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem6)
+        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_3.addItem(spacerItem11)
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
         self.verticalLayout_6 = QtWidgets.QVBoxLayout()
         self.verticalLayout_6.setContentsMargins(16, 0, -1, 0)
@@ -292,8 +419,8 @@ class Ui_Dialog(object):
         self.spinBoxCPULoadState.setProperty("value", 100)
         self.spinBoxCPULoadState.setObjectName("spinBoxCPULoadState")
         self.horizontalLayout_4.addWidget(self.spinBoxCPULoadState)
-        spacerItem7 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_4.addItem(spacerItem7)
+        spacerItem12 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem12)
         self.verticalLayout_6.addLayout(self.horizontalLayout_4)
         self.labelCPULoadStateHint = QtWidgets.QLabel(Dialog)
         self.labelCPULoadStateHint.setEnabled(False)
@@ -301,19 +428,20 @@ class Ui_Dialog(object):
         font.setPointSize(7)
         self.labelCPULoadStateHint.setFont(font)
         self.labelCPULoadStateHint.setStyleSheet("QWidget {\n"
-"color: #444;\n"
-"margin-left:16px;\n"
-"margin-top:2px;\n"
-"}\n"
+"                color: #444;\n"
+"                margin-left: 16px;\n"
+"                margin-top: 2px;\n"
+"                }\n"
 "\n"
-"QWidget:disabled{color: #999;}")
+"                QWidget:disabled{color: #999;}")
         self.labelCPULoadStateHint.setWordWrap(True)
+        self.labelCPULoadStateHint.setIndent(0)
         self.labelCPULoadStateHint.setObjectName("labelCPULoadStateHint")
         self.verticalLayout_6.addWidget(self.labelCPULoadStateHint)
         self.verticalLayout_3.addLayout(self.verticalLayout_6)
         self.verticalLayout_8.addLayout(self.verticalLayout_3)
-        spacerItem8 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
-        self.verticalLayout_8.addItem(spacerItem8)
+        spacerItem13 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed)
+        self.verticalLayout_8.addItem(spacerItem13)
         self.verticalLayout_11 = QtWidgets.QVBoxLayout()
         self.verticalLayout_11.setContentsMargins(0, -1, 0, -1)
         self.verticalLayout_11.setObjectName("verticalLayout_11")
@@ -328,21 +456,6 @@ class Ui_Dialog(object):
         self.checkBoxCPUTurboManagment.setEnabled(False)
         self.checkBoxCPUTurboManagment.setObjectName("checkBoxCPUTurboManagment")
         self.verticalLayout_13.addWidget(self.checkBoxCPUTurboManagment)
-        self.labelCPUTurboManagment = QtWidgets.QLabel(Dialog)
-        self.labelCPUTurboManagment.setEnabled(False)
-        font = QtGui.QFont()
-        font.setPointSize(7)
-        self.labelCPUTurboManagment.setFont(font)
-        self.labelCPUTurboManagment.setStyleSheet("QWidget {\n"
-"color: #444;\n"
-"margin-left:16px;\n"
-"margin-top:2px;\n"
-"}\n"
-"\n"
-"QWidget:disabled{color: #999;}")
-        self.labelCPUTurboManagment.setWordWrap(True)
-        self.labelCPUTurboManagment.setObjectName("labelCPUTurboManagment")
-        self.verticalLayout_13.addWidget(self.labelCPUTurboManagment)
         self.verticalLayout_16.addLayout(self.verticalLayout_13)
         self.verticalLayout_12 = QtWidgets.QVBoxLayout()
         self.verticalLayout_12.setObjectName("verticalLayout_12")
@@ -366,26 +479,26 @@ class Ui_Dialog(object):
         font.setPointSize(8)
         self.comboBoxCPUTurboIdleState.setFont(font)
         self.comboBoxCPUTurboIdleState.setStyleSheet("QWidget {\n"
-"    border: 1px solid #b6b6b6;\n"
-"    padding-left: 4px;\n"
-"    padding-right: 4px;\n"
-"    padding-bottom:2px;\n"
-"    border-radius: 2px;\n"
-"}\n"
+"                        border: 1px solid #b6b6b6;\n"
+"                        padding-left: 4px;\n"
+"                        padding-right: 4px;\n"
+"                        padding-bottom:2px;\n"
+"                        border-radius: 2px;\n"
+"                    }\n"
 "\n"
-"QWidget:disabled{\n"
-"    border: 1px solid #a9a9a9;\n"
-"}\n"
+"                    QWidget:disabled{\n"
+"                        border: 1px solid #a9a9a9;\n"
+"                    }\n"
 "\n"
-"QWidget:drop-down {\n"
-"    border-width: 0px;\n"
-"}")
+"                    QWidget:drop-down {\n"
+"                        border-width: 0px;\n"
+"                    }")
         self.comboBoxCPUTurboIdleState.setIconSize(QtCore.QSize(20, 20))
         self.comboBoxCPUTurboIdleState.setFrame(False)
         self.comboBoxCPUTurboIdleState.setObjectName("comboBoxCPUTurboIdleState")
         self.horizontalLayout_6.addWidget(self.comboBoxCPUTurboIdleState)
-        spacerItem9 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_6.addItem(spacerItem9)
+        spacerItem14 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_6.addItem(spacerItem14)
         self.verticalLayout_12.addLayout(self.horizontalLayout_6)
         self.verticalLayout_16.addLayout(self.verticalLayout_12)
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout()
@@ -402,25 +515,25 @@ class Ui_Dialog(object):
         font.setPointSize(8)
         self.comboBoxCPUTurboLoadState.setFont(font)
         self.comboBoxCPUTurboLoadState.setStyleSheet("QWidget {\n"
-"    border: 1px solid #b6b6b6;\n"
-"    padding-left: 4px;\n"
-"    padding-right: 4px;\n"
-"    padding-bottom:2px;\n"
-"    border-radius: 2px;\n"
-"}\n"
+"                        border: 1px solid #b6b6b6;\n"
+"                        padding-left: 4px;\n"
+"                        padding-right: 4px;\n"
+"                        padding-bottom:2px;\n"
+"                        border-radius: 2px;\n"
+"                    }\n"
 "\n"
-"QWidget:disabled{\n"
-"    border: 1px solid #a9a9a9;\n"
-"}\n"
+"                    QWidget:disabled{\n"
+"                        border: 1px solid #a9a9a9;\n"
+"                    }\n"
 "\n"
-"QWidget:drop-down {\n"
-"    border-width: 0px;\n"
-"}")
+"                    QWidget:drop-down {\n"
+"                        border-width: 0px;\n"
+"                    }")
         self.comboBoxCPUTurboLoadState.setFrame(True)
         self.comboBoxCPUTurboLoadState.setObjectName("comboBoxCPUTurboLoadState")
         self.horizontalLayout_7.addWidget(self.comboBoxCPUTurboLoadState)
-        spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
-        self.horizontalLayout_7.addItem(spacerItem10)
+        spacerItem15 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
+        self.horizontalLayout_7.addItem(spacerItem15)
         self.verticalLayout_16.addLayout(self.horizontalLayout_7)
         self.verticalLayout_11.addLayout(self.verticalLayout_16)
         self.verticalLayout_8.addLayout(self.verticalLayout_11)
@@ -441,18 +554,22 @@ class Ui_Dialog(object):
         self.label.setText(trans(locale, "all_data_will_be_removed_when_off"))
         self.checkBoxCloseToTray.setText(trans(locale, "close_to_tray"))
         self.checkBoxOpenMinimized.setText(trans(locale, "start_to_tray"))
+        self.label_12.setText(trans(locale, "autostart"))
         self.checkBoxAutostartIsActive.setText(trans(locale, "add_to_autostart"))
+        self.labelAutostartDelay.setText(trans(locale, "delay_before_start_sec_text"))
+        self.labelAutostartDelayHint.setText(trans(locale, "autostart_delay_hint"))
+        self.label_9.setText(trans(locale, "statistics"))
+        self.labelBackupInterval.setText(trans(locale, "backup_interval_text"))
+        self.labelBackupIntervalHint.setText(trans(locale, "less_backup_interval_less_consumption_text"))
         self.label_2.setText(trans(locale, "cpu_modes_management"))
         self.label_3.setText(trans(locale, "default_when_off"))
         self.checkBoxCPUManagment.setText(trans(locale, "auto_change_cpu_state"))
         self.label_4.setText(trans(locale, "when_load_less_then_then"))
         self.labelCPUThreshhold.setText(trans(locale, "load_threshold"))
-        self.labelCPUTreshholdHint.setText(trans(locale, "collect_as_all_cores_load"))
         self.labelCPUIdleState.setText(trans(locale, "idle_state"))
         self.labelCPULoadState.setText(trans(locale, "load_state"))
         self.labelCPULoadStateHint.setText(trans(locale, "state_less_than_100_will"))
         self.checkBoxCPUTurboManagment.setText(trans(locale, "force_cpu_state"))
-        self.labelCPUTurboManagment.setText(trans(locale, "auto_change_depends_on_threshold"))
 
         #Комбобоксы режимов турбо
         self.labelCPUTurboIdleState.setText(trans(locale, "in_idle"))
