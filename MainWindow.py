@@ -401,39 +401,42 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
             #Обновим и перечитаем новый конфиг
             support.writeToConfig(window.config)
-            new_config = support.readConfig(self)
+            self.config = support.readConfig(self)
 
-            if current_config.getIsBackupNeeded() and not new_config.getIsBackupNeeded():
+            #Проставим параметры, которые по умолчанию читаем не из сохраненного конфига
+            self.config.setAutostartIsActive(window.config.getAutostartIsActive())
+
+            if current_config.getIsBackupNeeded() and not self.config.getIsBackupNeeded():
                 self.backup_worker.stop()
                 support.removeStatFile()
             
-            if not current_config.getIsBackupNeeded() and new_config.getIsBackupNeeded():
+            if not current_config.getIsBackupNeeded() and self.config.getIsBackupNeeded():
                 self.startBackupWorker()
 
             #Позаботимся обновить ограничения процессора если они поменялись
             if current_config.getIsCPUManagmentOn():
                 hardware.updateCPUParameters(current_config, 
-                                             new_config.getCPUIdleState(), 
-                                             new_config.getCPULoadState(),
-                                             new_config.getCPUTurboIdleId(),
-                                             new_config.getCPUTurboLoadId()
+                                             self.config.getCPUIdleState(), 
+                                             self.config.getCPULoadState(),
+                                             self.config.getCPUTurboIdleId(),
+                                             self.config.getCPUTurboLoadId()
                                              )
             
             #И если пользователь отключил управление процом — выставим все в сотку и турбо без ограничений, обычно это дефолт
-            if new_config.getIsCPUManagmentOn() == False and (new_config.getIsCPUManagmentOn() != current_config.getIsCPUManagmentOn()):
+            if self.config.getIsCPUManagmentOn() == False and (self.config.getIsCPUManagmentOn() != current_config.getIsCPUManagmentOn()):
                 hardware.setCPUStatetoDefault()
                 hardware.setTurboToDefault()
 
             #Обновим локализацию если надо
-            if new_config.getCurrentLanguageCode() != current_config.getCurrentLanguageCode():
+            if self.config.getCurrentLanguageCode() != current_config.getCurrentLanguageCode():
                 self.retranslateUi(window, window.config.getCurrentLanguageCode())
 
             #Управление автостартом
-            if new_config.getAutostartIsActive():
+            if self.config.getAutostartIsActive():
                 if not current_config.getAutostartIsActive():
                     #Добавим, если только включили
                     taskManager.addToAutostart(self)
-                elif int(new_config.getAutostartDelay()) != int(current_config.getAutostartDelay()):
+                elif int(self.config.getAutostartDelay()) != int(current_config.getAutostartDelay()):
                     #Обновим, если изменили значение паузы
                     taskManager.addToAutostart(self)
 
@@ -442,9 +445,9 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                     taskManager.removeFromAutostart(self)
 
             #Обновим время обновления данных
-            self.collect_slow_worker.update(new_config)
-            self.update_ui_scores_worker.update(new_config)
-            self.update_tray_icon_worker.update(new_config)
-            self.backup_worker.update(new_config)
+            self.collect_slow_worker.update(self.config)
+            self.update_ui_scores_worker.update(self.config)
+            self.update_tray_icon_worker.update(self.config)
+            self.backup_worker.update(self.config)
 
             window.destroy()
