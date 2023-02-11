@@ -2,8 +2,8 @@
 name: Bug report
 about: Create a report to help me improve
 title: ''
-labels: ''
-assignees: ''
+labels: 'Bug'
+assignees: 'me'
 
 ---
 
@@ -16,14 +16,5 @@ Steps to reproduce the behavior:
 2. Click on '....'
 3. See error or unexpected behavior
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
-
-**Desktop (please complete the following information):**
- - OS: [e.g. win10]
-
-**Additional context**
-Add any other context about the problem here.
