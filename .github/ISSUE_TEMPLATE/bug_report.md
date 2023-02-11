@@ -2,8 +2,8 @@
 name: Bug report
 about: Create a report to help me improve
 title: ''
-labels: 'Bug'
-assignees: 'me'
+labels: 'bug'
+assignees: 'treepoint'
 
 ---
 
