@@ -31,6 +31,7 @@ Basically, it was developed for notebooks but may help with desktop CPUs too. Te
 - Ryzen 4600H
 - Ryzen 4800H
 - Intel Pentium Gold 7505
+- 11th Gen Intel Core i7-1165G7
 
 And win10/11.
 
@@ -95,6 +96,7 @@ AveTemp — программа на базе python и LibreHardwareMonitorLib �
 - Ryzen 4600H
 - Ryzen 4800H
 - Intel Pentium Gold 7505
+- 11th Gen Intel Core i7-1165G7
 
 на win10/11.
 
