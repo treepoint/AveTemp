@@ -39,6 +39,11 @@ def getCpuName(computer):
             else:
                 cpu_name, graphics = str(hardware.Name).split(' with') 
             
+            intel_gen_index = cpu_name.find('Gen')
+
+            if intel_gen_index > 0:
+                cpu_name = cpu_name.split('Gen ',1)[1]
+            
             return cpu_name
 
 def getCoresAndThreadsCount(computer):
