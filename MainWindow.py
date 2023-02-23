@@ -14,6 +14,8 @@ import workers
 import taskManager
 import localization
 import system
+import update
+import alerts
 
 trans = localization.trans
 languages = Entities.Languages()
@@ -29,8 +31,14 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.config = Entities.Config()
         support.readConfig(self)
 
+        #Инициализируем текстовки для перевода, так как
+        #Возможно по ходу надо будет их актуализировать
+        #Например ставить нужную версию для скачивания при обновлении
+        self.locale = self.config.getCurrentLanguageCode()
+        self.localizations = Entities.Localizations()
+
         #Дизайн
-        self.setupUi(self, self.config.getCurrentLanguageCode()) 
+        self.setupUi(self, self.locale) 
 
         #Включаем мониторинг и объект, откуда брать данные
         self.computer = hardware.initHardware()
@@ -120,9 +128,30 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         if self.config.getOpenMinimized:
             self.update_ui_scores_worker.stop()
 
-        #Плашка если нет админских прав
-        if support.isThereAdminRight():
-            self.frameAdminRight.setVisible(False)
+        #Проверим различные статусы при запуске
+        self.checkStatus()
+
+    def checkStatus(self):
+        #Проверим наличие админских прав
+        if not support.isThereAdminRight():
+            alerts.setAlertError(self, 'admin_rights')
+            return
+
+        #Проверим обновления и если есть — проинформируем
+        self.release_info = update.getNewerReleaseInfo(self)
+
+        if self.release_info['update']:
+
+            locale_list = languages.getList()
+
+            for locale in locale_list:
+                text = trans(locale, 'new_release')
+                text = text.replace('<download_url>', self.release_info['download_link'])
+                print(text)
+                self.localizations.setDictionaryValue(locale, 'new_release', text)
+
+            alerts.setAlertInfo(self, 'new_release')
+            return
 
     def showEvent(self, event):
         #Как появилось окно — запустим воркер обновления интерфейса
@@ -320,8 +349,6 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
     #Обновляем показатели в интерфейсе
     def updateUiScores(self, result):
 
-        locale = self.config.getCurrentLanguageCode()
-
         data_lists = self.data_lists
         
         if len(data_lists['general_temps']) > 0:
@@ -349,7 +376,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                 avg_tdp = support.toRoundStr(self.getAvgTDPForSeconds(60*minutes))
 
                 self.tableAverage.setItem(row, 0, QTableWidgetItem(f"{ avg_temp } С°"))            
-                self.tableAverage.setItem(row, 1, QTableWidgetItem(f"{ avg_tdp } { trans(locale, 'watt') }"))
+                self.tableAverage.setItem(row, 1, QTableWidgetItem(f"{ avg_tdp } { trans(self.locale, 'watt') }"))
 
                 row += 1
 
@@ -385,9 +412,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.collect_slow_worker.update(new_config)
 
     def showSettings(self):
-        locale = self.config.getCurrentLanguageCode()
-
-        window = SettingsWindow.Main(locale)
+        window = SettingsWindow.Main(self.locale)
                 
         app_icon = support.getResourcePath('./images/icon.png')
 
@@ -428,8 +453,10 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
                 hardware.setTurboToDefault()
 
             #Обновим локализацию если надо
-            if self.config.getCurrentLanguageCode() != current_config.getCurrentLanguageCode():
-                self.retranslateUi(window, window.config.getCurrentLanguageCode())
+            new_locale = window.config.getCurrentLanguageCode()
+            if self.locale != new_locale:
+                self.retranslateUi(window, new_locale)
+                self.locale = new_locale
 
             #Управление автостартом
             if self.config.getAutostartIsActive():

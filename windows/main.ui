@@ -984,18 +984,21 @@ QPushButton:pressed
            </layout>
           </item>
           <item>
-           <widget class="QFrame" name="frameAdminRight">
+           <widget class="QFrame" name="frameAlert">
             <property name="enabled">
              <bool>true</bool>
+            </property>
+            <property name="visible">
+             <bool>false</bool>
             </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>24</height>
+              <height>28</height>
              </size>
             </property>
             <property name="styleSheet">
-             <string notr="true">background: #ea7777; color: white; font-weight: bold;</string>
+             <string notr="true">color: white; font-weight: bold; border-radius:4px;</string>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -1020,7 +1023,7 @@ QPushButton:pressed
               <number>0</number>
              </property>
              <item>
-              <widget class="QLabel" name="labelAdminRights">
+              <widget class="QLabel" name="labelAlert">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -1029,6 +1032,9 @@ QPushButton:pressed
                </property>
                <property name="styleSheet">
                 <string notr="true">padding:4px;</string>
+               </property>
+                <property name="openExternalLinks">
+                <bool>true</bool>
                </property>
                <property name="text">
                 <string>Для корректной работы нужны права администратора</string>

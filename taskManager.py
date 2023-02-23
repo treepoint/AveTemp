@@ -13,7 +13,7 @@ def addToAutostart(self):
     # Создаем триггер
     TASK_TRIGGER_LOGON = 9
     trigger = task_def.Triggers.Create(TASK_TRIGGER_LOGON)
-    trigger.Id = "LogonTriggerId"
+    trigger.Id = 'LogonTriggerId'
     trigger.UserId = os.environ.get('USERNAME') # получаем имя текущего пользователя
     trigger.Delay = f'PT{self.config.getAutostartDelay()}S'
     
@@ -61,5 +61,5 @@ def checkThatAutostartIsActive(self):
 
     return is_task_exist
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     print(checkThatAutostartIsActive())

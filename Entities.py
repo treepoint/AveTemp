@@ -54,7 +54,8 @@ class Config:
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
         self.name = 'AveTemp'
-        self.version = '1.4.2'
+        self.version = '1.4.1'
+        self.alert_text = ''
 
     #Локализация
     def getCurrentLanguageCode(self):
@@ -192,6 +193,12 @@ class Config:
     def getVersion(self):
         return self.version
 
+    def getAlertText(self):
+        return self.alert_text
+
+    def setAlertText(self, value):
+        self.alert_text = value
+
 class ConfigParser:
     def getMain(config):
         #Описание парсера
@@ -260,9 +267,12 @@ class Languages:
     def getRussian(self):
         return self.ru
 
+    def getList(self):
+        return ['en', 'ru']
+
 class Localizations:
-    def getDictionary(self):
-        dictionary = {
+    def __init__(self, 
+                 dictionary = {
                             "en": {
                                 "frequency": "Frequency",
                                 "load": "Load",
@@ -307,7 +317,8 @@ class Localizations:
                                 "on_load": "Under load:",
                                 "min_freq": "Minimum frequencies (energy efficient)",
                                 "basic_freq": "Base frequencies (balanced)",
-                                "max_freq": "Maximum frequencies (productive)"
+                                "max_freq": "Maximum frequencies (productive)",
+                                "new_release": "New version available. <a href=\'<download_url>\'>Download and update</a>"
                                 },
                             "ru": {
                                 "frequency": "Частота",
@@ -353,8 +364,16 @@ class Localizations:
                                 "on_load": "Под нагрузкой:",
                                 "min_freq": "Минимальные частоты (энергоэффективно)",
                                 "basic_freq": "Базовые частоты (сбалансировано)",
-                                "max_freq": "Максимальные частоты (производительно)"                        
+                                "max_freq": "Максимальные частоты (производительно)",
+                                "new_release": "Доступна новая версия. <a href=\'<download_url>\'>Скачать и обновить</a>",                    
                                 }
                             }
+                    ):
+    
+        self.dictionary = dictionary
 
-        return dictionary
+    def getDictionary(self):
+        return self.dictionary
+
+    def setDictionaryValue(self, locale, key, value):
+        self.dictionary[locale][key] = value
