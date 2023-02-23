@@ -2,6 +2,13 @@ from bs4 import BeautifulSoup
 import urllib.request
 from langdetect import detect
 
+import alerts
+import localization
+import Entities
+
+trans = localization.trans
+languages = Entities.Languages()
+
 github_url = 'https://github.com'
 maintainer = 'treepoint'
 
@@ -80,6 +87,21 @@ def getNewerReleaseInfo(self):
         release_info['update'] = False
 
     return release_info
+
+def checkUpdates(self):
+    self.release_info = getNewerReleaseInfo(self)
+
+    if self.release_info['update']:
+
+        locale_list = languages.getList()
+
+        for locale in locale_list:
+            text = trans(locale, 'new_release')
+            text = text.replace('<download_url>', self.release_info['download_link'])
+            self.localizations.setDictionaryValue(locale, 'new_release', text)
+
+        alerts.setAlertInfo(self, 'new_release')
+        return
 
 if __name__ == '__main__':
     print(getVersionHash('1.4.3'))

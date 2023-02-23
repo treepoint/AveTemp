@@ -1,5 +1,30 @@
 import enum
 
+class DataLists:
+    def __init__(self,
+                 lists = {
+                            'general_temps' : [], 
+                            'average_temps' : [],
+                            'general_TDP' : [],
+                            'average_TDP' : [],
+                            'all_load' : [],
+                            'current_temp' : 0,
+                            'min_temp' : 0,
+                            'max_temp' : 0,
+                            'current_TDP' : 0,
+                            'min_TDP' : 0,
+                            'max_TDP' : 0,
+                            'cpu' : 
+                                    { 
+                                        'cores' : [],
+                                        'threads' : [],
+                                    }
+                        }):
+        self.lists = lists
+    
+    def get(self):
+        return self.lists
+
 class Config:
     def __init__(self, 
                  collect_slow_data_interval = 1, 

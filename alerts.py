@@ -23,3 +23,5 @@ def setAlertTextAndShow(self, locale_text):
     self.labelAlert.setText(trans(locale, locale_text, init_trans))
     #Покажем
     self.frameAlert.setVisible(True)
+    
+    self.is_alert_showing = True

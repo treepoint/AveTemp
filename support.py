@@ -4,7 +4,6 @@ import configparser  # Для чтения конфига
 import ctypes
 import os, sys
 import json
-import io
 
 from pathlib import Path
 
@@ -12,6 +11,7 @@ import Entities
 import registry
 import taskManager
 import localization
+import alerts
 
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
@@ -45,6 +45,11 @@ def isThereAdminRight():
         is_admin = ctypes.windll.shell32.IsUserAnAdmin()
 
     return is_admin
+
+def checkAdminRights(self):
+    if not isThereAdminRight():
+        alerts.setAlertError(self, 'admin_rights')
+        return
 
 def writeToConfig(config):
     configParser = configparser.ConfigParser()
@@ -183,7 +188,7 @@ def getTrayImage(value, config):
 
     return pixmap
 
-def saveData(self):
+def saveStatistics(self):
     #Добавляем версию, чтобы проверять на совместимость
     data = self.data_lists
     data['version'] = self.config.getVersion()

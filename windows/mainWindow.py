@@ -525,7 +525,6 @@ class Ui_MainWindow(object):
         self.actionShowSettings.setObjectName("actionShowSettings")
         self.actionResetAll = QtGui.QAction(MainWindow)
         self.actionResetAll.setObjectName("actionResetAll")
-
         self.retranslateUi(MainWindow, locale)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
