@@ -318,7 +318,8 @@ class Localizations:
                                 "min_freq": "Minimum frequencies (energy efficient)",
                                 "basic_freq": "Base frequencies (balanced)",
                                 "max_freq": "Maximum frequencies (productive)",
-                                "new_release": "New version available. <a href=\'<download_url>\'>Download and update</a>"
+                                "new_release": "New version available. <a href=\'<download_url>\'>Download and update</a>",
+                                "close": "Close",
                                 },
                             "ru": {
                                 "frequency": "Частота",
@@ -366,6 +367,7 @@ class Localizations:
                                 "basic_freq": "Базовые частоты (сбалансировано)",
                                 "max_freq": "Максимальные частоты (производительно)",
                                 "new_release": "Доступна новая версия. <a href=\'<download_url>\'>Скачать и обновить</a>",                    
+                                "close": "Закрыть",
                                 }
                             }
                     ):

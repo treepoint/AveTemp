@@ -7,6 +7,12 @@ import sys
 import workers
 import MainWindow
 
+#Для локализации
+import Entities
+import localization
+trans = localization.trans
+languages = Entities.Languages()
+
 class TrayWrapper:
     def __init__(self):
         self.app = QApplication(sys.argv)
@@ -42,11 +48,13 @@ class TrayWrapper:
                                         "color: rgb(25, 25, 25);"
                                         "}")
 
-        #Набор пунктов
-        action = QAction('Закрыть')
-        menu.addAction(action)
-        action.triggered.connect(self.properQuit)
+        #Локализация
+        self.locale = self.window.config.getCurrentLanguageCode()
 
+        #Набор пунктов
+        self.action = QAction(trans(self.window.config.getCurrentLanguageCode(), "close"))
+        menu.addAction(self.action)
+        self.action.triggered.connect(self.properQuit)
         self.tray.setContextMenu(menu)
 
         #Обработка событий
@@ -54,7 +62,7 @@ class TrayWrapper:
 
         #Создаем поток для обновления информации в трее
         self.app_worker = workers.TrayWorker(self)
-        self.app_worker.result.connect(self.updateIcon)
+        self.app_worker.result.connect(self.updateTray)
         self.app_worker.start()
 
         #Ну и запускаем
@@ -64,10 +72,16 @@ class TrayWrapper:
         self.tray.setVisible(False)
         exit(0)
 
-    def updateIcon(self, result):
+    def updateTray(self, result):
         if result:
             icon = QIcon(self.window.image)
             self.tray.setIcon(icon)
+            #Если сменился язык — обновим пункт в меню
+            app_locale = self.window.config.getCurrentLanguageCode()
+
+            if self.locale != app_locale:
+                self.action.setText(trans(app_locale, "close"))
+                self.locale = app_locale
         else:
             #Если из воркера не пришел результат — значит приложение закрыли, дропаем
             self.tray.setVisible(False)
