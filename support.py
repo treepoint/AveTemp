@@ -48,7 +48,7 @@ def isThereAdminRight():
 
 def checkAdminRights(self):
     if not isThereAdminRight():
-        alerts.setAlertError(self, 'admin_rights')
+        alerts.setAlert(self, 'ERROR', 'admin_rights')
         return
 
 def writeToConfig(config):
@@ -223,6 +223,15 @@ def getRestoredData(self):
 
 def getCurrentPath():
     return os.getcwd()
+
+#Задаем размеры окошка исходя из оборудования
+def setWindowsSize(self, additional_height = 0):
+    additional_height += (self.cpu_cores - 6) * 24
+
+    if self.is_alert_showing:
+        additional_height += 36
+
+    self.resize(400, 330 + additional_height)
 
 if __name__ == "__main__":
     print(getCurrentPath())

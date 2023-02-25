@@ -292,30 +292,84 @@ class Ui_MainWindow(object):
         self.verticalLayout_5.addWidget(self.tableAverage)
         self.buttonResetAverageTemps = QtWidgets.QPushButton(self.centralwidget)
         self.buttonResetAverageTemps.setStyleSheet("QPushButton {\n"
-"    border-radius:4px; \n"
-"    background: #e1e1e1; \n"
-"    padding: 4px; \n"
+"    border: 1px solid #d8d8d8;\n"
+"    qproperty-icon: none; /* empty image */\n"
+"    image: url("+ support.getResourcePath('./images/clear.svg')+ ");\n"
+"    qproperty-iconSize: 18px; /* space for the background image */\n"
+"    border-radius: 4px; \n"
+"    background: #eeeeee; \n"
 "    font-weight: normal; \n"
 "    color: #222;\n"
-"    border: 1px solid #d8d8d8;\n"
+"    padding: 4px; \n"
 "}\n"
 "\n"
-"QPushButton:hover\n"
-"{\n"
-"   background: #d8d8d8; \n"
+"QPushButton:hover {\n"
+"    image: url("+ support.getResourcePath('./images/clear_hover.svg')+ ");\n"
+"    background: #d8d8d8; \n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"   background: #c9c9c9; \n"
+"    image: url("+ support.getResourcePath('./images/clear_pressed.svg')+ ");\n"
+"    background: #c9c9c9; \n"
 "}")
+        self.buttonResetAverageTemps.setText("")
         self.buttonResetAverageTemps.setObjectName("buttonResetAverageTemps")
         self.verticalLayout_5.addWidget(self.buttonResetAverageTemps)
         self.horizontalLayout_6.addLayout(self.verticalLayout_5)
         self.verticalLayout_3.addLayout(self.horizontalLayout_6)
-        spacerItem2 = QtWidgets.QSpacerItem(20, 0, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        spacerItem2 = QtWidgets.QSpacerItem(4, 0, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
         self.verticalLayout_3.addItem(spacerItem2)
+        self.widgetCurrentValues = QtWidgets.QWidget(self.centralwidget)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.widgetCurrentValues.sizePolicy().hasHeightForWidth())
+        self.widgetCurrentValues.setSizePolicy(sizePolicy)
+        self.widgetCurrentValues.setMinimumSize(QtCore.QSize(0, 0))
+        palette = QtGui.QPalette()
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Inactive, QtGui.QPalette.ColorRole.Window, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Button, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Base, brush)
+        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(QtGui.QPalette.ColorGroup.Disabled, QtGui.QPalette.ColorRole.Window, brush)
+        self.widgetCurrentValues.setPalette(palette)
+        font = QtGui.QFont()
+        font.setKerning(True)
+        self.widgetCurrentValues.setFont(font)
+        self.widgetCurrentValues.setMouseTracking(False)
+        self.widgetCurrentValues.setTabletTracking(False)
+        self.widgetCurrentValues.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
+        self.widgetCurrentValues.setStyleSheet("")
+        self.widgetCurrentValues.setObjectName("widgetCurrentValues")
+        self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.widgetCurrentValues)
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_4.setSpacing(0)
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setSizeConstraint(QtWidgets.QLayout.SizeConstraint.SetDefaultConstraint)
         self.horizontalLayout.setContentsMargins(-1, -1, -1, 0)
         self.horizontalLayout.setSpacing(16)
         self.horizontalLayout.setObjectName("horizontalLayout")
@@ -325,12 +379,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_9 = QtWidgets.QVBoxLayout()
         self.verticalLayout_9.setSpacing(4)
         self.verticalLayout_9.setObjectName("verticalLayout_9")
-        self.label_9 = QtWidgets.QLabel(self.centralwidget)
+        self.label_9 = QtWidgets.QLabel(self.widgetCurrentValues)
         self.label_9.setMaximumSize(QtCore.QSize(16777215, 16))
         self.label_9.setStyleSheet("font-weight: bold; color: #222; font-size:12px;")
         self.label_9.setObjectName("label_9")
         self.verticalLayout_9.addWidget(self.label_9)
-        self.line_4 = QtWidgets.QFrame(self.centralwidget)
+        self.line_4 = QtWidgets.QFrame(self.widgetCurrentValues)
         self.line_4.setFrameShape(QtWidgets.QFrame.Shape.HLine)
         self.line_4.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.line_4.setObjectName("line_4")
@@ -341,10 +395,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.label = QtWidgets.QLabel(self.centralwidget)
+        self.label = QtWidgets.QLabel(self.widgetCurrentValues)
         self.label.setObjectName("label")
         self.verticalLayout_2.addWidget(self.label)
-        self.lineEditCpuMinTemp = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEditCpuMinTemp = QtWidgets.QLineEdit(self.widgetCurrentValues)
         self.lineEditCpuMinTemp.setEnabled(True)
         self.lineEditCpuMinTemp.setMaximumSize(QtCore.QSize(16777215, 16777215))
         font = QtGui.QFont()
@@ -364,10 +418,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_2)
         self.verticalLayout_10 = QtWidgets.QVBoxLayout()
         self.verticalLayout_10.setObjectName("verticalLayout_10")
-        self.label_8 = QtWidgets.QLabel(self.centralwidget)
+        self.label_8 = QtWidgets.QLabel(self.widgetCurrentValues)
         self.label_8.setObjectName("label_8")
         self.verticalLayout_10.addWidget(self.label_8)
-        self.lineEditCpuCurrentTemp = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEditCpuCurrentTemp = QtWidgets.QLineEdit(self.widgetCurrentValues)
         self.lineEditCpuCurrentTemp.setEnabled(True)
         self.lineEditCpuCurrentTemp.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.lineEditCpuCurrentTemp.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
@@ -378,10 +432,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addLayout(self.verticalLayout_10)
         self.verticalLayout_4 = QtWidgets.QVBoxLayout()
         self.verticalLayout_4.setObjectName("verticalLayout_4")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
+        self.label_2 = QtWidgets.QLabel(self.widgetCurrentValues)
         self.label_2.setObjectName("label_2")
         self.verticalLayout_4.addWidget(self.label_2)
-        self.lineEditCpuMaxTemp = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEditCpuMaxTemp = QtWidgets.QLineEdit(self.widgetCurrentValues)
         self.lineEditCpuMaxTemp.setEnabled(True)
         self.lineEditCpuMaxTemp.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.lineEditCpuMaxTemp.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
@@ -391,24 +445,28 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.lineEditCpuMaxTemp)
         self.horizontalLayout_3.addLayout(self.verticalLayout_4)
         self.verticalLayout_7.addLayout(self.horizontalLayout_3)
-        self.buttonResetGeneralTemps = QtWidgets.QPushButton(self.centralwidget)
+        self.buttonResetGeneralTemps = QtWidgets.QPushButton(self.widgetCurrentValues)
         self.buttonResetGeneralTemps.setStyleSheet("QPushButton {\n"
-"    border-radius:4px; \n"
-"    background: #e1e1e1; \n"
-"    padding: 4px; \n"
+"    border: 1px solid #d8d8d8;\n"
+"    qproperty-icon: none; /* empty image */\n"
+"    image: url("+ support.getResourcePath('./images/clear.svg')+ ");\n"
+"    qproperty-iconSize: 18px; /* space for the background image */\n"
+"    border-radius: 4px; \n"
+"    background: #eeeeee; \n"
 "    font-weight: normal; \n"
 "    color: #222;\n"
-"    border: 1px solid #d8d8d8;\n"
+"    padding: 4px; \n"
 "}\n"
 "\n"
-"QPushButton:hover\n"
-"{\n"
-"   background: #d8d8d8; \n"
+"QPushButton:hover {\n"
+"    image: url("+ support.getResourcePath('./images/clear_hover.svg')+ ");\n"
+"    background: #d8d8d8; \n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"   background: #c9c9c9; \n"
+"    image: url("+ support.getResourcePath('./images/clear_pressed.svg')+ ");\n"
+"    background: #c9c9c9; \n"
 "}")
         self.buttonResetGeneralTemps.setObjectName("buttonResetGeneralTemps")
         self.verticalLayout_7.addWidget(self.buttonResetGeneralTemps)
@@ -419,12 +477,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_14 = QtWidgets.QVBoxLayout()
         self.verticalLayout_14.setSpacing(4)
         self.verticalLayout_14.setObjectName("verticalLayout_14")
-        self.label_10 = QtWidgets.QLabel(self.centralwidget)
+        self.label_10 = QtWidgets.QLabel(self.widgetCurrentValues)
         self.label_10.setMaximumSize(QtCore.QSize(16777215, 16))
         self.label_10.setStyleSheet("font-weight: bold; color: #222; font-size:12px;")
         self.label_10.setObjectName("label_10")
         self.verticalLayout_14.addWidget(self.label_10)
-        self.line_7 = QtWidgets.QFrame(self.centralwidget)
+        self.line_7 = QtWidgets.QFrame(self.widgetCurrentValues)
         self.line_7.setFrameShape(QtWidgets.QFrame.Shape.HLine)
         self.line_7.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.line_7.setObjectName("line_7")
@@ -435,10 +493,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.verticalLayout_13 = QtWidgets.QVBoxLayout()
         self.verticalLayout_13.setObjectName("verticalLayout_13")
-        self.label_11 = QtWidgets.QLabel(self.centralwidget)
+        self.label_11 = QtWidgets.QLabel(self.widgetCurrentValues)
         self.label_11.setObjectName("label_11")
         self.verticalLayout_13.addWidget(self.label_11)
-        self.lineEditCpuMinTDP = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEditCpuMinTDP = QtWidgets.QLineEdit(self.widgetCurrentValues)
         self.lineEditCpuMinTDP.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.lineEditCpuMinTDP.setStyleSheet("font-weight:normal; border:  1px solid #d8d8d8; width: 40px;")
         self.lineEditCpuMinTDP.setReadOnly(True)
@@ -447,10 +505,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addLayout(self.verticalLayout_13)
         self.verticalLayout_17 = QtWidgets.QVBoxLayout()
         self.verticalLayout_17.setObjectName("verticalLayout_17")
-        self.label_15 = QtWidgets.QLabel(self.centralwidget)
+        self.label_15 = QtWidgets.QLabel(self.widgetCurrentValues)
         self.label_15.setObjectName("label_15")
         self.verticalLayout_17.addWidget(self.label_15)
-        self.lineEditCpuCurrentTDP = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEditCpuCurrentTDP = QtWidgets.QLineEdit(self.widgetCurrentValues)
         self.lineEditCpuCurrentTDP.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.lineEditCpuCurrentTDP.setStyleSheet("font-weight:normal; border:  1px solid #d8d8d8; width: 40px;")
         self.lineEditCpuCurrentTDP.setReadOnly(True)
@@ -459,10 +517,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addLayout(self.verticalLayout_17)
         self.verticalLayout_16 = QtWidgets.QVBoxLayout()
         self.verticalLayout_16.setObjectName("verticalLayout_16")
-        self.label_16 = QtWidgets.QLabel(self.centralwidget)
+        self.label_16 = QtWidgets.QLabel(self.widgetCurrentValues)
         self.label_16.setObjectName("label_16")
         self.verticalLayout_16.addWidget(self.label_16)
-        self.lineEditCpuMaxTDP = QtWidgets.QLineEdit(self.centralwidget)
+        self.lineEditCpuMaxTDP = QtWidgets.QLineEdit(self.widgetCurrentValues)
         self.lineEditCpuMaxTDP.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.lineEditCpuMaxTDP.setStyleSheet("font-weight:normal; border:  1px solid #d8d8d8; width: 40px;")
         self.lineEditCpuMaxTDP.setReadOnly(True)
@@ -470,40 +528,44 @@ class Ui_MainWindow(object):
         self.verticalLayout_16.addWidget(self.lineEditCpuMaxTDP)
         self.horizontalLayout_2.addLayout(self.verticalLayout_16)
         self.verticalLayout_8.addLayout(self.horizontalLayout_2)
-        self.buttonResetTDP = QtWidgets.QPushButton(self.centralwidget)
+        self.buttonResetTDP = QtWidgets.QPushButton(self.widgetCurrentValues)
         self.buttonResetTDP.setStyleSheet("QPushButton {\n"
-"    border-radius:4px; \n"
-"    background: #e1e1e1; \n"
-"    padding: 4px; \n"
+"    border: 1px solid #d8d8d8;\n"
+"    qproperty-icon: none; /* empty image */\n"
+"    image: url("+ support.getResourcePath('./images/clear.svg')+ ");\n"
+"    qproperty-iconSize: 18px; /* space for the background image */\n"
+"    border-radius: 4px; \n"
+"    background: #eeeeee; \n"
 "    font-weight: normal; \n"
 "    color: #222;\n"
-"    border: 1px solid #d8d8d8;\n"
+"    padding: 4px; \n"
 "}\n"
 "\n"
-"QPushButton:hover\n"
-"{\n"
-"   background: #d8d8d8; \n"
+"QPushButton:hover {\n"
+"    image: url("+ support.getResourcePath('./images/clear_hover.svg')+ ");\n"
+"    background: #d8d8d8; \n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"   background: #c9c9c9; \n"
+"    image: url("+ support.getResourcePath('./images/clear_pressed.svg')+ ");\n"
+"    background: #c9c9c9; \n"
 "}")
         self.buttonResetTDP.setObjectName("buttonResetTDP")
         self.verticalLayout_8.addWidget(self.buttonResetTDP)
         self.horizontalLayout.addLayout(self.verticalLayout_8)
-        self.verticalLayout_3.addLayout(self.horizontalLayout)
+        self.horizontalLayout_4.addLayout(self.horizontalLayout)
+        self.verticalLayout_3.addWidget(self.widgetCurrentValues)
         self.frameAlert = QtWidgets.QFrame(self.centralwidget)
         self.frameAlert.setEnabled(True)
-        self.frameAlert.setVisible(False)
-        self.frameAlert.setMaximumSize(QtCore.QSize(16777215, 28))
-        self.frameAlert.setStyleSheet("color: white; font-weight: bold;border-radius:4px;")
+        self.frameAlert.setMaximumSize(QtCore.QSize(16777215, 600))
+        self.frameAlert.setVisible(True)
         self.frameAlert.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frameAlert.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frameAlert.setObjectName("frameAlert")
         self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.frameAlert)
         self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_15.setSpacing(8)
+        self.verticalLayout_15.setSpacing(0)
         self.verticalLayout_15.setObjectName("verticalLayout_15")
         self.labelAlert = QtWidgets.QLabel(self.frameAlert)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
@@ -513,8 +575,21 @@ class Ui_MainWindow(object):
         self.labelAlert.setSizePolicy(sizePolicy)
         self.labelAlert.setStyleSheet("padding:4px;")
         self.labelAlert.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.labelAlert.setOpenExternalLinks(True)
         self.labelAlert.setObjectName("labelAlert")
         self.verticalLayout_15.addWidget(self.labelAlert)
+        self.plainTextEditAlert = QtWidgets.QPlainTextEdit(self.frameAlert)
+        self.plainTextEditAlert.setStyleSheet("")
+        self.plainTextEditAlert.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        self.plainTextEditAlert.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
+        self.plainTextEditAlert.setLineWidth(0)
+        self.plainTextEditAlert.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.plainTextEditAlert.setReadOnly(True)
+        self.plainTextEditAlert.setPlainText("")
+        self.plainTextEditAlert.setBackgroundVisible(True)
+        self.plainTextEditAlert.setVisible(False)
+        self.plainTextEditAlert.setObjectName("plainTextEditAlert")
+        self.verticalLayout_15.addWidget(self.plainTextEditAlert)
         self.verticalLayout_3.addWidget(self.frameAlert)
         self.horizontalLayout_7.addLayout(self.verticalLayout_3)
         self.horizontalLayout_7.setStretch(1, 1)
@@ -549,7 +624,6 @@ class Ui_MainWindow(object):
         item.setText(trans(locale, "temp"))
         item = self.tableAverage.horizontalHeaderItem(1)
         item.setText(trans(locale, "TDP"))
-        self.buttonResetAverageTemps.setText(trans(locale, "clear"))
         self.label_9.setText(trans(locale, "temp"))
         self.label.setText(trans(locale, "min") + ".")
         self.lineEditCpuMinTemp.setText("0")
@@ -557,7 +631,6 @@ class Ui_MainWindow(object):
         self.lineEditCpuCurrentTemp.setText("0")
         self.label_2.setText(trans(locale, "max") + ".")
         self.lineEditCpuMaxTemp.setText("0")
-        self.buttonResetGeneralTemps.setText(trans(locale, "clear"))
         self.label_10.setText(trans(locale, "TDP"))
         self.label_11.setText(trans(locale, "min") + ".")
         self.lineEditCpuMinTDP.setText("0")
@@ -565,7 +638,6 @@ class Ui_MainWindow(object):
         self.lineEditCpuCurrentTDP.setText("0")
         self.label_16.setText(trans(locale, "max") + ".")
         self.lineEditCpuMaxTDP.setText("0")
-        self.buttonResetTDP.setText(trans(locale, "clear"))
 
         #Получаем из конфига, чтобы проставить тот что был до переключения
         alert_text = self.config.getAlertText()

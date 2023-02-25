@@ -13,6 +13,7 @@ import taskManager
 import system
 import data
 import update
+import alerts
 
 app_icon = support.getResourcePath('./images/icon.png')
 data_lists = Entities.DataLists()
@@ -79,19 +80,9 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         self.is_alert_showing = False
 
+        support.setWindowsSize(self)
         support.checkAdminRights(self)
-        update.checkUpdates(self)
-
-        self.setWindowsSize()
-
-    #Задаем размеры окошка исходя из оборудования
-    def setWindowsSize(self):
-        additional_height = (self.cpu_cores - 6) * 24
-
-        if self.is_alert_showing:
-                additional_height += 36
-
-        self.resize(400, 330 + additional_height)
+        update.checkUpdates(self, self.locale)
 
     def setupButtonsActions(self):
         self.buttonResetGeneralTemps.clicked.connect(data.resetGeneralTemps)
@@ -106,7 +97,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         workers.processFastData(self, result)
 
     def saveStatistics(self, result):
-        workers.saveStatistics(self, result)
+        workers.saveStatistics(self)
 
     def updateSystemStateConfig(self, result):
         workers.updateSystemStateConfig(self, result)

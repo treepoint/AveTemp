@@ -580,26 +580,30 @@ QTableView
                <widget class="QPushButton" name="buttonResetAverageTemps">
                 <property name="styleSheet">
                  <string notr="true">QPushButton {
-	border-radius:4px; 
-	background: #e1e1e1; 
-	padding: 4px; 
+    border: 1px solid #d8d8d8;
+    qproperty-icon: none;
+    qproperty-iconSize: 18px;
+    image: url(./images/clear.svg);
+	border-radius: 4px; 
+	background: #eeeeee; 
 	font-weight: normal; 
 	color: #222;
-    border: 1px solid #d8d8d8;
+	padding: 4px; 
 }
 
-QPushButton:hover
-{
-   background: #d8d8d8; 
+QPushButton:hover {
+    image: url(./images/clear_hover.svg);
+    background: #d8d8d8; 
 }
 
 QPushButton:pressed
 {
-   background: #c9c9c9; 
+    image: url(./images/clear_pressed.svg);
+    background: #c9c9c9; 
 }</string>
                 </property>
                 <property name="text">
-                 <string>Сбросить</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -613,392 +617,535 @@ QPushButton:pressed
              <enum>Qt::Vertical</enum>
             </property>
             <property name="sizeType">
-             <enum>QSizePolicy::Expanding</enum>
+             <enum>QSizePolicy::MinimumExpanding</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>20</width>
+              <width>4</width>
               <height>0</height>
              </size>
             </property>
            </spacer>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
-            <property name="spacing">
-             <number>16</number>
+           <widget class="QWidget" name="widgetCurrentValues" native="true">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
-            <property name="bottomMargin">
-             <number>0</number>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
             </property>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_7">
-              <property name="spacing">
-               <number>8</number>
-              </property>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_9">
-                <property name="spacing">
-                 <number>4</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="label_9">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>16</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
-                  </property>
-                  <property name="text">
-                   <string>Температура, С°</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line_4">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_3">
-                <property name="spacing">
-                 <number>8</number>
-                </property>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_2">
-                  <item>
-                   <widget class="QLabel" name="label">
-                    <property name="text">
-                     <string>Мин.</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="lineEditCpuMinTemp">
-                    <property name="enabled">
-                     <bool>true</bool>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="font">
-                     <font>
-                      <weight>50</weight>
-                      <bold>false</bold>
-                      <strikeout>false</strikeout>
-                     </font>
-                    </property>
-                    <property name="mouseTracking">
-                     <bool>false</bool>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="acceptDrops">
-                     <bool>true</bool>
-                    </property>
-                    <property name="autoFillBackground">
-                     <bool>false</bool>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
-                    </property>
-                    <property name="text">
-                     <string>0</string>
-                    </property>
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                    <property name="clearButtonEnabled">
-                     <bool>false</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_10">
-                  <item>
-                   <widget class="QLabel" name="label_8">
-                    <property name="text">
-                     <string>Текущая</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="lineEditCpuCurrentTemp">
-                    <property name="enabled">
-                     <bool>true</bool>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
-                    </property>
-                    <property name="text">
-                     <string>0</string>
-                    </property>
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_4">
-                  <item>
-                   <widget class="QLabel" name="label_2">
-                    <property name="text">
-                     <string>Макс.</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="lineEditCpuMaxTemp">
-                    <property name="enabled">
-                     <bool>true</bool>
-                    </property>
-                    <property name="maximumSize">
-                     <size>
-                      <width>16777215</width>
-                      <height>16777215</height>
-                     </size>
-                    </property>
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
-                    </property>
-                    <property name="text">
-                     <string>0</string>
-                    </property>
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QPushButton" name="buttonResetGeneralTemps">
-                <property name="styleSheet">
-                 <string notr="true">QPushButton {
-	border-radius:4px; 
-	background: #e1e1e1; 
-	padding: 4px; 
+            <property name="palette">
+             <palette>
+              <active>
+               <colorrole role="Button">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Base">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Window">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </active>
+              <inactive>
+               <colorrole role="Button">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Base">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Window">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </inactive>
+              <disabled>
+               <colorrole role="Button">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Base">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+               <colorrole role="Window">
+                <brush brushstyle="SolidPattern">
+                 <color alpha="255">
+                  <red>255</red>
+                  <green>255</green>
+                  <blue>255</blue>
+                 </color>
+                </brush>
+               </colorrole>
+              </disabled>
+             </palette>
+            </property>
+            <property name="font">
+             <font>
+              <kerning>true</kerning>
+             </font>
+            </property>
+            <property name="mouseTracking">
+             <bool>false</bool>
+            </property>
+            <property name="tabletTracking">
+             <bool>false</bool>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::LeftToRight</enum>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
+               <property name="spacing">
+                <number>16</number>
+               </property>
+               <property name="sizeConstraint">
+                <enum>QLayout::SetDefaultConstraint</enum>
+               </property>
+               <property name="bottomMargin">
+                <number>0</number>
+               </property>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <property name="spacing">
+                  <number>8</number>
+                 </property>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_9">
+                   <property name="spacing">
+                    <number>4</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="label_9">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>16</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Температура, С°</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="Line" name="line_4">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_3">
+                   <property name="spacing">
+                    <number>8</number>
+                   </property>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_2">
+                     <item>
+                      <widget class="QLabel" name="label">
+                       <property name="text">
+                        <string>Мин.</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEditCpuMinTemp">
+                       <property name="enabled">
+                        <bool>true</bool>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <weight>50</weight>
+                         <bold>false</bold>
+                         <strikeout>false</strikeout>
+                        </font>
+                       </property>
+                       <property name="mouseTracking">
+                        <bool>false</bool>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="acceptDrops">
+                        <bool>true</bool>
+                       </property>
+                       <property name="autoFillBackground">
+                        <bool>false</bool>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
+                       </property>
+                       <property name="text">
+                        <string>0</string>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                       <property name="clearButtonEnabled">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_10">
+                     <item>
+                      <widget class="QLabel" name="label_8">
+                       <property name="text">
+                        <string>Текущая</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEditCpuCurrentTemp">
+                       <property name="enabled">
+                        <bool>true</bool>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
+                       </property>
+                       <property name="text">
+                        <string>0</string>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_4">
+                     <item>
+                      <widget class="QLabel" name="label_2">
+                       <property name="text">
+                        <string>Макс.</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEditCpuMaxTemp">
+                       <property name="enabled">
+                        <bool>true</bool>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>16777215</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
+                       </property>
+                       <property name="text">
+                        <string>0</string>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="buttonResetGeneralTemps">
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+    border: 1px solid #d8d8d8;
+    qproperty-icon: none;
+    qproperty-iconSize: 18px;
+    image: url(./images/clear.svg);
+	border-radius: 4px; 
+	background: #eeeeee; 
 	font-weight: normal; 
 	color: #222;
-    border: 1px solid #d8d8d8;
+	padding: 4px; 
 }
 
-QPushButton:hover
-{
-   background: #d8d8d8; 
+QPushButton:hover {
+    image: url(./images/clear_hover.svg);
+    background: #d8d8d8; 
 }
 
 QPushButton:pressed
 {
-   background: #c9c9c9; 
+    image: url(./images/clear_pressed.svg);
+    background: #c9c9c9; 
 }</string>
-                </property>
-                <property name="text">
-                 <string>Сбросить</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_8">
-              <property name="spacing">
-               <number>8</number>
-              </property>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_14">
-                <property name="spacing">
-                 <number>4</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="label_10">
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>16</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
-                  </property>
-                  <property name="text">
-                   <string>Теплопакет, Вт</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="Line" name="line_7">
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <property name="spacing">
-                 <number>8</number>
-                </property>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_13">
-                  <item>
-                   <widget class="QLabel" name="label_11">
-                    <property name="text">
-                     <string>Мин.</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="lineEditCpuMinTDP">
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
-                    </property>
-                    <property name="text">
-                     <string>0</string>
-                    </property>
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_17">
-                  <item>
-                   <widget class="QLabel" name="label_15">
-                    <property name="text">
-                     <string>Текущий</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="lineEditCpuCurrentTDP">
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
-                    </property>
-                    <property name="text">
-                     <string>0</string>
-                    </property>
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-                <item>
-                 <layout class="QVBoxLayout" name="verticalLayout_16">
-                  <item>
-                   <widget class="QLabel" name="label_16">
-                    <property name="text">
-                     <string>Макс.</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLineEdit" name="lineEditCpuMaxTDP">
-                    <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
-                    </property>
-                    <property name="text">
-                     <string>0</string>
-                    </property>
-                    <property name="readOnly">
-                     <bool>true</bool>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QPushButton" name="buttonResetTDP">
-                <property name="styleSheet">
-                 <string notr="true">QPushButton {
-	border-radius:4px; 
-	background: #e1e1e1; 
-	padding: 4px; 
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_8">
+                 <property name="spacing">
+                  <number>8</number>
+                 </property>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_14">
+                   <property name="spacing">
+                    <number>4</number>
+                   </property>
+                   <item>
+                    <widget class="QLabel" name="label_10">
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>16</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+                     </property>
+                     <property name="text">
+                      <string>Теплопакет, Вт</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="Line" name="line_7">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_2">
+                   <property name="spacing">
+                    <number>8</number>
+                   </property>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_13">
+                     <item>
+                      <widget class="QLabel" name="label_11">
+                       <property name="text">
+                        <string>Мин.</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEditCpuMinTDP">
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
+                       </property>
+                       <property name="text">
+                        <string>0</string>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_17">
+                     <item>
+                      <widget class="QLabel" name="label_15">
+                       <property name="text">
+                        <string>Текущий</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEditCpuCurrentTDP">
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
+                       </property>
+                       <property name="text">
+                        <string>0</string>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QVBoxLayout" name="verticalLayout_16">
+                     <item>
+                      <widget class="QLabel" name="label_16">
+                       <property name="text">
+                        <string>Макс.</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLineEdit" name="lineEditCpuMaxTDP">
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">font-weight:normal; border:  1px solid #d8d8d8; width: 40px;</string>
+                       </property>
+                       <property name="text">
+                        <string>0</string>
+                       </property>
+                       <property name="readOnly">
+                        <bool>true</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="buttonResetTDP">
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+    border: 1px solid #d8d8d8;
+    qproperty-icon: none;
+    qproperty-iconSize: 18px;
+    image: url(./images/clear.svg);
+	border-radius: 4px; 
+	background: #eeeeee; 
 	font-weight: normal; 
 	color: #222;
-    border: 1px solid #d8d8d8;
+	padding: 4px; 
 }
 
-QPushButton:hover
-{
-   background: #d8d8d8; 
+QPushButton:hover {
+    image: url(./images/clear_hover.svg);
+    background: #d8d8d8; 
 }
 
 QPushButton:pressed
 {
-   background: #c9c9c9; 
+    image: url(./images/clear_pressed.svg);
+    background: #c9c9c9; 
 }</string>
-                </property>
-                <property name="text">
-                 <string>Сбросить</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-           </layout>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </item>
           <item>
            <widget class="QFrame" name="frameAlert">
             <property name="enabled">
              <bool>true</bool>
             </property>
-            <property name="visible">
-             <bool>false</bool>
-            </property>
             <property name="maximumSize">
              <size>
               <width>16777215</width>
-              <height>28</height>
+              <height>600</height>
              </size>
             </property>
-            <property name="styleSheet">
-             <string notr="true">color: white; font-weight: bold; border-radius:4px;</string>
+            <property name="visible">
+             <bool>true</bool>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
@@ -1008,7 +1155,7 @@ QPushButton:pressed
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_15">
              <property name="spacing">
-              <number>8</number>
+              <number>0</number>
              </property>
              <property name="leftMargin">
               <number>0</number>
@@ -1033,14 +1180,42 @@ QPushButton:pressed
                <property name="styleSheet">
                 <string notr="true">padding:4px;</string>
                </property>
-                <property name="openExternalLinks">
-                <bool>true</bool>
-               </property>
                <property name="text">
                 <string>Для корректной работы нужны права администратора</string>
                </property>
                <property name="alignment">
                 <set>Qt::AlignCenter</set>
+               </property>
+               <property name="openExternalLinks">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPlainTextEdit" name="plainTextEditAlert">
+               <property name="styleSheet">
+                <string notr="true"/>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::NoFrame</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Plain</enum>
+               </property>
+               <property name="lineWidth">
+                <number>0</number>
+               </property>
+               <property name="horizontalScrollBarPolicy">
+                <enum>Qt::ScrollBarAlwaysOff</enum>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+               <property name="plainText">
+                <string/>
+               </property>
+               <property name="backgroundVisible">
+                <bool>true</bool>
                </property>
               </widget>
              </item>
@@ -1061,9 +1236,6 @@ QPushButton:pressed
    </property>
   </action>
   <action name="actionResetAll">
-   <property name="text">
-    <string>Сбросить все</string>
-   </property>
   </action>
  </widget>
  <resources>

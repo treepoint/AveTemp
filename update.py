@@ -88,20 +88,36 @@ def getNewerReleaseInfo(self):
 
     return release_info
 
-def checkUpdates(self):
+def reorderUpdateLocaleText(self):
+    locale_list = languages.getList()
+
+    for locale in locale_list:
+        text = trans(locale, 'new_release')
+        text = text.replace('<download_url>', self.release_info['download_link'])
+        self.localizations.setDictionaryValue(locale, 'new_release', text)
+
+def checkUpdates(self, locale):
     self.release_info = getNewerReleaseInfo(self)
 
-    if self.release_info['update']:
-
-        locale_list = languages.getList()
-
-        for locale in locale_list:
-            text = trans(locale, 'new_release')
-            text = text.replace('<download_url>', self.release_info['download_link'])
-            self.localizations.setDictionaryValue(locale, 'new_release', text)
-
-        alerts.setAlertInfo(self, 'new_release')
+    if not self.release_info['update']:
         return
+    
+    release_notes = ''
+
+    release_length = len(self.release_info[locale]['release_notes'])
+
+    for index, note in enumerate(self.release_info[locale]['release_notes']):
+        if (index + 1 != release_length):
+            release_notes += f'• { note }\n\n'
+        else:
+            release_notes += f'• { note }'
+
+    description = f'{self.release_info[locale]["description"]}\n{release_notes}'
+
+    reorderUpdateLocaleText(self)
+
+    alerts.setAlert(self, 'INFO', 'new_release', description)
+    return
 
 if __name__ == '__main__':
     print(getVersionHash('1.4.3'))
