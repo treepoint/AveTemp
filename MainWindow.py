@@ -79,6 +79,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         workers.startWorkers(self)
 
         self.is_alert_showing = False
+        self.is_alert_expand = False
 
         support.setWindowsSize(self)
         support.checkAdminRights(self)
@@ -89,6 +90,10 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.buttonResetTDP.clicked.connect(data.resetTDP)
         self.buttonResetAverageTemps.clicked.connect(data.resetAverage)
         self.buttonShowSettings.clicked.connect(self.showSettings)
+        self.pushButtonAlertExpand.clicked.connect(self.expandAlert)
+
+    def expandAlert(self):
+        alerts.expandAlert(self)
 
     def processSlowData(self, result):
         workers.processSlowData(self, result)
