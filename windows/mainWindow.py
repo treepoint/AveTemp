@@ -571,9 +571,10 @@ class Ui_MainWindow(object):
         self.horizontalLayout_8.setContentsMargins(4, 0, -1, 0)
         self.horizontalLayout_8.setSpacing(8)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
-        self.pushButtonAlertExpand = QtWidgets.QPushButton(self.frameAlert)
-        self.pushButtonAlertExpand.setMaximumSize(QtCore.QSize(20, 20))
-        self.pushButtonAlertExpand.setStyleSheet("QPushButton {\n"
+        self.buttonAlertExpand = QtWidgets.QPushButton(self.frameAlert)
+        self.buttonAlertExpand.setMaximumSize(QtCore.QSize(20, 20))
+        self.buttonAlertExpand.setVisible(False)
+        self.buttonAlertExpand.setStyleSheet("QPushButton {\n"
 "    qproperty-icon: none;\n"
 "    qproperty-iconSize: 18px;\n"
 "    image: url(./images/expand.svg);\n"
@@ -595,10 +596,10 @@ class Ui_MainWindow(object):
 "    image: url(./images/expand_pressed.svg);\n"
 "    background: #c9c9c9; \n"
 "}")
-        self.pushButtonAlertExpand.setText("")
-        self.pushButtonAlertExpand.setFlat(True)
-        self.pushButtonAlertExpand.setObjectName("pushButtonAlertExpand")
-        self.horizontalLayout_8.addWidget(self.pushButtonAlertExpand)
+        self.buttonAlertExpand.setText("")
+        self.buttonAlertExpand.setFlat(True)
+        self.buttonAlertExpand.setObjectName("buttonAlertExpand")
+        self.horizontalLayout_8.addWidget(self.buttonAlertExpand)
         self.labelAlert = QtWidgets.QLabel(self.frameAlert)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -673,12 +674,13 @@ class Ui_MainWindow(object):
         self.lineEditCpuMaxTDP.setText("0")
 
         #Получаем из конфига, чтобы проставить тот что был до переключения
-        alert_text = self.config.getAlertText()
         self.labelAlert.setOpenExternalLinks(True)
-        self.labelAlert.setText(trans(locale, alert_text))
-
         self.actionShowSettings.setText(trans(locale, "settings"))
         self.actionResetAll.setText(trans(locale, "clear_all"))
+
+        #Проставляем алерты
+        self.labelAlert.setText(trans(locale, "alert_title"))
+        self.plainTextEditAlert.setPlainText(trans(locale, "alert_description"))
 
 if __name__ == "__main__":
     import sys

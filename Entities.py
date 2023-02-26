@@ -80,7 +80,6 @@ class Config:
         self.system_data_collect_interval = 300
         self.name = 'AveTemp'
         self.version = '1.4.1'
-        self.alert_text = ''
 
     #Локализация
     def getCurrentLanguageCode(self):
@@ -218,12 +217,6 @@ class Config:
     def getVersion(self):
         return self.version
 
-    def getAlertText(self):
-        return self.alert_text
-
-    def setAlertText(self, value):
-        self.alert_text = value
-
 class ConfigParser:
     def getMain(config):
         #Описание парсера
@@ -316,6 +309,7 @@ class Localizations:
                                 "watt": "W",
                                 "settings": "Settings",
                                 "admin_rights": "Administrator rights are required for proper work",
+                                "admin_rights_description": "Administrator rights are needed to access system gauges such as temperature and power consumption, as well as to add the program to the autostart.",
                                 "language": "Language: ",
                                 "collection_interval_text": "Data collection interval, seconds: ",
                                 "collect_and_restore_stat": "Store and retrieve statistics for a day",
@@ -344,6 +338,7 @@ class Localizations:
                                 "basic_freq": "Base frequencies (balanced)",
                                 "max_freq": "Maximum frequencies (productive)",
                                 "new_release": "New version available. <a href=\'<download_url>\'>Download and update</a>",
+                                "new_release_description": "",
                                 "close": "Close",
                                 },
                             "ru": {
@@ -364,6 +359,7 @@ class Localizations:
                                 "watt": "Вт",
                                 "settings": "Настройки",
                                 "admin_rights": "Для корректной работы нужны права администратора",
+                                "admin_rights_description": "Права администратора нужны для доступа к системным датчикам, таким как температура и энергопотребление.\n\nТак же они нужны для добавления программы в автозагрузку.",
                                 "language": "Язык: ",
                                 "collection_interval_text": "Интервал сбора данных, секунды: ",
                                 "collect_and_restore_stat": "Хранить и восстанавливать статистику за сутки",
@@ -391,8 +387,11 @@ class Localizations:
                                 "min_freq": "Минимальные частоты (энергоэффективно)",
                                 "basic_freq": "Базовые частоты (сбалансировано)",
                                 "max_freq": "Максимальные частоты (производительно)",
-                                "new_release": "Доступна новая версия. <a href=\'<download_url>\'>Скачать и обновить</a>",                    
+                                "new_release": "Доступна новая версия. <a href=\'<download_url>\'>Скачать и обновить</a>",
+                                "new_release_description": "",                    
                                 "close": "Закрыть",
+                                "alert_title": "",
+                                "alert_description": "",
                                 }
                             }
                     ):

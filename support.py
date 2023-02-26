@@ -48,7 +48,7 @@ def isThereAdminRight():
 
 def checkAdminRights(self):
     if not isThereAdminRight():
-        alerts.setAlert(self, 'ERROR', 'admin_rights')
+        alerts.setAlert(self, 'ERROR', 'admin_rights', 'admin_rights_description')
         return
 
 def writeToConfig(config):

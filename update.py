@@ -88,7 +88,7 @@ def getNewerReleaseInfo(self):
 
     return release_info
 
-def reorderUpdateLocaleText(self):
+def reorderNewReleaseAlertText(self):
     locale_list = languages.getList()
 
     for locale in locale_list:
@@ -96,27 +96,41 @@ def reorderUpdateLocaleText(self):
         text = text.replace('<download_url>', self.release_info['download_link'])
         self.localizations.setDictionaryValue(locale, 'new_release', text)
 
+def updateTransReleaseNotes(self):
+
+    locale_list = languages.getList()
+
+    for locale in locale_list:
+        #Соберем описание релиза
+        release_notes = ''
+
+        release_length = len(self.release_info[locale]['release_notes'])
+
+        for index, note in enumerate(self.release_info[locale]['release_notes']):
+            if (index + 1 != release_length):
+                release_notes += f'• { note }\n\n'
+            else:
+                release_notes += f'• { note }'
+
+        text = f'{self.release_info[locale]["description"]}\n{release_notes}'
+
+        self.localizations.setDictionaryValue(locale, 'new_release_description', text)
+
 def checkUpdates(self, locale):
+    #Получим инфу
     self.release_info = getNewerReleaseInfo(self)
 
+    #Если ничего нет — выйдем
     if not self.release_info['update']:
         return
     
-    release_notes = ''
+    #Зададим локализации текста для алерта
+    reorderNewReleaseAlertText(self)
+    #Зададим локализации текста для описания алерта
+    updateTransReleaseNotes(self)
 
-    release_length = len(self.release_info[locale]['release_notes'])
-
-    for index, note in enumerate(self.release_info[locale]['release_notes']):
-        if (index + 1 != release_length):
-            release_notes += f'• { note }\n\n'
-        else:
-            release_notes += f'• { note }'
-
-    description = f'{self.release_info[locale]["description"]}\n{release_notes}'
-
-    reorderUpdateLocaleText(self)
-
-    alerts.setAlert(self, 'INFO', 'new_release', description)
+    #Зададим все и покажем
+    alerts.setAlert(self, 'INFO', 'new_release', 'new_release_description')
     return
 
 if __name__ == '__main__':

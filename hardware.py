@@ -262,10 +262,10 @@ def updateCPUParameters(self, current_config):
     new_load_id = self.config.getCPUTurboLoadId()
 
     #Получим старые состояния
-    current_idle_state = self.current_config.getCPUIdleState(), 
-    current_load_state = self.current_config.getCPULoadState(),
-    current_idle_id = self.config.getCPUTurboIdleId(),
-    current_load_id = self.config.getCPUTurboLoadId()
+    current_idle_state = current_config.getCPUIdleState(), 
+    current_load_state = current_config.getCPULoadState(),
+    current_idle_id = current_config.getCPUTurboIdleId(),
+    current_load_id = current_config.getCPUTurboLoadId()
     cpu_performance_mode_on = current_config.getPerformanceCPUModeOn()
 
     #Сравним состояния и применим если надо

@@ -1184,7 +1184,10 @@ QPushButton:pressed
                 <number>0</number>
                </property>
                <item>
-                <widget class="QPushButton" name="pushButtonAlertExpand">
+                <widget class="QPushButton" name="buttonAlertExpand">
+                 <property name="visible">
+                    <bool>false</bool>
+                 </property>
                  <property name="maximumSize">
                   <size>
                    <width>20</width>

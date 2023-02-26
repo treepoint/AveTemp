@@ -1,6 +1,9 @@
 import localization
 import support
+import Entities
+
 trans = localization.trans
+languages = Entities.Languages()
 
 def getAlertsStyles(type):
     if type == 'ERROR':
@@ -63,37 +66,44 @@ def getAlertsStyles(type):
     
     return styles
 
-def setAlert(self, type = 'INFO', locale_text_alert = 'ERROR', description_text = False):
+def setAlert(self, type = 'INFO', locale_text_alert = False, locale_description_text = False):
+    if not locale_text_alert:
+        return
+
+    locale_list = languages.getList()
+
+    #Переопредим заголовок алерта
+    for locale in locale_list:
+        text = trans(locale, locale_text_alert)
+        self.localizations.setDictionaryValue(locale, 'alert_title', text)
+
     if (self.is_alert_showing):
         self.frameAlert.setVisible(False)
         self.is_alert_showing = False
 
+    #Зададим стили
     styles = getAlertsStyles(type)
-
     self.frameAlert.setStyleSheet(styles['alert'])
-    self.plainTextEditAlert.setStyleSheet(styles['description'])
 
-    setAlertTextAndShow(self, locale_text_alert)
+    #Зададим текстовки
+    self.labelAlert.setText(trans(self.locale, locale_text_alert))
 
-    if (description_text):
-        setAlertDescriptionText(self, description_text)
-
-def setAlertTextAndShow(self, locale_text):
-    #Получим локализацию
-    locale = self.config.getCurrentLanguageCode()
-    #Запишем текст алерта для перевода на лету
-    self.config.setAlertText(locale_text)
-    #Проставим локализованный
-    init_trans = localization.initTrans(self.localizations)
-    self.labelAlert.setText(trans(locale, locale_text, init_trans))
     #Покажем
     self.frameAlert.setVisible(True)
     self.is_alert_showing = True
     #Компенсируем размеры окна, учитывая открытый алерт
     support.setWindowsSize(self)
 
-def setAlertDescriptionText(self, text):
-    self.plainTextEditAlert.setPlainText(text)
+    #Если есть — зададим
+    if (locale_description_text):
+        #Переопредим описание алерта
+        for locale in locale_list:
+            text = trans(locale, locale_description_text)
+            self.localizations.setDictionaryValue(locale, 'alert_description', text)
+            
+        self.plainTextEditAlert.setStyleSheet(styles['description'])
+        self.plainTextEditAlert.setPlainText(trans(self.locale, locale_description_text))
+        self.buttonAlertExpand.setVisible(True)
 
 def setExpandAlertButtonStyle(self):
     if self.is_alert_expand:
@@ -101,7 +111,7 @@ def setExpandAlertButtonStyle(self):
     else:
         image = 'minimize'
 
-    self.pushButtonAlertExpand.setStyleSheet("QPushButton {\n"
+    self.buttonAlertExpand.setStyleSheet("QPushButton {\n"
                                              "    qproperty-icon: none;\n"
                                              "    qproperty-iconSize: 18px;\n"
                                              "    image: url(./images/" + image + ".svg);\n"
