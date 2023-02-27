@@ -22,8 +22,6 @@ def findLatestReleaseUrl(self):
 
 #Соберем всю доп.информацию по релизу
 def findReleaseInfo(self):
-    release_url = findLatestReleaseUrl(self)
-
     release_info = {
                     'version': 0,
                     'en': {
@@ -34,8 +32,14 @@ def findReleaseInfo(self):
                             'description': '',
                             'release_notes': [],
                             },
-                    'download_link' : ''
+                    'download_link' : '',
+                    'ok': False
                     }
+
+    try:
+        release_url = findLatestReleaseUrl(self)
+    except:
+        return release_info
 
     soup = BeautifulSoup(urllib.request.urlopen(release_url).read(), 'html.parser')
 
@@ -69,6 +73,8 @@ def findReleaseInfo(self):
     release_info['version'] = release_url.replace(f'{github_url}/{maintainer}/{self.config.getName()}/releases/tag/','')
     release_info['download_link'] = f'{github_url}/{maintainer}/{self.config.getName()}/releases/download/{ release_info["version"] }/{self.config.getName()}.exe'
 
+    release_info['ok'] = True
+
     return release_info
 
 def getVersionHash(version):
@@ -80,6 +86,10 @@ def getVersionHash(version):
 
 def getNewerReleaseInfo(self):
     release_info = findReleaseInfo(self)
+
+    if not release_info['ok']:
+        release_info['update'] = False
+        return release_info
 
     if getVersionHash(release_info['version']) > getVersionHash(self.config.getVersion()):
         release_info['update'] = True

@@ -81,9 +81,10 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.is_alert_showing = False
         self.is_alert_expand = False
 
-        support.setWindowsSize(self)
         support.checkAdminRights(self)
         update.checkUpdates(self, self.locale)
+
+        support.setComponentsSize(self)
 
     def setupButtonsActions(self):
         self.buttonResetGeneralTemps.clicked.connect(data.resetGeneralTemps)

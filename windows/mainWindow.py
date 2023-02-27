@@ -72,18 +72,18 @@ class Ui_MainWindow(object):
 "    border:solid 0px;\n"
 "    qproperty-icon: url(\" \"); /* empty image */\n"
 "    qproperty-iconSize: 20px 20px; /* space for the background image */\n"
-"    border-image: url(./images/settings.svg);\n"
+"    border-image : url("+ support.getResourcePath('./images/settings.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    border-image : url(./images/settings_hover.svg);\n"
+"    border-image : url("+ support.getResourcePath('./images/settings_hover.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"    border-image : url(./images/settings_pressed.svg);\n"
+"    border-image : url("+ support.getResourcePath('./images/settings_pressed.svg')+ ");\n"
 "    background-repeat: no-repeat;\n"
 "}")
         self.buttonShowSettings.setText("")
@@ -295,7 +295,7 @@ class Ui_MainWindow(object):
 "    border: 1px solid #d8d8d8;\n"
 "    qproperty-icon: none;\n"
 "    qproperty-iconSize: 18px;\n"
-"    image: url(./images/clear.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear.svg')+ ");\n"
 "    border-radius: 4px; \n"
 "    background: #eeeeee; \n"
 "    font-weight: normal; \n"
@@ -304,13 +304,13 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    image: url(./images/clear_hover.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear_hover.svg')+ ");\n"
 "    background: #d8d8d8; \n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"    image: url(./images/clear_pressed.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear_pressed.svg')+ ");\n"
 "    background: #c9c9c9; \n"
 "}")
         self.buttonResetAverageTemps.setText("")
@@ -450,7 +450,7 @@ class Ui_MainWindow(object):
 "    border: 1px solid #d8d8d8;\n"
 "    qproperty-icon: none;\n"
 "    qproperty-iconSize: 18px;\n"
-"    image: url(./images/clear.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear.svg')+ ");\n"
 "    border-radius: 4px; \n"
 "    background: #eeeeee; \n"
 "    font-weight: normal; \n"
@@ -459,13 +459,13 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    image: url(./images/clear_hover.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear_hover.svg')+ ");\n"
 "    background: #d8d8d8; \n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"    image: url(./images/clear_pressed.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear_pressed.svg')+ ");\n"
 "    background: #c9c9c9; \n"
 "}")
         self.buttonResetGeneralTemps.setObjectName("buttonResetGeneralTemps")
@@ -533,7 +533,7 @@ class Ui_MainWindow(object):
 "    border: 1px solid #d8d8d8;\n"
 "    qproperty-icon: none;\n"
 "    qproperty-iconSize: 18px;\n"
-"    image: url(./images/clear.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear.svg')+ ");\n"
 "    border-radius: 4px; \n"
 "    background: #eeeeee; \n"
 "    font-weight: normal; \n"
@@ -542,13 +542,13 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    image: url(./images/clear_hover.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear_hover.svg')+ ");\n"
 "    background: #d8d8d8; \n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"    image: url(./images/clear_pressed.svg);\n"
+"    image : url("+ support.getResourcePath('./images/clear_pressed.svg')+ ");\n"
 "    background: #c9c9c9; \n"
 "}")
         self.buttonResetTDP.setObjectName("buttonResetTDP")
@@ -559,7 +559,7 @@ class Ui_MainWindow(object):
         self.frameAlert = QtWidgets.QFrame(self.centralwidget)
         self.frameAlert.setEnabled(True)
         self.frameAlert.setMaximumSize(QtCore.QSize(16777215, 600))
-        self.frameAlert.setVisible(True)
+        self.frameAlert.setVisible(False)
         self.frameAlert.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.frameAlert.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.frameAlert.setObjectName("frameAlert")
@@ -577,7 +577,7 @@ class Ui_MainWindow(object):
         self.buttonAlertExpand.setStyleSheet("QPushButton {\n"
 "    qproperty-icon: none;\n"
 "    qproperty-iconSize: 18px;\n"
-"    image: url(./images/expand.svg);\n"
+"    image : url("+ support.getResourcePath('./images/expand.svg')+ ");\n"
 "    border-radius: 4px; \n"
 "    background: #eeeeee; \n"
 "    font-weight: normal; \n"
@@ -587,13 +587,13 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton:hover {\n"
-"    image: url(./images/expand_hover.svg);\n"
+"    image : url("+ support.getResourcePath('./images/expand_hover.svg')+ ");\n"
 "    background: #d8d8d8; \n"
 "}\n"
 "\n"
 "QPushButton:pressed\n"
 "{\n"
-"    image: url(./images/expand_pressed.svg);\n"
+"    image : url("+ support.getResourcePath('./images/expand_pressed.svg')+ ");\n"
 "    background: #c9c9c9; \n"
 "}")
         self.buttonAlertExpand.setText("")
@@ -623,6 +623,7 @@ class Ui_MainWindow(object):
         self.plainTextEditAlert.setBackgroundVisible(True)
         self.plainTextEditAlert.setVisible(False)
         self.plainTextEditAlert.setObjectName("plainTextEditAlert")
+        self.plainTextEditAlert.resize(QtCore.QSize(16777215, 140))
         self.verticalLayout_15.addWidget(self.plainTextEditAlert)
         self.verticalLayout_3.addWidget(self.frameAlert)
         self.horizontalLayout_7.addLayout(self.verticalLayout_3)

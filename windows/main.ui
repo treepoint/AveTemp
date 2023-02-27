@@ -1145,7 +1145,7 @@ QPushButton:pressed
              </size>
             </property>
             <property name="visible">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>

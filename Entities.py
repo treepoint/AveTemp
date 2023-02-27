@@ -79,7 +79,7 @@ class Config:
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
         self.name = 'AveTemp'
-        self.version = '1.4.1'
+        self.version = '1.4.2'
 
     #Локализация
     def getCurrentLanguageCode(self):
@@ -340,6 +340,8 @@ class Localizations:
                                 "new_release": "New version available. <a href=\'<download_url>\'>Download and update</a>",
                                 "new_release_description": "",
                                 "close": "Close",
+                                "alert_title": "",
+                                "alert_description": "",
                                 },
                             "ru": {
                                 "frequency": "Частота",

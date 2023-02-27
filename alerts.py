@@ -91,8 +91,6 @@ def setAlert(self, type = 'INFO', locale_text_alert = False, locale_description_
     #Покажем
     self.frameAlert.setVisible(True)
     self.is_alert_showing = True
-    #Компенсируем размеры окна, учитывая открытый алерт
-    support.setWindowsSize(self)
 
     #Если есть — зададим
     if (locale_description_text):
@@ -110,40 +108,38 @@ def setExpandAlertButtonStyle(self):
         image = 'expand'
     else:
         image = 'minimize'
-
+    
     self.buttonAlertExpand.setStyleSheet("QPushButton {\n"
-                                             "    qproperty-icon: none;\n"
-                                             "    qproperty-iconSize: 18px;\n"
-                                             "    image: url(./images/" + image + ".svg);\n"
-                                             "    border-radius: 4px; \n"
-                                             "    background: #eeeeee; \n"
-                                             "    font-weight: normal; \n"
-                                             "    color: #222;\n"
-                                             "    padding: 4px; \n"
-                                             "    margin-bottom: 1px;\n"
-                                             "}\n"
-                                             "\n"
-                                             "QPushButton:hover {\n"
-                                             "    image: url(./images/" + image + "_hover.svg);\n"
-                                             "    background: #d8d8d8; \n"
-                                             "}\n"
-                                             "\n"
-                                             "QPushButton:pressed\n"
-                                             "{\n"
-                                             "    image: url(./images/" + image + "_pressed.svg);\n"
-                                             "    background: #c9c9c9; \n"
-                                             "}")
+                                        "    qproperty-icon: none;\n"
+                                        "    qproperty-iconSize: 18px;\n"
+                                        "    image : url("+ support.getResourcePath('./images/' + image + '.svg')+ ");\n"
+                                        "    border-radius: 4px; \n"
+                                        "    background: #eeeeee; \n"
+                                        "    font-weight: normal; \n"
+                                        "    color: #222;\n"
+                                        "    padding: 4px; \n"
+                                        "    margin-bottom: 1px;\n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:hover {\n"
+                                        "    image : url("+ support.getResourcePath('./images/' + image + '_hover.svg')+ ");\n"
+                                        "    background: #d8d8d8; \n"
+                                        "}\n"
+                                        "\n"
+                                        "QPushButton:pressed\n"
+                                        "{\n"
+                                        "    image : url("+ support.getResourcePath('./images/' + image + '_pressed.svg')+ ");\n"
+                                        "    background: #c9c9c9; \n"
+                                        "}")
 
 def expandAlert(self):
     if self.is_alert_expand:
         self.plainTextEditAlert.setVisible(False)
-        support.setWindowsSize(self)
+        self.is_alert_expand = False
         self.widgetCurrentValues.setVisible(True)
         setExpandAlertButtonStyle(self)
-        self.is_alert_expand = False
     else:
         self.widgetCurrentValues.setVisible(False)
-        support.setWindowsSize(self, 72)
+        self.is_alert_expand = True
         setExpandAlertButtonStyle(self)
         self.plainTextEditAlert.setVisible(True)
-        self.is_alert_expand = True
