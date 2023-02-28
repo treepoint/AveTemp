@@ -372,8 +372,8 @@ def startWorkers(self):
     startSystemMonitoringWorker(self)
 
 def stopWorkers(self):
+    self.update_ui_scores_worker.stop()
     self.collect_fast_worker.stop()
     self.collect_slow_worker.stop()
-    self.update_ui_scores_worker.stop()
     self.backup_worker.stop()
     self.system_monitoring_worker()

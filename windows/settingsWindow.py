@@ -87,6 +87,7 @@ class Ui_Dialog(object):
         self.labelNameAndVersion = QtWidgets.QLabel(Dialog)
         self.labelNameAndVersion.setStyleSheet("font-weight: bold; color: #222; font-size:12px;")
         self.labelNameAndVersion.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeading|QtCore.Qt.AlignmentFlag.AlignLeft|QtCore.Qt.AlignmentFlag.AlignVCenter)
+        self.labelNameAndVersion.setOpenExternalLinks(True)
         self.labelNameAndVersion.setObjectName("labelNameAndVersion")
         self.verticalLayout_7.addWidget(self.labelNameAndVersion)
         self.line = QtWidgets.QFrame(Dialog)
@@ -132,8 +133,8 @@ class Ui_Dialog(object):
         self.horizontalLayout_2.addWidget(self.label_11)
         self.spinBoxLoggingInterval = QtWidgets.QDoubleSpinBox(Dialog)
         self.spinBoxLoggingInterval.setMinimumSize(QtCore.QSize(60, 0))
-        self.spinBoxLoggingInterval.setSingleStep(0.1)
         self.spinBoxLoggingInterval.setMinimum(0.3)
+        self.spinBoxLoggingInterval.setSingleStep(0.1)
         self.spinBoxLoggingInterval.setProperty("value", 1.0)
         self.spinBoxLoggingInterval.setObjectName("spinBoxLoggingInterval")
         self.horizontalLayout_2.addWidget(self.spinBoxLoggingInterval)
@@ -273,8 +274,8 @@ class Ui_Dialog(object):
         self.horizontalLayout_9.addWidget(self.labelBackupInterval)
         self.spinBoxBackupInterval = QtWidgets.QDoubleSpinBox(Dialog)
         self.spinBoxBackupInterval.setMinimumSize(QtCore.QSize(60, 0))
-        self.spinBoxBackupInterval.setSingleStep(0.1)
         self.spinBoxBackupInterval.setMinimum(0.1)
+        self.spinBoxBackupInterval.setSingleStep(0.1)
         self.spinBoxBackupInterval.setProperty("value", 0.5)
         self.spinBoxBackupInterval.setObjectName("spinBoxBackupInterval")
         self.horizontalLayout_9.addWidget(self.spinBoxBackupInterval)
@@ -547,7 +548,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog, locale):
         Dialog.setWindowTitle(trans(locale, "settings"))
-        self.labelNameAndVersion.setText("AveTemp")
+        self.labelNameAndVersion.setText("<a style='color: inherit;' href='https://github.com/treepoint/AveTemp'>release_version</a>")
         self.label_5.setText(trans(locale, "language"))
         self.label_11.setText(trans(locale, "collection_interval_text"))
         self.checkBoxStoreStat.setText(trans(locale, "collect_and_restore_stat"))
@@ -570,6 +571,7 @@ class Ui_Dialog(object):
         self.labelCPULoadState.setText(trans(locale, "load_state"))
         self.labelCPULoadStateHint.setText(trans(locale, "state_less_than_100_will"))
         self.checkBoxCPUTurboManagment.setText(trans(locale, "force_cpu_state"))
+        self.labelNameAndVersion.setText(trans(locale, "name_and_version"))
 
         #Комбобоксы режимов турбо
         self.labelCPUTurboIdleState.setText(trans(locale, "in_idle"))

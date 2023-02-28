@@ -292,6 +292,7 @@ class Localizations:
     def __init__(self, 
                  dictionary = {
                             "en": {
+                                "name_and_version": "<a style='color: inherit;' href='https://github.com/treepoint/AveTemp'>release_version</a>",
                                 "frequency": "Frequency",
                                 "load": "Load",
                                 "clear": "Clear",
@@ -344,6 +345,7 @@ class Localizations:
                                 "alert_description": "",
                                 },
                             "ru": {
+                                "name_and_version": "<a style='color: inherit;' href='https://github.com/treepoint/AveTemp'>release_version</a>",
                                 "frequency": "Частота",
                                 "load": "Нагрузка",
                                 "clear": "Очистить",

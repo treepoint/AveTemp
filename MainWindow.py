@@ -61,6 +61,9 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.locale = self.config.getCurrentLanguageCode()
         self.localizations = Entities.Localizations()
 
+        #Обновим название программы и версию в интерфейсе
+        support.updateNameAndVersion(self)
+
         #Интерфейс
         self.setupUi(self, self.locale) 
         

@@ -16,6 +16,9 @@ import alerts
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
 
+trans = localization.trans
+languages = Entities.Languages()
+
 ## Эта функция нужна, потому что auto-py-to-exe с какого-то времени хочет абсолютные пути для картинок и прочего
 ## Тогда как я хочу относительные, по крайней мере для этапа разработки. Так что она просто в нужных местах меняет.
 
@@ -238,3 +241,13 @@ def setComponentsSize(self, additional_height = 0):
 
 if __name__ == "__main__":
     print(getCurrentPath())
+
+def updateNameAndVersion(self):
+    #Проставим название и версию программы
+    name_and_version = f'{ self.config.getName() } { self.config.getVersion() }'
+    locale_list = languages.getList()
+
+    for locale in locale_list:
+        text = trans(locale, 'name_and_version')
+        text = text.replace('release_version', name_and_version)
+        self.localizations.setDictionaryValue(locale, 'name_and_version', text)

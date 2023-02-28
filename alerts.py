@@ -147,5 +147,6 @@ def expandAlert(self):
 def closeAlert(self):
     self.frameAlert.setVisible(False)
     self.is_alert_showing = False
-    expandAlert(self)
+    if self.is_alert_expand:
+        expandAlert(self)
     support.setComponentsSize(self)

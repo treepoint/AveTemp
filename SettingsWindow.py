@@ -16,8 +16,6 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.checkBoxAutostartIsActive.toggled.connect(self.switchAutostartBlock)
         self.checkBoxStoreStat.toggled.connect(self.switchStatisticsBlock)
 
-        self.labelNameAndVersion.setText(self.config.getName() + ' ' + self.config.getVersion())
-
     def reloadUi(self):
         self.retranslateUi(self, self.comboBoxLanguage.currentData())
 
