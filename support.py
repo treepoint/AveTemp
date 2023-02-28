@@ -229,9 +229,9 @@ def setComponentsSize(self, additional_height = 0):
     additional_height += (self.cpu_cores - 6) * 24
 
     if self.is_alert_showing and not self.is_alert_expand:
-        additional_height += 36
+        additional_height += 42
 
-    self.resize(400, 330 + additional_height)
+    self.resize(410, 324 + additional_height)
 
     self.CPUinfoTable.setMinimumHeight((self.cpu_cores * 24) + 2)
     self.tableAverage.setMinimumHeight((self.tableAverage.rowCount() * 24) + 2)

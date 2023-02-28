@@ -92,6 +92,10 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.buttonResetAverageTemps.clicked.connect(data.resetAverage)
         self.buttonShowSettings.clicked.connect(self.showSettings)
         self.buttonAlertExpand.clicked.connect(self.expandAlert)
+        self.buttonAlertClose.clicked.connect(self.closeAlert)
+
+    def closeAlert(self):
+        alerts.closeAlert(self)
 
     def expandAlert(self):
         alerts.expandAlert(self)

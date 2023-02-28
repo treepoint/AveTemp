@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(6)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QtCore.QSize(410, 346))
+        MainWindow.setMinimumSize(QtCore.QSize(410, 324))
         MainWindow.setMaximumSize(QtCore.QSize(410, 600))
         MainWindow.setWindowTitle("")
         MainWindow.setWindowOpacity(1.0)
@@ -568,12 +568,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_15.setSpacing(0)
         self.verticalLayout_15.setObjectName("verticalLayout_15")
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout()
-        self.horizontalLayout_8.setContentsMargins(4, 0, -1, 0)
+        self.horizontalLayout_8.setContentsMargins(4, 0, 4, 0)
         self.horizontalLayout_8.setSpacing(8)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
         self.buttonAlertExpand = QtWidgets.QPushButton(self.frameAlert)
         self.buttonAlertExpand.setMaximumSize(QtCore.QSize(20, 20))
-        self.buttonAlertExpand.setVisible(False)
+        self.buttonAlertExpand.setVisible(True)
         self.buttonAlertExpand.setStyleSheet("QPushButton {\n"
 "    qproperty-icon: none;\n"
 "    qproperty-iconSize: 18px;\n"
@@ -611,8 +611,38 @@ class Ui_MainWindow(object):
         self.labelAlert.setOpenExternalLinks(True)
         self.labelAlert.setObjectName("labelAlert")
         self.horizontalLayout_8.addWidget(self.labelAlert)
+        self.buttonAlertClose = QtWidgets.QPushButton(self.frameAlert)
+        self.buttonAlertClose.setMinimumSize(QtCore.QSize(20, 20))
+        self.buttonAlertClose.setMaximumSize(QtCore.QSize(20, 20))
+        self.buttonAlertClose.setStyleSheet("QPushButton {\n"
+"    qproperty-icon: none;\n"
+"    qproperty-iconSize: 18px;\n"
+"    image : url("+ support.getResourcePath('./images/close.svg')+ ");\n"
+"    border-radius: 4px; \n"
+"    background: none; \n"
+"    font-weight: normal; \n"
+"    color: #222;\n"
+"    padding: 4px; \n"
+"    margin-bottom: 1px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    image : url("+ support.getResourcePath('./images/close_hover.svg')+ ");\n"
+"    background: none; \n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    image : url("+ support.getResourcePath('./images/close_pressed.svg')+ ");\n"
+"    background: none; \n"
+"}")
+        self.buttonAlertClose.setText("")
+        self.buttonAlertClose.setFlat(True)
+        self.buttonAlertClose.setObjectName("buttonAlertClose")
+        self.horizontalLayout_8.addWidget(self.buttonAlertClose)
         self.verticalLayout_15.addLayout(self.horizontalLayout_8)
         self.plainTextEditAlert = QtWidgets.QPlainTextEdit(self.frameAlert)
+        self.plainTextEditAlert.setVisible(False)
         self.plainTextEditAlert.setStyleSheet("")
         self.plainTextEditAlert.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
         self.plainTextEditAlert.setFrameShadow(QtWidgets.QFrame.Shadow.Plain)
@@ -621,9 +651,7 @@ class Ui_MainWindow(object):
         self.plainTextEditAlert.setReadOnly(True)
         self.plainTextEditAlert.setPlainText("")
         self.plainTextEditAlert.setBackgroundVisible(True)
-        self.plainTextEditAlert.setVisible(False)
         self.plainTextEditAlert.setObjectName("plainTextEditAlert")
-        self.plainTextEditAlert.resize(QtCore.QSize(16777215, 140))
         self.verticalLayout_15.addWidget(self.plainTextEditAlert)
         self.verticalLayout_3.addWidget(self.frameAlert)
         self.horizontalLayout_7.addLayout(self.verticalLayout_3)

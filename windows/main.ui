@@ -22,7 +22,7 @@
   <property name="minimumSize">
    <size>
     <width>410</width>
-    <height>346</height>
+    <height>324</height>
    </size>
   </property>
   <property name="maximumSize">
@@ -1180,19 +1180,22 @@ QPushButton:pressed
                <property name="topMargin">
                 <number>0</number>
                </property>
+               <property name="rightMargin">
+                <number>4</number>
+               </property>
                <property name="bottomMargin">
                 <number>0</number>
                </property>
                <item>
                 <widget class="QPushButton" name="buttonAlertExpand">
-                 <property name="visible">
-                    <bool>false</bool>
-                 </property>
                  <property name="maximumSize">
                   <size>
                    <width>20</width>
                    <height>20</height>
                   </size>
+                 </property>
+                 <property name="visible">
+                  <bool>true</bool>
                  </property>
                  <property name="styleSheet">
                   <string notr="true">QPushButton {
@@ -1248,16 +1251,62 @@ QPushButton:pressed
                  </property>
                 </widget>
                </item>
+               <item>
+                <widget class="QPushButton" name="buttonAlertClose">
+                 <property name="minimumSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton {
+    qproperty-icon: none;
+    qproperty-iconSize: 18px;
+    image: url(./images/expand.svg);
+	border-radius: 4px; 
+	background: #eeeeee; 
+	font-weight: normal; 
+	color: #222;
+	padding: 4px; 
+	margin-bottom: 1px;
+}
+
+QPushButton:hover {
+    image: url(./images/expand_hover.svg);
+    background: #d8d8d8; 
+}
+
+QPushButton:pressed
+{
+    image: url(./images/expand_pressed.svg);
+    background: #c9c9c9; 
+}</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="flat">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
               </layout>
              </item>
              <item>
               <widget class="QPlainTextEdit" name="plainTextEditAlert">
+               <property name="visible">
+                <bool>false</bool>
+               </property>
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
-                <property name="visible">
-                <bool>false</bool>
-                </property>
                <property name="frameShape">
                 <enum>QFrame::NoFrame</enum>
                </property>

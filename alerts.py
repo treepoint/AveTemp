@@ -143,3 +143,9 @@ def expandAlert(self):
         self.is_alert_expand = True
         setExpandAlertButtonStyle(self)
         self.plainTextEditAlert.setVisible(True)
+
+def closeAlert(self):
+    self.frameAlert.setVisible(False)
+    self.is_alert_showing = False
+    expandAlert(self)
+    support.setComponentsSize(self)

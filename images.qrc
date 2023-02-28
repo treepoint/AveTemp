@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="images">
+    <file>images/close.svg</file>
+    <file>images/close_hover.svg</file>
+    <file>images/close_pressed.svg</file>
     <file>images/expand.svg</file>
     <file>images/expand_hover.svg</file>
     <file>images/expand_pressed.svg</file>
