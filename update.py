@@ -72,6 +72,7 @@ def findReleaseInfo(self):
 
     release_info['version'] = release_url.replace(f'{github_url}/{maintainer}/{self.config.getName()}/releases/tag/','')
     release_info['download_link'] = f'{github_url}/{maintainer}/{self.config.getName()}/releases/download/{ release_info["version"] }/{self.config.getName()}.exe'
+    release_info['release_url'] = release_url
 
     release_info['ok'] = True
 
@@ -103,7 +104,7 @@ def reorderNewReleaseAlertText(self):
 
     for locale in locale_list:
         text = trans(locale, 'new_release')
-        text = text.replace('<download_url>', self.release_info['download_link'])
+        text = text.replace('<release_url>', self.release_info['release_url'])
         self.localizations.setDictionaryValue(locale, 'new_release', text)
 
 def updateTransReleaseNotes(self):
