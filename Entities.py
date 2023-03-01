@@ -1,5 +1,30 @@
 import enum
 
+class DataLists:
+    def __init__(self,
+                 lists = {
+                            'general_temps' : [], 
+                            'average_temps' : [],
+                            'general_TDP' : [],
+                            'average_TDP' : [],
+                            'all_load' : [],
+                            'current_temp' : 0,
+                            'min_temp' : 0,
+                            'max_temp' : 0,
+                            'current_TDP' : 0,
+                            'min_TDP' : 0,
+                            'max_TDP' : 0,
+                            'cpu' : 
+                                    { 
+                                        'cores' : [],
+                                        'threads' : [],
+                                    }
+                        }):
+        self.lists = lists
+    
+    def get(self):
+        return self.lists
+
 class Config:
     def __init__(self, 
                  collect_slow_data_interval = 1, 
@@ -54,7 +79,7 @@ class Config:
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
         self.name = 'AveTemp'
-        self.version = '1.4.2'
+        self.version = '1.4.3'
 
     #Локализация
     def getCurrentLanguageCode(self):
@@ -260,10 +285,14 @@ class Languages:
     def getRussian(self):
         return self.ru
 
+    def getList(self):
+        return ['en', 'ru']
+
 class Localizations:
-    def getDictionary(self):
-        dictionary = {
+    def __init__(self, 
+                 dictionary = {
                             "en": {
+                                "name_and_version": "<a style='color: inherit;' href='https://github.com/treepoint/AveTemp'>release_version</a>",
                                 "frequency": "Frequency",
                                 "load": "Load",
                                 "clear": "Clear",
@@ -280,7 +309,8 @@ class Localizations:
                                 "TDP": "Thermal Design Power, W",
                                 "watt": "W",
                                 "settings": "Settings",
-                                "admin_rights": "Administrator rights are required for proper work",
+                                "admin_rights": "Administrator rights are required",
+                                "admin_rights_description": "Administrator rights are needed to access system gauges such as temperature and power consumption, as well as to add the program to the autostart.",
                                 "language": "Language: ",
                                 "collection_interval_text": "Data collection interval, seconds: ",
                                 "collect_and_restore_stat": "Store and retrieve statistics for a day",
@@ -307,9 +337,15 @@ class Localizations:
                                 "on_load": "Under load:",
                                 "min_freq": "Minimum frequencies (energy efficient)",
                                 "basic_freq": "Base frequencies (balanced)",
-                                "max_freq": "Maximum frequencies (productive)"
+                                "max_freq": "Maximum frequencies (productive)",
+                                "new_release": "New version available. <a style='color: inherit;' href=\'<release_url>\'>Download</a>",
+                                "new_release_description": "",
+                                "close": "Close",
+                                "alert_title": "",
+                                "alert_description": "",
                                 },
                             "ru": {
+                                "name_and_version": "<a style='color: inherit;' href='https://github.com/treepoint/AveTemp'>release_version</a>",
                                 "frequency": "Частота",
                                 "load": "Нагрузка",
                                 "clear": "Очистить",
@@ -326,7 +362,8 @@ class Localizations:
                                 "TDP": "Теплопакет, Вт",
                                 "watt": "Вт",
                                 "settings": "Настройки",
-                                "admin_rights": "Для корректной работы нужны права администратора",
+                                "admin_rights": "Требуются права администратора",
+                                "admin_rights_description": "Права администратора нужны для доступа к системным датчикам, таким как температура и энергопотребление.\n\nТак же они нужны для добавления программы в автозагрузку.",
                                 "language": "Язык: ",
                                 "collection_interval_text": "Интервал сбора данных, секунды: ",
                                 "collect_and_restore_stat": "Хранить и восстанавливать статистику за сутки",
@@ -353,8 +390,20 @@ class Localizations:
                                 "on_load": "Под нагрузкой:",
                                 "min_freq": "Минимальные частоты (энергоэффективно)",
                                 "basic_freq": "Базовые частоты (сбалансировано)",
-                                "max_freq": "Максимальные частоты (производительно)"                        
+                                "max_freq": "Максимальные частоты (производительно)",
+                                "new_release": "Доступна новая версия. <a style='color: inherit;' href=\'<release_url>\'>Скачать</a>",
+                                "new_release_description": "",                    
+                                "close": "Закрыть",
+                                "alert_title": "",
+                                "alert_description": "",
                                 }
                             }
+                    ):
+    
+        self.dictionary = dictionary
 
-        return dictionary
+    def getDictionary(self):
+        return self.dictionary
+
+    def setDictionaryValue(self, locale, key, value):
+        self.dictionary[locale][key] = value

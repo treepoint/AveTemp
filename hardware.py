@@ -75,7 +75,7 @@ def getCoresAndThreadsCount(computer):
     
     return data
 
-def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
+def collectFastData(computer, data_lists, cpu_threads):
     data = {
             'status' : Entities.Status.not_collect,
             'all_load' : 0,
@@ -114,7 +114,6 @@ def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
                     core_load = new_data
 
                 core_load = round(core_load, 2)
-
 
                 all_load += core_load
                 
@@ -251,14 +250,35 @@ def setCPUStatetoDefault():
 def setTurboToDefault():
     setCPUTurbo(2)
 
-def updateCPUParameters(config, idle_state, load_state, idle_id, load_id):
-    if config.getPerformanceCPUModeOn() == False and config.getCPULoadState() != idle_state:
-        setCPULimits(idle_state)
-        setCPUTurbo(idle_id)
+def updateCPUParameters(self, current_config):
+    if not current_config.getIsCPUManagmentOn():
+        return
 
-    if config.getPerformanceCPUModeOn() == True and config.getCPULoadState() != load_state:
-        setCPULimits(load_state)
-        setCPUTurbo(load_id)
+    #Получим новые состояния
+    new_idle_state = self.config.getCPUIdleState(), 
+    new_load_state = self.config.getCPULoadState(),
+    new_idle_id = self.config.getCPUTurboIdleId(),
+    new_load_id = self.config.getCPUTurboLoadId()
+
+    #Получим старые состояния
+    current_idle_state = current_config.getCPUIdleState(), 
+    current_load_state = current_config.getCPULoadState(),
+    current_idle_id = current_config.getCPUTurboIdleId(),
+    current_load_id = current_config.getCPUTurboLoadId()
+    cpu_performance_mode_on = current_config.getPerformanceCPUModeOn()
+
+    #Сравним состояния и применим если надо
+    if cpu_performance_mode_on == False:
+        if current_idle_state != new_idle_state:
+            setCPULimits(new_idle_state)
+        if current_idle_id != new_idle_id:
+            setCPUTurbo(new_idle_id)
+
+    if cpu_performance_mode_on == True:
+        if current_load_state != new_load_state:
+            setCPULimits(new_load_state)
+        if current_load_id != new_load_id:
+            setCPUTurbo(new_load_id)
 
 def setCPULimits(percentage):
     subprocess.run('powercfg -setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMAX ' + 
@@ -283,6 +303,21 @@ def setCPUTurbo(id):
 
 def applyPowerPlanScheme():
     subprocess.run('powercfg.exe -S SCHEME_CURRENT', startupinfo=startupinfo)
+
+def getAvgTempForSeconds(self, collect_slow_data_interval):
+    average_temps_sum_perion = sum(self.data_lists['average_temps'][:collect_slow_data_interval*self.collect_koef])
+    average_temps_len_perion = len(self.data_lists['average_temps'][:collect_slow_data_interval*self.collect_koef])
+
+    return average_temps_sum_perion/average_temps_len_perion
+
+def getAvgTDPForSeconds(self, collect_slow_data_interval):
+    average_TDPs_sum_perion = sum(self.data_lists['average_TDP'][:collect_slow_data_interval*self.collect_koef])
+    average_TDPs_len_perion = len(self.data_lists['average_TDP'][:collect_slow_data_interval*self.collect_koef])
+
+    return average_TDPs_sum_perion/average_TDPs_len_perion
+
+def checkSMT(self):
+    return self.cpu_cores != self.cpu_threads
 
 if __name__ == "__main__":
     collectFastData()

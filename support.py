@@ -4,7 +4,6 @@ import configparser  # Для чтения конфига
 import ctypes
 import os, sys
 import json
-import io
 
 from pathlib import Path
 
@@ -12,9 +11,14 @@ import Entities
 import registry
 import taskManager
 import localization
+import alerts
+import hardware
 
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
+
+trans = localization.trans
+languages = Entities.Languages()
 
 ## Эта функция нужна, потому что auto-py-to-exe с какого-то времени хочет абсолютные пути для картинок и прочего
 ## Тогда как я хочу относительные, по крайней мере для этапа разработки. Так что она просто в нужных местах меняет.
@@ -45,6 +49,11 @@ def isThereAdminRight():
         is_admin = ctypes.windll.shell32.IsUserAnAdmin()
 
     return is_admin
+
+def checkAdminRights(self):
+    if not isThereAdminRight():
+        alerts.setAlert(self, 'ERROR', 'admin_rights', 'admin_rights_description')
+        return
 
 def writeToConfig(config):
     configParser = configparser.ConfigParser()
@@ -183,7 +192,7 @@ def getTrayImage(value, config):
 
     return pixmap
 
-def saveData(self):
+def saveStatistics(self):
     #Добавляем версию, чтобы проверять на совместимость
     data = self.data_lists
     data['version'] = self.config.getVersion()
@@ -219,5 +228,29 @@ def getRestoredData(self):
 def getCurrentPath():
     return os.getcwd()
 
+#Задаем минимальные размеры компонентов и окна
+def setComponentsSize(self, additional_height = 0):
+    additional_height += (self.cpu_cores - 6) * 24
+
+    if self.is_alert_showing and not self.is_alert_expand:
+        additional_height += 42
+
+    self.CPUinfoTable.setMinimumHeight((self.cpu_cores * 24) + 2)
+    self.tableAverage.setMinimumHeight((self.tableAverage.rowCount() * 24) + 2)
+
+    additional_width = (len(hardware.getCpuName(self.computer)) - 24)*10
+
+    self.resize(412 + additional_width, 324 + additional_height)
+
 if __name__ == "__main__":
     print(getCurrentPath())
+
+def updateNameAndVersion(self):
+    #Проставим название и версию программы
+    name_and_version = f'{ self.config.getName() } { self.config.getVersion() }'
+    locale_list = languages.getList()
+
+    for locale in locale_list:
+        text = trans(locale, 'name_and_version')
+        text = text.replace('release_version', name_and_version)
+        self.localizations.setDictionaryValue(locale, 'name_and_version', text)

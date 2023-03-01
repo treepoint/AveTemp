@@ -198,6 +198,9 @@ QPushButton:pressed
            <property name="alignment">
             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
            </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
           </widget>
          </item>
          <item>
@@ -283,12 +286,12 @@ QWidget:drop-down {
              <height>0</height>
             </size>
            </property>
+           <property name="minimum">
+            <double>0.300000000000000</double>
+           </property>
            <property name="singleStep">
             <double>0.100000000000000</double>
            </property>
-            <property name="minimum">
-              <double>0.300000000000000</double>
-            </property>
            <property name="value">
             <double>1.000000000000000</double>
            </property>
@@ -663,10 +666,10 @@ QWidget:drop-down {
                  <height>0</height>
                 </size>
                </property>
-               <property name="singleStep">
+               <property name="minimum">
                 <double>0.100000000000000</double>
                </property>
-               <property name="minimum">
+               <property name="singleStep">
                 <double>0.100000000000000</double>
                </property>
                <property name="value">

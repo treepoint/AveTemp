@@ -8,3 +8,5 @@ pywin32
 pyi18n-v2
 pyyaml
 psutil
+beautifulsoup4
+langdetect
