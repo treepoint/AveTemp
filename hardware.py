@@ -75,7 +75,7 @@ def getCoresAndThreadsCount(computer):
     
     return data
 
-def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
+def collectFastData(computer, data_lists, cpu_threads):
     data = {
             'status' : Entities.Status.not_collect,
             'all_load' : 0,
@@ -114,7 +114,6 @@ def collectFastData(computer, data_lists, cpu_cores, cpu_threads):
                     core_load = new_data
 
                 core_load = round(core_load, 2)
-
 
                 all_load += core_load
                 

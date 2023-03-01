@@ -106,7 +106,7 @@ class CollectFastDataWorker(QThread):
         self.keepRunning = True
 
         while self.keepRunning:
-            data = hardware.collectFastData(self.computer, self.data_lists, self.cpu_cores, self.cpu_threads)
+            data = hardware.collectFastData(self.computer, self.data_lists, self.cpu_threads)
             self.result.emit(data)
             time.sleep(self.collect_fast_data_interval)
 
@@ -376,4 +376,4 @@ def stopWorkers(self):
     self.collect_fast_worker.stop()
     self.collect_slow_worker.stop()
     self.backup_worker.stop()
-    self.system_monitoring_worker()
+    self.system_monitoring_worker.stop()

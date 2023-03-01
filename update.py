@@ -14,6 +14,7 @@ maintainer = 'treepoint'
 
 #Со страницы тегов релизов получим все ссылки на релизы
 def findLatestReleaseUrl(self):
+
     soup = BeautifulSoup(urllib.request.urlopen(f'{github_url}/{maintainer}/{self.config.getName()}/tags').read(), 'html.parser')
 
     release_link = soup.find_all('a', {'class': 'Link--primary'})[0].get('href')
@@ -42,7 +43,7 @@ def findReleaseInfo(self):
         return release_info
 
     soup = BeautifulSoup(urllib.request.urlopen(release_url).read(), 'html.parser')
-
+    
     #Найдем основной контент и подтянем из него вложенные элементы
     content_body = soup.find_all('div', {'data-test-selector': 'body-content'})
     contents = content_body[0].contents

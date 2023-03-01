@@ -69,6 +69,7 @@ class TrayWrapper:
         self.app.exec()
 
     def properQuit(self):
+        self.window.destroy()
         self.tray.setVisible(False)
         exit(0)
 
@@ -85,6 +86,7 @@ class TrayWrapper:
         else:
             #Если из воркера не пришел результат — значит приложение закрыли, дропаем
             self.tray.setVisible(False)
+            self.window.destroy()
             exit(0)
 
     def onTrayIconActivated(self, reason):
