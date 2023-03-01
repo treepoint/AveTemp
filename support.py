@@ -12,6 +12,7 @@ import registry
 import taskManager
 import localization
 import alerts
+import hardware
 
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
@@ -234,10 +235,12 @@ def setComponentsSize(self, additional_height = 0):
     if self.is_alert_showing and not self.is_alert_expand:
         additional_height += 42
 
-    self.resize(410, 324 + additional_height)
-
     self.CPUinfoTable.setMinimumHeight((self.cpu_cores * 24) + 2)
     self.tableAverage.setMinimumHeight((self.tableAverage.rowCount() * 24) + 2)
+
+    additional_width = (len(hardware.getCpuName(self.computer)) - 24)*10
+
+    self.resize(412 + additional_width, 324 + additional_height)
 
 if __name__ == "__main__":
     print(getCurrentPath())

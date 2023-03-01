@@ -18,14 +18,14 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow, locale):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(410, 346)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        MainWindow.resize(412, 346)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(6)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
-        MainWindow.setMinimumSize(QtCore.QSize(410, 324))
-        MainWindow.setMaximumSize(QtCore.QSize(410, 600))
+        MainWindow.setMinimumSize(QtCore.QSize(412, 324))
+        MainWindow.setMaximumSize(QtCore.QSize(600, 600))
         MainWindow.setWindowTitle("")
         MainWindow.setWindowOpacity(1.0)
         MainWindow.setStyleSheet("QApplication:title {\n"
