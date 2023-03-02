@@ -579,6 +579,7 @@ class Ui_Dialog(object):
         self.comboBoxCPUTurboIdleState.clear()
         self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getEco()['name']), turbo_statuses.getEco()['id'])
         self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getBasic()['name']), turbo_statuses.getBasic()['id'])
+        self.comboBoxCPUTurboIdleState.addItem(trans(locale, turbo_statuses.getTurbo()['name']), turbo_statuses.getTurbo()['id'])
         self.comboBoxCPUTurboIdleState.setCurrentIndex(comboBox_CPU_Turbo_Idle_State_Index)
 
         self.labelCPUTurboLoadState.setText(trans(locale, "on_load"))
