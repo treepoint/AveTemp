@@ -237,18 +237,23 @@ def setCpuPerformanceState(config, data_lists):
     if config.getPerformanceCPUModeOn() == CPU_performance_mode_on:
         return CPU_performance_mode_on
 
-    setCPULimits(percentage)
+    setMaxCPULimits(percentage)
 
     if config.getIsTurboManagmentOn():
         setCPUTurbo(turbo_id)
 
     return CPU_performance_mode_on
 
-def setCPUStatetoDefault():
-    setCPULimits(100)
+def setCPUtoDefault():
+    #Проценты
+    setMinCPULimits()
+    setMaxCPULimits()
 
-def setTurboToDefault():
+    #Турбо
     setCPUTurbo(2)
+
+    #Применим
+    applyPowerPlanScheme()
 
 def updateCPUParameters(self, current_config):
     if not current_config.getIsCPUManagmentOn():
@@ -267,27 +272,38 @@ def updateCPUParameters(self, current_config):
     current_load_id = current_config.getCPUTurboLoadId()
     cpu_performance_mode_on = current_config.getPerformanceCPUModeOn()
 
+    #Проставим минимальные значения состояния процессора
+    setMinCPULimits(5, 5)
+
     #Сравним состояния и применим если надо
     if cpu_performance_mode_on == False:
         if current_idle_state != new_idle_state:
-            setCPULimits(new_idle_state)
+            setMaxCPULimits(new_idle_state)
         if current_idle_id != new_idle_id:
             setCPUTurbo(new_idle_id)
 
     if cpu_performance_mode_on == True:
         if current_load_state != new_load_state:
-            setCPULimits(new_load_state)
+            setMaxCPULimits(new_load_state)
         if current_load_id != new_load_id:
             setCPUTurbo(new_load_id)
 
-def setCPULimits(percentage):
+    #Применим
+    applyPowerPlanScheme()
+
+def setMinCPULimits(percentage_ac = 5, percentage_dc = 80):
+    subprocess.run('powercfg -setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN ' + 
+                    str(percentage_ac), startupinfo=startupinfo)
+
+    subprocess.run('powercfg -setdcvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMIN ' + 
+                    str(percentage_dc), startupinfo=startupinfo)
+
+def setMaxCPULimits(percentage = 100):
     subprocess.run('powercfg -setacvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMAX ' + 
                     str(percentage), startupinfo=startupinfo)
 
     subprocess.run('powercfg -setdcvalueindex SCHEME_CURRENT SUB_PROCESSOR PROCTHROTTLEMAX ' + 
                     str(percentage), startupinfo=startupinfo)
-
-    applyPowerPlanScheme()
 
 def setCPUTurbo(id):
     turbo_statuses = Entities.TurboStatuses()
@@ -298,8 +314,6 @@ def setCPUTurbo(id):
 
     subprocess.run('powercfg -setdcvalueindex SCHEME_CURRENT SUB_PROCESSOR PERFBOOSTMODE ' + 
                     mode_index, startupinfo=startupinfo)
-
-    applyPowerPlanScheme()
 
 def applyPowerPlanScheme():
     subprocess.run('powercfg.exe -S SCHEME_CURRENT', startupinfo=startupinfo)

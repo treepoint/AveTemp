@@ -134,8 +134,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         else:
             workers.stopWorkers(self)
 
-            hardware.setCPUStatetoDefault()
-            hardware.setTurboToDefault()
+            hardware.setCPUtoDefault()
 
             #Выключим мониторинг оборудования
             hardware.closeHardware(self.computer)
@@ -173,8 +172,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             
             #И если пользователь отключил управление процом — выставим все в сотку и турбо без ограничений, обычно это дефолт
             if self.config.getIsCPUManagmentOn() == False and (self.config.getIsCPUManagmentOn() != current_config.getIsCPUManagmentOn()):
-                hardware.setCPUStatetoDefault()
-                hardware.setTurboToDefault()
+                hardware.setCPUtoDefault()
 
             #Обновим локализацию если надо
             new_locale = window.config.getCurrentLanguageCode()
