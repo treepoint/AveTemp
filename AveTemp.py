@@ -77,6 +77,8 @@ class TrayWrapper:
             #Ну и запускаем
             self.app.exec()
         except Exception: 
+            hardware.setCPUtoDefault()
+            
             if self.no_debug:
                 traceback.print_exc()
             else:
