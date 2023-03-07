@@ -14,6 +14,7 @@ import system
 import data
 import update
 import alerts
+import processes
 
 app_icon = support.getResourcePath('./images/icon.png')
 data_lists = Entities.DataLists()
@@ -26,6 +27,12 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         self.config = Entities.Config()
         support.readConfig(self)
+
+        #Если уже запущен — выходим
+        if processes.alreadyRunning(self):
+            print('AveTemp is already running')
+            self.destroy()
+            exit(0)
 
         #Листы для хранения данных
         self.data_lists = data_lists.get()
