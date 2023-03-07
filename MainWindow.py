@@ -23,14 +23,18 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        system.increase_current_process_priority()
-
         self.config = Entities.Config()
         support.readConfig(self)
 
         #Если уже запущен — выходим
         if processes.alreadyRunning(self):
             raise Exception('AveTemp is already running')
+        
+        system.increase_current_process_priority()
+
+        #Применим текущие настройки процессора
+        if self.config.getIsCPUManagmentOn():
+            hardware.updateCPUParameters(self, self.config)
 
         #Листы для хранения данных
         self.data_lists = data_lists.get()
@@ -49,7 +53,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         #Проставляем режим работы процесора
         if self.config.getIsCPUManagmentOn():
             CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
-            self.config.setPerformanceCPUModeOn(CPU_performance_mode)
+            self.config.setIsCPUinLoadMode(CPU_performance_mode)
          
         #За сколько секунд храним данные, 86400 — сутки
         self.store_period = self.config.getStorePeriod()
@@ -137,9 +141,8 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             self.hide()
             self.update_ui_scores_worker.stop()
         else:
-            hardware.setCPUtoDefault()
-
             workers.stopWorkers(self)
+            hardware.setCPUtoDefault()
             #Выключим мониторинг оборудования
             hardware.closeHardware(self.computer)
 
@@ -170,13 +173,14 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             
             if not current_config.getIsBackupNeeded() and self.config.getIsBackupNeeded():
                 workers.startBackupWorker(self)
-
-            #Позаботимся обновить ограничения процессора если они поменялись
-            hardware.updateCPUParameters(self, current_config)
             
             #И если пользователь отключил управление процом — выставим все в сотку и турбо без ограничений, обычно это дефолт
             if self.config.getIsCPUManagmentOn() == False and (self.config.getIsCPUManagmentOn() != current_config.getIsCPUManagmentOn()):
                 hardware.setCPUtoDefault()
+            
+            #Иначе позаботимся обновить ограничения процессора если они поменялись
+            else:
+                hardware.updateCPUParameters(self, current_config)
 
             #Обновим локализацию если надо
             new_locale = window.config.getCurrentLanguageCode()

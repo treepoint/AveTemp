@@ -214,7 +214,7 @@ def setCpuPerformanceState(config, data_lists):
     if idle_ticks_count == config.getCPUIdleStatePause():
         percentage = config.getCPUIdleState()
         turbo_id = config.getCPUTurboIdleId()
-        CPU_performance_mode_on = False
+        is_CPU_in_load_mode = False
     else:
         if (len(turbo_ticks) >= 2):
             #Врубаем турбо или если прошло 3 турбо тика или если второй тик больше первого на 15%
@@ -223,26 +223,26 @@ def setCpuPerformanceState(config, data_lists):
                 if int(data[0]) > int(config.getCPUThreshhold()):
                     percentage = config.getCPULoadState()
                     turbo_id = config.getCPUTurboLoadId()
-                    CPU_performance_mode_on = True
+                    is_CPU_in_load_mode = True
 
                 #Во всех других случаях ничего не меняем и возвращаем как есть
                 else:
-                    CPU_performance_mode_on = config.getPerformanceCPUModeOn()
+                    is_CPU_in_load_mode = config.getIsCPUinLoadMode()
             else:
-                CPU_performance_mode_on = config.getPerformanceCPUModeOn()
+                is_CPU_in_load_mode = config.getIsCPUinLoadMode()
         else:
-            CPU_performance_mode_on = config.getPerformanceCPUModeOn()
+            is_CPU_in_load_mode = config.getIsCPUinLoadMode()
 
     #Если мы уже в нужном режиме — не переключаем
-    if config.getPerformanceCPUModeOn() == CPU_performance_mode_on:
-        return CPU_performance_mode_on
+    if config.getIsCPUinLoadMode() == is_CPU_in_load_mode:
+        return is_CPU_in_load_mode
 
     setMaxCPULimits(percentage)
 
     if config.getIsTurboManagmentOn():
         setCPUTurbo(turbo_id)
 
-    return CPU_performance_mode_on
+    return is_CPU_in_load_mode
 
 def setCPUtoDefault():
     #Проценты
@@ -256,37 +256,26 @@ def setCPUtoDefault():
     applyPowerPlanScheme()
 
 def updateCPUParameters(self, current_config):
-    if not current_config.getIsCPUManagmentOn():
-        return
-
     #Получим новые состояния
     new_idle_state = self.config.getCPUIdleState()
     new_load_state = self.config.getCPULoadState()
     new_idle_id = self.config.getCPUTurboIdleId()
     new_load_id = self.config.getCPUTurboLoadId()
 
-    #Получим старые состояния
-    current_idle_state = current_config.getCPUIdleState()
-    current_load_state = current_config.getCPULoadState()
-    current_idle_id = current_config.getCPUTurboIdleId()
-    current_load_id = current_config.getCPUTurboLoadId()
-    cpu_performance_mode_on = current_config.getPerformanceCPUModeOn()
+    #Получим текущий режим проца
+    is_CPU_in_load_mode = current_config.getIsCPUinLoadMode()
 
     #Проставим минимальные значения состояния процессора
     setMinCPULimits(5, 5)
 
-    #Сравним состояния и применим если надо
-    if cpu_performance_mode_on == False:
-        if current_idle_state != new_idle_state:
-            setMaxCPULimits(new_idle_state)
-        if current_idle_id != new_idle_id:
-            setCPUTurbo(new_idle_id)
+    #Применим состояния с учетом текущего режима проца, чтобы не включать турбо когда не надо
+    if is_CPU_in_load_mode == False:
+        setMaxCPULimits(new_idle_state)
+        setCPUTurbo(new_idle_id)
 
-    if cpu_performance_mode_on == True:
-        if current_load_state != new_load_state:
-            setMaxCPULimits(new_load_state)
-        if current_load_id != new_load_id:
-            setCPUTurbo(new_load_id)
+    if is_CPU_in_load_mode == True:
+        setMaxCPULimits(new_load_state)
+        setCPUTurbo(new_load_id)
 
     #Применим
     applyPowerPlanScheme()

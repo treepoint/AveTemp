@@ -122,11 +122,11 @@ def startCollectFastDataWorker(self):
 #Обработка данных из CollectFastDataWorker'а
 def processFastData(self, result):
     if not self.config.getIsCPUManagmentOn():
-        CPU_performance_mode = False
+        is_CPU_in_load_mode = False
     else:
-        CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
+        is_CPU_in_load_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
 
-    self.config.setPerformanceCPUModeOn(CPU_performance_mode)
+    self.config.setIsCPUinLoadMode(is_CPU_in_load_mode)
 
     data.writeThreadsData(self, result)
 

@@ -63,7 +63,7 @@ class Config:
 
         #Управление процессором
         self.collect_fast_data_interval = collect_fast_data_interval
-        self.performance_CPU_mode_on = True
+        self.is_CPU_in_load_mode = False
         self.CPU_idle_state_pause = CPU_idle_state_pause
         self.is_CPU_managment_on = is_CPU_managment_on
         self.CPU_threshhold = CPU_threshhold
@@ -146,11 +146,11 @@ class Config:
     def setCollectFastDataInterval(self, value):
         self.collect_fast_data_interval = value
 
-    def setPerformanceCPUModeOn(self, value):
-        self.performance_CPU_mode_on = value
+    def setIsCPUinLoadMode(self, value):
+        self.is_CPU_in_load_mode = value
 
-    def getPerformanceCPUModeOn(self):
-        return self.performance_CPU_mode_on
+    def getIsCPUinLoadMode(self):
+        return self.is_CPU_in_load_mode
 
     def getCPUIdleStatePause(self):
         return self.CPU_idle_state_pause
