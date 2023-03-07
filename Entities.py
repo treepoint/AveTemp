@@ -30,7 +30,7 @@ class Config:
                  collect_slow_data_interval = 1, 
                  collect_fast_data_interval = 0.1,
                  autostart_delay = 3,
-                 backup_interval = 1, 
+                 backup_interval = 15, 
                  is_backup_needed = True, 
                  store_period = 86400, 
                  close_to_tray = False, 
