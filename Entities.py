@@ -27,7 +27,7 @@ class DataLists:
 
 class Config:
     def __init__(self, 
-                 collect_slow_data_interval = 1, 
+                 collect_slow_data_interval = 0.7, 
                  collect_fast_data_interval = 0.1,
                  autostart_delay = 3,
                  backup_interval = 15, 
@@ -37,7 +37,7 @@ class Config:
                  open_minimized = False,
                  CPU_idle_state_pause = 50,
                  is_CPU_managment_on = False,
-                 CPU_threshhold = 45,
+                 CPU_threshhold = 70,
                  CPU_idle_state = 60,
                  CPU_load_state = 100,
                  is_turbo_managment_on = False,
