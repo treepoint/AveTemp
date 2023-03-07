@@ -6,6 +6,7 @@ import os, sys
 import json
 
 from pathlib import Path
+from datetime import datetime
 
 import Entities 
 import registry
@@ -14,6 +15,10 @@ import localization
 import alerts
 import hardware
 
+now = datetime.now()
+current_time = now.strftime("%H_%M_%S")
+
+debug_file = f'debug_{current_time}.txt'
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
 
@@ -254,3 +259,8 @@ def updateNameAndVersion(self):
         text = trans(locale, 'name_and_version')
         text = text.replace('release_version', name_and_version)
         self.localizations.setDictionaryValue(locale, 'name_and_version', text)
+
+def writeToDebugFile(content):
+    with open(debug_file, 'w') as file:
+        file.truncate(0)
+        file.write(content)

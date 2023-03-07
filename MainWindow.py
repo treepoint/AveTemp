@@ -30,9 +30,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         #Если уже запущен — выходим
         if processes.alreadyRunning(self):
-            print('AveTemp is already running')
-            self.destroy()
-            exit(0)
+            raise Exception('AveTemp is already running')
 
         #Листы для хранения данных
         self.data_lists = data_lists.get()
@@ -139,10 +137,9 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             self.hide()
             self.update_ui_scores_worker.stop()
         else:
-            workers.stopWorkers(self)
-
             hardware.setCPUtoDefault()
 
+            workers.stopWorkers(self)
             #Выключим мониторинг оборудования
             hardware.closeHardware(self.computer)
 

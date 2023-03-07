@@ -1,18 +1,16 @@
 import psutil
 
 def alreadyRunning(self):
-    pid = None
     process_name = self.config.getName()
+    count = 0
 
     for proc in psutil.process_iter():
         if process_name in proc.name():
-            pid = proc.pid
-            break
+            count += 1
+        if count >= 3:
+            return True
 
-    if pid == None:
-        return False
-    else:
-        return True
+    return False
 
 if __name__ == "__main__":
     alreadyRunning()
