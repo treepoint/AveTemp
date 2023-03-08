@@ -243,19 +243,17 @@ class UpdateUiScoresWorker(QThread):
     def stop(self):
         self.keepRunning = False
 
-def startUpdateUiScoresWorker(self):
+def createUpdateUiScoresWorker(self):
     #Создаем воркер обновления показателей интерфейса
     #У нас теперь данные стекаются с разных воркеров, так что обновлять надо централизовано
     self.update_ui_scores_worker = UpdateUiScoresWorker(self)
     self.update_ui_scores_worker.result.connect(self.updateUiScores)
-    self.update_ui_scores_worker.start()
 
 #Обработка данных из UpdateUiScoresWorker'а — обновляем показатели в интерфейсе
-def updateUiScores(self, result):
-
+def updateUiScores(self):
     data_lists = self.data_lists
     
-    if len(data_lists['general_temps']) > 0:
+    if data_lists['current_temp'] > 0:
         #Минимальная
         self.lineEditCpuMinTemp.setText(str(data_lists['min_temp']))
         #Текущая
@@ -263,16 +261,7 @@ def updateUiScores(self, result):
         #Максимальная
         self.lineEditCpuMaxTemp.setText(str(data_lists['max_temp']))
 
-    if len(data_lists['general_TDP']) > 0:
-        #Минимальный
-        self.lineEditCpuMinTDP.setText(str(data_lists['min_TDP']))
-        #Текущий
-        self.lineEditCpuCurrentTDP.setText(str(data_lists['current_TDP']))
-        #Максимальный
-        self.lineEditCpuMaxTDP.setText(str(data_lists['max_TDP']))
-
-    if len(data_lists['average_temps']) > 0:
-
+        #Средние температуры
         row = 0
 
         for minutes in (1, 5, 15, 60, 60*24):
@@ -283,6 +272,14 @@ def updateUiScores(self, result):
             self.tableAverage.setItem(row, 1, QTableWidgetItem(f"{ avg_tdp } { trans(self.locale, 'watt') }"))
 
             row += 1
+
+    if data_lists['current_TDP'] > 0:
+        #Минимальный
+        self.lineEditCpuMinTDP.setText(str(data_lists['min_TDP']))
+        #Текущий
+        self.lineEditCpuCurrentTDP.setText(str(data_lists['current_TDP']))
+        #Максимальный
+        self.lineEditCpuMaxTDP.setText(str(data_lists['max_TDP']))
 
     for core in self.data_lists['cpu']['cores']:
         self.CPUinfoTable.setItem(core['id'], 0, QTableWidgetItem(core['clock']))
@@ -356,12 +353,12 @@ def startWorkers(self):
     startUpdateTrayIconWorker(self)
 
     #Для обновления GUI
-    startUpdateUiScoresWorker(self)
+    createUpdateUiScoresWorker(self)
+
+    if not self.config.getOpenMinimized():
+        self.update_ui_scores_worker.start()
 
     #Для бэкапа
-    if self.config.getOpenMinimized:
-        self.update_ui_scores_worker.stop()
-
     if self.config.getIsBackupNeeded():
         if support.getRestoredData(self):
             self.data_lists = support.getRestoredData(self)

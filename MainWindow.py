@@ -125,7 +125,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         workers.updateSystemStateConfig(self, result)
 
     def updateUiScores(self, result):
-        workers.updateUiScores(self, result)
+        workers.updateUiScores(self)
 
     def updateTrayIcon(self, result):
         workers.updateTrayIcon(self)
