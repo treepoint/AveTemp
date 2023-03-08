@@ -3,9 +3,7 @@ import enum
 class DataLists:
     def __init__(self,
                  lists = {
-                            'general_temps' : [], 
                             'average_temps' : [],
-                            'general_TDP' : [],
                             'average_TDP' : [],
                             'all_load' : [],
                             'current_temp' : 0,

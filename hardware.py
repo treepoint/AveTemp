@@ -11,6 +11,7 @@ from LibreHardwareMonitor.Hardware import Computer
 
 import Entities
 import logger
+import support
 
 #Вот эти пляски со startupinfo нужны, чтобы окно не теряло фокус в процессе запуска подпроцессов
 startupinfo = None
@@ -153,29 +154,27 @@ def collectSlowData(self, data_lists):
         for sensor in hardware.Sensors:
             #Добавляем общую температуру проца
             if str(sensor.SensorType) == 'Temperature' and str(sensor.Name) in ('Core (Tctl/Tdie)', 'CPU Package'):
-                new_data = round(sensor.Value, 2)
+                new_temp = round(sensor.Value, 2)
 
-                general_temps = data_lists['general_temps'][:1]
+                old_temp = data_lists['current_temp']
 
-                if len(general_temps) > 0:
-                    old_data = general_temps[0]
-                    data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
+                if old_temp > 0:
+                    data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_temp, old_temp)
                 else:
-                    data['cpu']['temp'] = new_data
+                    data['cpu']['temp'] = new_temp
 
                 continue
 
             #Добавляем TDP
             if str(sensor.SensorType) == 'Power' and str(sensor.Name) in ('Package', 'CPU Package') and type(sensor.Value) != NoneType:
-                new_data = round(sensor.Value, 2)
+                new_tdp = round(sensor.Value, 2)
 
-                general_TDPs = data_lists['general_TDP'][:1]
+                old_tdp = data_lists['current_TDP']
 
-                if len(general_TDPs):
-                    old_data = general_TDPs[0]
-                    data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data)
+                if old_tdp > 0:
+                    data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_tdp, old_tdp)
                 else:
-                    data['cpu']['tdp'] = new_data
+                    data['cpu']['tdp'] = new_tdp
 
                 continue 
 
@@ -183,19 +182,11 @@ def collectSlowData(self, data_lists):
             if str(sensor.SensorType) == 'Clock' and 'Core' in str(sensor.Name):
                 number = str(sensor.Name).split('#')[1]
 
-                if isinstance(sensor.Value, type(None)):
-                    value = 0
-                else:
-                    value = round(sensor.Value, 2)
+                value = support.nvl(round(sensor.Value, 2), 0)
 
                 data['cpu']['cores'] += [{'id' : int(number), 'clock' : value }]
                 continue 
                     
-    if len(general_temps) == 0:
-         data['status'] = Entities.Status.error
-    else:
-        data['status'] = Entities.Status.success
-
     return data
 
 def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, smoothing_factor = 1.5, theshold = 3):
@@ -325,7 +316,7 @@ def getAvgTempForSeconds(self, collect_slow_data_interval):
     average_temps_sum_perion = sum(self.data_lists['average_temps'][:collect_slow_data_interval*self.collect_koef])
     avg = average_temps_sum_perion/average_temps_len_perion
 
-    return nvl(avg, 0)
+    return support.nvl(avg, 0)
 
 @logger.log
 def getAvgTDPForSeconds(self, collect_slow_data_interval):
@@ -335,16 +326,10 @@ def getAvgTDPForSeconds(self, collect_slow_data_interval):
     average_TDPs_sum_perion = sum(self.data_lists['average_TDP'][:collect_slow_data_interval*self.collect_koef])
     avg = average_TDPs_sum_perion/average_TDPs_len_perion
 
-    return nvl(avg, 0)
+    return support.nvl(avg, 0)
 
 def checkSMT(self):
     return self.cpu_cores != self.cpu_threads
-
-def nvl(first, second):
-    if (first == None or type(first) == NoneType):
-        return second
-
-    return first
 
 if __name__ == "__main__":
     collectFastData()

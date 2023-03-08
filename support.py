@@ -251,5 +251,11 @@ def updateNameAndVersion(self):
         text = text.replace('release_version', name_and_version)
         self.localizations.setDictionaryValue(locale, 'name_and_version', text)
 
+def nvl(first, second):
+    if (first == None or isinstance(first, type(None))):
+        return second
+
+    return first
+
 if __name__ == "__main__":
     print(getCurrentPath())
