@@ -58,10 +58,10 @@ class TrayWrapper:
                                             "}")
 
             #Локализация
-            self.locale = self.window.config.getCurrentLanguageCode()
+            self.locale = self.window.locale
 
             #Набор пунктов
-            self.action = QAction(trans(self.window.config.getCurrentLanguageCode(), "close"))
+            self.action = QAction(trans(self.locale, "close"))
             menu.addAction(self.action)
             self.action.triggered.connect(self.properQuit)
             self.tray.setContextMenu(menu)
@@ -95,12 +95,11 @@ class TrayWrapper:
         if result:
             icon = QIcon(self.window.image)
             self.tray.setIcon(icon)
-            #Если сменился язык — обновим пункт в меню
-            app_locale = self.window.config.getCurrentLanguageCode()
 
-            if self.locale != app_locale:
-                self.action.setText(trans(app_locale, "close"))
-                self.locale = app_locale
+            #Если сменился язык — обновим пункт в меню
+            if self.locale != self.window.locale:
+                self.action.setText(trans(self.window.locale, "close"))
+                self.locale = self.window.locale
         else:
             #Если из воркера не пришел результат — значит приложение закрыли, дропаем
             self.properQuit()

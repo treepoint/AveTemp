@@ -334,11 +334,11 @@ def startUpdateTrayIconWorker(self):
     self.update_tray_icon_worker.start()
 
 #Обработка данных из UpdateTrayIconWorker'а
-def updateTrayIcon(self, result):
+def updateTrayIcon(self):
     data_lists = self.data_lists
 
-    if len(data_lists['general_temps']) > 0:
-        #Сформируем новое изображения трея
+    #Если температуры отличаются — сделаем новое изображения трея
+    if round(float(data_lists['current_temp'])) != round(float(data_lists['prev_current_temp'])):
         self.image = support.getTrayImage(data_lists['current_temp'], self.config)
 
 def updateWorkersCollectionInterval(self):

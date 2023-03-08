@@ -5,6 +5,7 @@ import support
 def resetGeneralTemps(self):
     self.data_lists['general_temps'] = []
     self.data_lists['current_temp'] = 0
+    self.data_lists['prev_current_temp'] = 0
     self.data_lists['min_temp'] = 0
     self.data_lists['max_temp'] = 0
 
@@ -38,6 +39,7 @@ def writeTempData(self, result):
         if cpu_temp > self.data_lists['max_temp']:
             self.data_lists['max_temp'] = cpu_temp
 
+        self.data_lists['prev_current_temp'] = self.data_lists['current_temp']
         self.data_lists['current_temp'] = cpu_temp
     
     #Обрезаем массивы

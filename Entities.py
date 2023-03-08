@@ -9,6 +9,7 @@ class DataLists:
                             'average_TDP' : [],
                             'all_load' : [],
                             'current_temp' : 0,
+                            'prev_current_temp' : 0,
                             'min_temp' : 0,
                             'max_temp' : 0,
                             'current_TDP' : 0,

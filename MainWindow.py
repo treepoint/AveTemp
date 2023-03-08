@@ -128,7 +128,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         workers.updateUiScores(self, result)
 
     def updateTrayIcon(self, result):
-        workers.updateTrayIcon(self, result)
+        workers.updateTrayIcon(self)
 
     def showEvent(self, event):
         #Как появилось окно — запустим воркер обновления интерфейса
