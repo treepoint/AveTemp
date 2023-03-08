@@ -2,6 +2,7 @@
 #Для работы с регистром windows
 from winregistry import WinRegistry
 import support
+import logger
 
 #USAGE
 
@@ -18,7 +19,8 @@ if __name__ == "__main__":
         assert test_entry.value == "test"
         client.delete_entry(TEST_REG_PATH, "remove_me") """
 
-def getCurrentThemeIsLight():
+@logger.log
+def getCurrentThemeIsLight(self):
     path = r"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
 
     with WinRegistry() as client:

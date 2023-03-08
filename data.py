@@ -4,8 +4,8 @@ import support
 #Функции для сброса записанных данных
 def resetGeneralTemps(self):
     self.data_lists['general_temps'] = []
-    self.data_lists['current_temp'] = 0
     self.data_lists['prev_current_temp'] = 0
+    self.data_lists['current_temp'] = 0
     self.data_lists['min_temp'] = 0
     self.data_lists['max_temp'] = 0
 

@@ -10,6 +10,7 @@ clr.FindAssembly(r'./DLL')
 from LibreHardwareMonitor.Hardware import Computer
 
 import Entities
+import logger
 
 #Вот эти пляски со startupinfo нужны, чтобы окно не теряло фокус в процессе запуска подпроцессов
 startupinfo = None
@@ -17,7 +18,8 @@ startupinfo = subprocess.STARTUPINFO()
 startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
 startupinfo.wShowWindow = subprocess.SW_HIDE
 
-def initHardware():
+@logger.log
+def initHardware(self):
     #Подрубаем общий мониторинг на всю сессию
     computer = Computer()
     #Включаем сбор информации по процу
@@ -26,12 +28,14 @@ def initHardware():
 
     return computer
 
-def closeHardware(computer):
-    computer.Close()
+@logger.log
+def closeHardware(self):
+    self.computer.Close()
 
-def getCpuName(computer):
+@logger.log
+def getCpuName(self):
     #Идем по сенсорам и забираем название проца
-    for hardware in computer.Hardware:
+    for hardware in self.computer.Hardware:
         if 'LibreHardwareMonitor.Hardware.CPU' in str(hardware.GetType()):
             name = str(hardware.Name)
             if 'with' not in name:
@@ -46,7 +50,8 @@ def getCpuName(computer):
             
             return cpu_name
 
-def getCoresAndThreadsCount(computer):
+@logger.log
+def getCoresAndThreadsCount(self):
     data = {
             'status' : Entities.Status.not_collect,
             'cores_count' : 0,
@@ -54,7 +59,7 @@ def getCoresAndThreadsCount(computer):
            }
 
     #Идем по сенсорам
-    for hardware in computer.Hardware:
+    for hardware in self.computer.Hardware:
         hardware.Update()
 
         for sensor in hardware.Sensors:
@@ -75,7 +80,8 @@ def getCoresAndThreadsCount(computer):
     
     return data
 
-def collectFastData(computer, data_lists, cpu_threads):
+@logger.log
+def collectFastData(self, data_lists, cpu_threads):
     data = {
             'status' : Entities.Status.not_collect,
             'all_load' : 0,
@@ -87,7 +93,7 @@ def collectFastData(computer, data_lists, cpu_threads):
 
     all_load = 0
 
-    for hardware in computer.Hardware:
+    for hardware in self.computer.Hardware:
         hardware.Update()
 
         for sensor in hardware.Sensors:
@@ -128,7 +134,8 @@ def collectFastData(computer, data_lists, cpu_threads):
 
     return data
 
-def collectSlowData(computer, data_lists):
+@logger.log
+def collectSlowData(self, data_lists):
     data = {
             'status' : Entities.Status.not_collect,
             'cpu' : 
@@ -140,7 +147,7 @@ def collectSlowData(computer, data_lists):
            }
 
     #Идем по сенсорам
-    for hardware in computer.Hardware:
+    for hardware in self.computer.Hardware:
         hardware.Update()
 
         for sensor in hardware.Sensors:
@@ -200,51 +207,53 @@ def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, smoothing
     else:
         return old_data
 
-def setCpuPerformanceState(config, data_lists):
-    if not config.getIsCPUManagmentOn():
+@logger.log
+def setCpuPerformanceState(self):
+    if not self.config.getIsCPUManagmentOn():
         return
 
     #Надо проверить, если последние несколько записей были из режима простоя — значит его можно активировать
     #Это надо, чтобы процессор туда-сюда не дергать постоянно
-    data = data_lists['all_load'][:config.getCPUIdleStatePause()]
+    data = self.data_lists['all_load'][:self.config.getCPUIdleStatePause()]
 
-    idle_ticks_count = len(list(filter(lambda all_load: (all_load < config.getCPUThreshhold()), data)))
-    turbo_ticks = list(filter(lambda all_load: (all_load >= config.getCPUThreshhold()), data[:3]))[::-1]
+    idle_ticks_count = len(list(filter(lambda all_load: (all_load < self.config.getCPUThreshhold()), data)))
+    turbo_ticks = list(filter(lambda all_load: (all_load >= self.config.getCPUThreshhold()), data[:3]))[::-1]
 
-    if idle_ticks_count == config.getCPUIdleStatePause():
-        percentage = config.getCPUIdleState()
-        turbo_id = config.getCPUTurboIdleId()
+    if idle_ticks_count == self.config.getCPUIdleStatePause():
+        percentage = self.config.getCPUIdleState()
+        turbo_id = self.config.getCPUTurboIdleId()
         is_CPU_in_load_mode = False
     else:
         if (len(turbo_ticks) >= 2):
             #Врубаем турбо или если прошло 3 турбо тика или если второй тик больше первого на 15%
             #Так пытаемся минимизировать лишнее включение турбо когда не надо
             if (len(turbo_ticks) >= 3) or (turbo_ticks[1] >= turbo_ticks[0] + 15):
-                if int(data[0]) > int(config.getCPUThreshhold()):
-                    percentage = config.getCPULoadState()
-                    turbo_id = config.getCPUTurboLoadId()
+                if int(data[0]) > int(self.config.getCPUThreshhold()):
+                    percentage = self.config.getCPULoadState()
+                    turbo_id = self.config.getCPUTurboLoadId()
                     is_CPU_in_load_mode = True
 
                 #Во всех других случаях ничего не меняем и возвращаем как есть
                 else:
-                    is_CPU_in_load_mode = config.getIsCPUinLoadMode()
+                    is_CPU_in_load_mode = self.config.getIsCPUinLoadMode()
             else:
-                is_CPU_in_load_mode = config.getIsCPUinLoadMode()
+                is_CPU_in_load_mode = self.config.getIsCPUinLoadMode()
         else:
-            is_CPU_in_load_mode = config.getIsCPUinLoadMode()
+            is_CPU_in_load_mode = self.config.getIsCPUinLoadMode()
 
     #Если мы уже в нужном режиме — не переключаем
-    if config.getIsCPUinLoadMode() == is_CPU_in_load_mode:
+    if self.config.getIsCPUinLoadMode() == is_CPU_in_load_mode:
         return is_CPU_in_load_mode
 
     setMaxCPULimits(percentage)
 
-    if config.getIsTurboManagmentOn():
+    if self.config.getIsTurboManagmentOn():
         setCPUTurbo(turbo_id)
 
     return is_CPU_in_load_mode
 
-def setCPUtoDefault():
+@logger.log
+def setCPUtoDefault(self):
     #Проценты
     setMinCPULimits()
     setMaxCPULimits()
@@ -255,6 +264,7 @@ def setCPUtoDefault():
     #Применим
     applyPowerPlanScheme()
 
+@logger.log
 def updateCPUParameters(self, current_config):
     #Получим новые состояния
     new_idle_state = self.config.getCPUIdleState()
@@ -307,20 +317,34 @@ def setCPUTurbo(id):
 def applyPowerPlanScheme():
     subprocess.run('powercfg.exe -S SCHEME_CURRENT', startupinfo=startupinfo)
 
+@logger.log
 def getAvgTempForSeconds(self, collect_slow_data_interval):
-    average_temps_sum_perion = sum(self.data_lists['average_temps'][:collect_slow_data_interval*self.collect_koef])
     average_temps_len_perion = len(self.data_lists['average_temps'][:collect_slow_data_interval*self.collect_koef])
+    if average_temps_len_perion == 0: return 0
 
-    return average_temps_sum_perion/average_temps_len_perion
+    average_temps_sum_perion = sum(self.data_lists['average_temps'][:collect_slow_data_interval*self.collect_koef])
+    avg = average_temps_sum_perion/average_temps_len_perion
 
+    return nvl(avg, 0)
+
+@logger.log
 def getAvgTDPForSeconds(self, collect_slow_data_interval):
-    average_TDPs_sum_perion = sum(self.data_lists['average_TDP'][:collect_slow_data_interval*self.collect_koef])
     average_TDPs_len_perion = len(self.data_lists['average_TDP'][:collect_slow_data_interval*self.collect_koef])
+    if average_TDPs_len_perion == 0: return 0
 
-    return average_TDPs_sum_perion/average_TDPs_len_perion
+    average_TDPs_sum_perion = sum(self.data_lists['average_TDP'][:collect_slow_data_interval*self.collect_koef])
+    avg = average_TDPs_sum_perion/average_TDPs_len_perion
+
+    return nvl(avg, 0)
 
 def checkSMT(self):
     return self.cpu_cores != self.cpu_threads
+
+def nvl(first, second):
+    if (first == None or type(first) == NoneType):
+        return second
+
+    return first
 
 if __name__ == "__main__":
     collectFastData()

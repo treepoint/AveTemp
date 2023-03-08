@@ -6,7 +6,6 @@ import os, sys
 import json
 
 from pathlib import Path
-from datetime import datetime
 
 import Entities 
 import registry
@@ -15,10 +14,6 @@ import localization
 import alerts
 import hardware
 
-now = datetime.now()
-current_time = now.strftime("%H_%M_%S")
-
-debug_file = f'debug_{current_time}.txt'
 config_file = 'settings.ini'
 stat_file = 'statistics.json'
 
@@ -147,7 +142,7 @@ def readConfig(self):
         self.config.setCPUTurboLoadId(int(getValueFromConfigs('CPU_turbo_load_id')))
 
         #И, заодно, прочитаем нужные параметры реестра
-        self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight())
+        self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight(self))
         
         try:
             language_code = config['main']['current_language_code']
@@ -242,7 +237,7 @@ def setComponentsSize(self, additional_height = 0):
     self.CPUinfoTable.setMinimumHeight((self.cpu_cores * 24) + 2)
     self.tableAverage.setMinimumHeight((self.tableAverage.rowCount() * 24) + 2)
 
-    additional_width = (len(hardware.getCpuName(self.computer)) - 24)*10
+    additional_width = (len(hardware.getCpuName(self)) - 24)*10
 
     self.resize(412 + additional_width, 324 + additional_height)
 
@@ -255,11 +250,6 @@ def updateNameAndVersion(self):
         text = trans(locale, 'name_and_version')
         text = text.replace('release_version', name_and_version)
         self.localizations.setDictionaryValue(locale, 'name_and_version', text)
-
-def writeToDebugFile(content):
-    with open(debug_file, 'w') as file:
-        file.truncate(0)
-        file.write(content)
 
 if __name__ == "__main__":
     print(getCurrentPath())

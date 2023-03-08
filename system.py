@@ -1,7 +1,9 @@
 import os
 import psutil
+import logger
 
-def increase_current_process_priority():
+@logger.log
+def increase_current_process_priority(self):
     process = psutil.Process(os.getpid())
     process.nice(psutil.REALTIME_PRIORITY_CLASS)
 

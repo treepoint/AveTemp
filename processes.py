@@ -1,5 +1,7 @@
 import psutil
+import logger
 
+@logger.log
 def alreadyRunning(self):
     process_name = self.config.getName()
     count = 0

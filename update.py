@@ -5,6 +5,7 @@ from langdetect import detect
 import alerts
 import localization
 import Entities
+import logger
 
 trans = localization.trans
 languages = Entities.Languages()
@@ -13,6 +14,7 @@ github_url = 'https://github.com'
 maintainer = 'treepoint'
 
 #Со страницы тегов релизов получим все ссылки на релизы
+@logger.log
 def findLatestReleaseUrl(self):
 
     soup = BeautifulSoup(urllib.request.urlopen(f'{github_url}/{maintainer}/{self.config.getName()}/tags').read(), 'html.parser')
@@ -22,6 +24,7 @@ def findLatestReleaseUrl(self):
     return f'{ github_url }{ release_link }'
 
 #Соберем всю доп.информацию по релизу
+@logger.log
 def findReleaseInfo(self):
     release_info = {
                     'version': 0,
@@ -79,13 +82,15 @@ def findReleaseInfo(self):
 
     return release_info
 
-def getVersionHash(version):
+@logger.log
+def getVersionHash(self, version):
     hash = 0
     for number in version.split('.'):
         hash += int(number)
 
     return hash
 
+@logger.log
 def getNewerReleaseInfo(self):
     release_info = findReleaseInfo(self)
 
@@ -93,13 +98,14 @@ def getNewerReleaseInfo(self):
         release_info['update'] = False
         return release_info
 
-    if getVersionHash(release_info['version']) > getVersionHash(self.config.getVersion()):
+    if getVersionHash(self, release_info['version']) > getVersionHash(self, self.config.getVersion()):
         release_info['update'] = True
     else:
         release_info['update'] = False
 
     return release_info
 
+@logger.log
 def reorderNewReleaseAlertText(self):
     locale_list = languages.getList()
 
@@ -108,6 +114,7 @@ def reorderNewReleaseAlertText(self):
         text = text.replace('<release_url>', self.release_info['release_url'])
         self.localizations.setDictionaryValue(locale, 'new_release', text)
 
+@logger.log
 def updateTransReleaseNotes(self):
 
     locale_list = languages.getList()
@@ -128,7 +135,8 @@ def updateTransReleaseNotes(self):
 
         self.localizations.setDictionaryValue(locale, 'new_release_description', text)
 
-def checkUpdates(self, locale):
+@logger.log
+def checkUpdates(self):
     #Получим инфу
     self.release_info = getNewerReleaseInfo(self)
 
