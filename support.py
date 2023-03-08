@@ -204,14 +204,13 @@ def saveStatistics(self):
 
     jsonStr = json.dumps(data)
 
-    with open(stat_file, 'w') as bf:
-        bf.write(jsonStr)
+    with open(stat_file, 'w') as file:
+        file.write(jsonStr)
 
 def removeStatFile():
     os.remove(stat_file)
 
 def getRestoredData(self):
-
     try:
         file = open(stat_file)
         data = json.load(file)
@@ -247,9 +246,6 @@ def setComponentsSize(self, additional_height = 0):
 
     self.resize(412 + additional_width, 324 + additional_height)
 
-if __name__ == "__main__":
-    print(getCurrentPath())
-
 def updateNameAndVersion(self):
     #Проставим название и версию программы
     name_and_version = f'{ self.config.getName() } { self.config.getVersion() }'
@@ -264,3 +260,6 @@ def writeToDebugFile(content):
     with open(debug_file, 'w') as file:
         file.truncate(0)
         file.write(content)
+
+if __name__ == "__main__":
+    print(getCurrentPath())
