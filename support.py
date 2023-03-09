@@ -203,7 +203,8 @@ def saveStatistics(self):
         file.write(jsonStr)
 
 def removeStatFile():
-    os.remove(stat_file)
+    if os.path.isfile(stat_file):
+        os.remove(stat_file)
 
 def getRestoredData(self):
     try:
