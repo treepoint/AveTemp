@@ -3,13 +3,12 @@ import support
 
 #Функции для сброса записанных данных
 def resetGeneralTemps(self):
-    self.data_lists['general_temps'] = []
+    self.data_lists['prev_current_temp'] = 0
     self.data_lists['current_temp'] = 0
     self.data_lists['min_temp'] = 0
     self.data_lists['max_temp'] = 0
 
 def resetTDP(self):
-    self.data_lists['general_TDP'] = []
     self.data_lists['current_TDP'] = 0
     self.data_lists['min_TDP'] = 0
     self.data_lists['max_TDP'] = 0
@@ -29,8 +28,7 @@ def writeTempData(self, result):
     cpu_temp = round(result['cpu']['temp'], 1)
 
     if cpu_temp > 0:
-        self.data_lists['general_temps'].insert(0, result['cpu']['temp'])
-        self.data_lists['average_temps'].insert(0, result['cpu']['temp'])
+        self.data_lists['average_temps'].insert(0, cpu_temp)
 
         if cpu_temp < self.data_lists['min_temp'] or self.data_lists['min_temp'] == 0:
             self.data_lists['min_temp'] = cpu_temp
@@ -38,10 +36,10 @@ def writeTempData(self, result):
         if cpu_temp > self.data_lists['max_temp']:
             self.data_lists['max_temp'] = cpu_temp
 
+        self.data_lists['prev_current_temp'] = self.data_lists['current_temp']
         self.data_lists['current_temp'] = cpu_temp
     
     #Обрезаем массивы
-    self.data_lists['general_temps'] = self.data_lists['general_temps'][:self.store_period]
     self.data_lists['average_temps'] = self.data_lists['average_temps'][:self.store_period]
 
 #Записываем данные по TDP
@@ -49,8 +47,7 @@ def writeTDPData(self, result):
     cpu_TDP = round(result['cpu']['tdp'], 1)
 
     if cpu_TDP > 0 and cpu_TDP != inf:
-        self.data_lists['general_TDP'].insert(0, result['cpu']['tdp'])
-        self.data_lists['average_TDP'].insert(0, result['cpu']['tdp'])
+        self.data_lists['average_TDP'].insert(0, cpu_TDP)
 
         if (cpu_TDP < self.data_lists['min_TDP']) or self.data_lists['min_TDP'] == 0:
             self.data_lists['min_TDP'] = cpu_TDP
@@ -61,7 +58,6 @@ def writeTDPData(self, result):
         self.data_lists['current_TDP'] = cpu_TDP
 
     #Обрезаем массив
-    self.data_lists['general_TDP'] = self.data_lists['general_TDP'][:self.store_period]
     self.data_lists['average_TDP'] = self.data_lists['average_TDP'][:self.store_period]
 
 #Записываем данные по ядрам

@@ -142,7 +142,7 @@ def readConfig(self):
         self.config.setCPUTurboLoadId(int(getValueFromConfigs('CPU_turbo_load_id')))
 
         #И, заодно, прочитаем нужные параметры реестра
-        self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight())
+        self.config.setSystemUsesLightTheme(registry.getCurrentThemeIsLight(self))
         
         try:
             language_code = config['main']['current_language_code']
@@ -199,14 +199,13 @@ def saveStatistics(self):
 
     jsonStr = json.dumps(data)
 
-    with open(stat_file, 'w') as bf:
-        bf.write(jsonStr)
+    with open(stat_file, 'w') as file:
+        file.write(jsonStr)
 
 def removeStatFile():
     os.remove(stat_file)
 
 def getRestoredData(self):
-
     try:
         file = open(stat_file)
         data = json.load(file)
@@ -238,12 +237,9 @@ def setComponentsSize(self, additional_height = 0):
     self.CPUinfoTable.setMinimumHeight((self.cpu_cores * 24) + 2)
     self.tableAverage.setMinimumHeight((self.tableAverage.rowCount() * 24) + 2)
 
-    additional_width = (len(hardware.getCpuName(self.computer)) - 24)*10
+    additional_width = (len(hardware.getCpuName(self)) - 24)*10
 
     self.resize(412 + additional_width, 324 + additional_height)
-
-if __name__ == "__main__":
-    print(getCurrentPath())
 
 def updateNameAndVersion(self):
     #Проставим название и версию программы
@@ -254,3 +250,12 @@ def updateNameAndVersion(self):
         text = trans(locale, 'name_and_version')
         text = text.replace('release_version', name_and_version)
         self.localizations.setDictionaryValue(locale, 'name_and_version', text)
+
+def nvl(first, second):
+    if (first == None or isinstance(first, type(None))):
+        return second
+
+    return first
+
+if __name__ == "__main__":
+    print(getCurrentPath())

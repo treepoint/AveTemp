@@ -14,6 +14,8 @@ import system
 import data
 import update
 import alerts
+import processes
+import logger
 
 app_icon = support.getResourcePath('./images/icon.png')
 data_lists = Entities.DataLists()
@@ -22,19 +24,33 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        system.increase_current_process_priority()
+        self.main()
+    
+    @logger.log
+    def main(self):
+        logger.setDebug(self)
 
         self.config = Entities.Config()
         support.readConfig(self)
+
+        #Если уже запущен — выходим
+        if processes.alreadyRunning(self):
+            raise Exception('AveTemp is already running')
+        
+        system.increase_current_process_priority(self)
+
+        #Применим текущие настройки процессора
+        if self.config.getIsCPUManagmentOn():
+            hardware.updateCPUParameters(self, self.config)
 
         #Листы для хранения данных
         self.data_lists = data_lists.get()
 
         #Включаем мониторинг и объект, откуда брать данные
-        self.computer = hardware.initHardware()
+        self.computer = hardware.initHardware(self)
 
         #Данные по ядрам и потокам
-        cores_and_threads = hardware.getCoresAndThreadsCount(self.computer)
+        cores_and_threads = hardware.getCoresAndThreadsCount(self)
         self.cpu_cores = cores_and_threads['cores_count']
         self.cpu_threads = cores_and_threads['threads_count']
 
@@ -43,8 +59,8 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
 
         #Проставляем режим работы процесора
         if self.config.getIsCPUManagmentOn():
-            CPU_performance_mode = hardware.setCpuPerformanceState(self.config, self.data_lists)
-            self.config.setPerformanceCPUModeOn(CPU_performance_mode)
+            CPU_performance_mode = hardware.setCpuPerformanceState(self)
+            self.config.setIsCPUinLoadMode(CPU_performance_mode)
          
         #За сколько секунд храним данные, 86400 — сутки
         self.store_period = self.config.getStorePeriod()
@@ -85,17 +101,27 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         self.is_alert_expand = False
 
         support.checkAdminRights(self)
-        update.checkUpdates(self, self.locale)
+        update.checkUpdates(self)
 
         support.setComponentsSize(self)
 
+    @logger.log
     def setupButtonsActions(self):
-        self.buttonResetGeneralTemps.clicked.connect(data.resetGeneralTemps)
-        self.buttonResetTDP.clicked.connect(data.resetTDP)
-        self.buttonResetAverageTemps.clicked.connect(data.resetAverage)
-        self.buttonShowSettings.clicked.connect(self.showSettings)
-        self.buttonAlertExpand.clicked.connect(self.expandAlert)
-        self.buttonAlertClose.clicked.connect(self.closeAlert)
+        self.buttonResetGeneralTemps.pressed.connect(self.resetGeneralTemps)
+        self.buttonResetTDP.pressed.connect(self.resetTDP)
+        self.buttonResetAverageTemps.pressed.connect(self.resetAverage)
+        self.buttonShowSettings.pressed.connect(self.showSettings)
+        self.buttonAlertExpand.pressed.connect(self.expandAlert)
+        self.buttonAlertClose.pressed.connect(self.closeAlert)
+
+    def resetGeneralTemps(self):
+        data.resetGeneralTemps(self)
+
+    def resetTDP(self):
+        data.resetTDP(self)
+
+    def resetAverage(self):
+        data.resetAverage(self)
 
     def closeAlert(self):
         alerts.closeAlert(self)
@@ -116,16 +142,18 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         workers.updateSystemStateConfig(self, result)
 
     def updateUiScores(self, result):
-        workers.updateUiScores(self, result)
+        workers.updateUiScores(self)
 
     def updateTrayIcon(self, result):
-        workers.updateTrayIcon(self, result)
+        workers.updateTrayIcon(self)
 
+    @logger.log
     def showEvent(self, event):
         #Как появилось окно — запустим воркер обновления интерфейса
         self.update_ui_scores_worker.start()
 
     #Перезаписываем событие не закрытие, чтобы скрывать в трей если это надо
+    @logger.log
     def closeEvent(self, event):
         if self.config.getCloseToTray():
             event.ignore()
@@ -133,19 +161,19 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             self.update_ui_scores_worker.stop()
         else:
             workers.stopWorkers(self)
-
-            hardware.setCPUStatetoDefault()
-            hardware.setTurboToDefault()
-
+            hardware.setCPUtoDefault(self)
             #Выключим мониторинг оборудования
-            hardware.closeHardware(self.computer)
+            hardware.closeHardware(self)
 
+    @logger.log
     def setCpuName(self):
-        cpu_name = hardware.getCpuName(self.computer)
+        cpu_name = hardware.getCpuName(self)
         cpu_name_with_counts = f"{ cpu_name } ({ str(self.cpu_cores) }/{ str(self.cpu_threads) })"
         self.cpuNameLabel.setText(cpu_name_with_counts)
 
+    @logger.log
     def showSettings(self):
+
         window = SettingsWindow.Main(self.locale)
         window.setWindowIcon(QIcon(app_icon))
         window.setData(self.config)
@@ -167,14 +195,14 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             
             if not current_config.getIsBackupNeeded() and self.config.getIsBackupNeeded():
                 workers.startBackupWorker(self)
-
-            #Позаботимся обновить ограничения процессора если они поменялись
-            hardware.updateCPUParameters(self, current_config)
             
             #И если пользователь отключил управление процом — выставим все в сотку и турбо без ограничений, обычно это дефолт
             if self.config.getIsCPUManagmentOn() == False and (self.config.getIsCPUManagmentOn() != current_config.getIsCPUManagmentOn()):
-                hardware.setCPUStatetoDefault()
-                hardware.setTurboToDefault()
+                hardware.setCPUtoDefault(self)
+            
+            #Иначе позаботимся обновить ограничения процессора если они поменялись
+            else:
+                hardware.updateCPUParameters(self, current_config)
 
             #Обновим локализацию если надо
             new_locale = window.config.getCurrentLanguageCode()

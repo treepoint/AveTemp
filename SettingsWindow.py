@@ -1,5 +1,7 @@
 from PyQt6 import QtWidgets
+
 import windows.settingsWindow
+import logger
 
 import Entities
 languages = Entities.Languages()
@@ -7,18 +9,27 @@ languages = Entities.Languages()
 class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
     def __init__(self, locale, parent=None):
         super().__init__(parent)
+
+        logger.setDebug(self)
+        self.main(locale)
+
+    @logger.log
+    def main(self, locale):
+
         self.config = Entities.Config()
 
         self.setupUi(self, locale)
 
-        self.buttonSaveSettings.clicked.connect(self.closeWindow)
+        self.buttonSaveSettings.pressed.connect(self.closeWindow)
         self.checkBoxCPUManagment.toggled.connect(self.switchCPUManagmentBlock)
         self.checkBoxAutostartIsActive.toggled.connect(self.switchAutostartBlock)
         self.checkBoxStoreStat.toggled.connect(self.switchStatisticsBlock)
 
-    def reloadUi(self):
+    @logger.log
+    def reloadUi(self, index):
         self.retranslateUi(self, self.comboBoxLanguage.currentData())
 
+    @logger.log
     def setData(self, config):
         #Селект локализации
         self.comboBoxLanguage.addItem(languages.getRussian()['name'], languages.getRussian()['code'])
@@ -59,8 +70,9 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.comboBoxCPUTurboIdleState.setCurrentIndex(idleComboboxIndex)
         self.comboBoxCPUTurboLoadState.setCurrentIndex(loadComboboxIndex)
 
-    def switchStatisticsBlock(self):
-        if self.checkBoxStoreStat.isChecked():
+    @logger.log
+    def switchStatisticsBlock(self, is_checked):
+        if is_checked:
             new_state = True
         else:
             new_state = False
@@ -69,8 +81,9 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.labelBackupIntervalHint.setEnabled(new_state)
         self.spinBoxBackupInterval.setEnabled(new_state)
 
-    def switchAutostartBlock(self):
-        if self.checkBoxAutostartIsActive.isChecked():
+    @logger.log
+    def switchAutostartBlock(self, is_checked):
+        if is_checked:
             new_state = True
         else:
             new_state = False
@@ -79,8 +92,9 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.labelAutostartDelayHint.setEnabled(new_state)
         self.spinBoxAutostartDelay.setEnabled(new_state)
 
-    def switchCPUManagmentBlock(self):
-        if self.checkBoxCPUManagment.isChecked():
+    @logger.log
+    def switchCPUManagmentBlock(self, is_checked):
+        if is_checked:
             new_state = True
         else:
             new_state = False
@@ -101,6 +115,7 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
         self.labelCPUTurboLoadState.setEnabled(new_state)
         self.comboBoxCPUTurboLoadState.setEnabled(new_state)
 
+    @logger.log
     def closeWindow(self):
         #Локализация
         self.config.setCurrentLanguageCode(self.comboBoxLanguage.currentData())

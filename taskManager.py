@@ -1,11 +1,13 @@
 import os
 import win32com.client
 import support
+import logger
 
 scheduler = win32com.client.Dispatch('Schedule.Service')
 scheduler.Connect()
 root_folder = scheduler.GetFolder('\\')
 
+@logger.log
 def addToAutostart(self):
     task_def = scheduler.NewTask(0)
     location = str(support.getCurrentPath())
@@ -45,6 +47,7 @@ def addToAutostart(self):
         '',  # Без пароля
         TASK_LOGON_NONE)
 
+@logger.log
 def removeFromAutostart(self):
     if checkThatAutostartIsActive(self):
         root_folder.DeleteTask(self.config.getName(), 0)
@@ -53,6 +56,7 @@ def removeFromAutostart(self):
 # Да, есть метод получения одного таска по имени, но он падает если таска нет,
 # а завязываться на состояние «я упал» как-то не хочется, потому просто посмотрим
 # в общем списке
+@logger.log
 def checkThatAutostartIsActive(self):
     tasks = root_folder.GetTasks(0)
     task_name = self.config.getName()

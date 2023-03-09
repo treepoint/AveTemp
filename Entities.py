@@ -3,12 +3,11 @@ import enum
 class DataLists:
     def __init__(self,
                  lists = {
-                            'general_temps' : [], 
                             'average_temps' : [],
-                            'general_TDP' : [],
                             'average_TDP' : [],
                             'all_load' : [],
                             'current_temp' : 0,
+                            'prev_current_temp' : 0,
                             'min_temp' : 0,
                             'max_temp' : 0,
                             'current_TDP' : 0,
@@ -27,17 +26,17 @@ class DataLists:
 
 class Config:
     def __init__(self, 
-                 collect_slow_data_interval = 1, 
+                 collect_slow_data_interval = 0.7, 
                  collect_fast_data_interval = 0.1,
                  autostart_delay = 3,
-                 backup_interval = 1, 
+                 backup_interval = 15, 
                  is_backup_needed = True, 
                  store_period = 86400, 
                  close_to_tray = False, 
                  open_minimized = False,
                  CPU_idle_state_pause = 50,
                  is_CPU_managment_on = False,
-                 CPU_threshhold = 45,
+                 CPU_threshhold = 70,
                  CPU_idle_state = 60,
                  CPU_load_state = 100,
                  is_turbo_managment_on = False,
@@ -63,7 +62,7 @@ class Config:
 
         #Управление процессором
         self.collect_fast_data_interval = collect_fast_data_interval
-        self.performance_CPU_mode_on = True
+        self.is_CPU_in_load_mode = False
         self.CPU_idle_state_pause = CPU_idle_state_pause
         self.is_CPU_managment_on = is_CPU_managment_on
         self.CPU_threshhold = CPU_threshhold
@@ -146,11 +145,11 @@ class Config:
     def setCollectFastDataInterval(self, value):
         self.collect_fast_data_interval = value
 
-    def setPerformanceCPUModeOn(self, value):
-        self.performance_CPU_mode_on = value
+    def setIsCPUinLoadMode(self, value):
+        self.is_CPU_in_load_mode = value
 
-    def getPerformanceCPUModeOn(self):
-        return self.performance_CPU_mode_on
+    def getIsCPUinLoadMode(self):
+        return self.is_CPU_in_load_mode
 
     def getCPUIdleStatePause(self):
         return self.CPU_idle_state_pause
