@@ -57,9 +57,9 @@ def findReleaseInfo(self):
 
             if len(text) > 0:
                 if detect(text) == 'en':
-                    release_info['en']['description'] += text
+                    release_info['en']['description'] += f'{text}\n\n'
                 else:
-                    release_info['ru']['description'] += text
+                    release_info['ru']['description'] += f'{text}\n\n'
 
         if content.name == 'ul' or content.name == 'ol':
             release_notes = content.contents
@@ -73,6 +73,10 @@ def findReleaseInfo(self):
                             release_info['en']['release_notes'].append(text.replace('\n',''))
                         else:
                             release_info['ru']['release_notes'].append(text.replace('\n',''))
+
+    #Удалим последние переносы строк
+    release_info['en']['description'] = release_info['en']['description'][:-2]
+    release_info['ru']['description'] = release_info['ru']['description'][:-2]
 
     release_info['version'] = release_url.replace(f'{github_url}/{maintainer}/{self.config.getName()}/releases/tag/','')
     release_info['download_link'] = f'{github_url}/{maintainer}/{self.config.getName()}/releases/download/{ release_info["version"] }/{self.config.getName()}.exe'
