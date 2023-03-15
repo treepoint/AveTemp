@@ -3,6 +3,8 @@
 - English description — https://github.com/treepoint/AveTemp#avetemp-eng
 - Русское описание — https://github.com/treepoint/AveTemp#avetemp-ru
 
+[Boosty](https://boosty.to/paul_khoziashev), [Patreon](https://patreon.com/paul_khoziashev).
+
 # AveTemp (ENG)
 Free to use tool for continuous monitoring CPU temperature and TDP, also auto adjust CPU performance state and CPU Turbo mode depends on current workload.
 
@@ -62,8 +64,11 @@ I am very appreciating LibreHardwareMonitor and everyone whom working on it http
 MPL-2.0 license, so you can use it everywhere if you want to without any payments.
 
 ## Donate
-I will be happy if you will send me money for a coffee cup:
+I will be happy if you will support me. Besides development, i am also a [musician](https://soundcloud.com/bqv7wqvhjdko):
+- Boosty: https://boosty.to/paul_khoziashev
+- Patreon: https://patreon.com/paul_khoziashev
 
+Или можно сразу на карту:
 - Uzbek sum: 8600 4904 8192 1298
 - USD: 4278 3100 2282 7059
 - Russian rubles: 2202 2023 3862 1422
@@ -127,8 +132,11 @@ AveTemp — программа на базе python и LibreHardwareMonitorLib �
 Лицензия MPL-2.0, так что вы можете использовать программу бесплатно везде где если захотите.
 
 ## Донаты и поддержка
-Я буду рад, если вы скините мне деньги на чашку кофе:
+Я буду рад, если вы меня поддержите. Кроме разработки AT, я еще и [музыкант](https://soundcloud.com/bqv7wqvhjdko):
+- Boosty: https://boosty.to/paul_khoziashev
+- Patreon: https://patreon.com/paul_khoziashev
 
+Или можно сразу на карту:
 - Узбекские сумы: 8600 4904 8192 1298
 - Доллары: 4278 3100 2282 7059
 - Российские рубли: 2202 2023 3862 1422
