@@ -64,6 +64,7 @@ def writeToConfig(config):
     with open(config_file, 'w') as configfile:
         configfile.truncate(0)
         configParser.write(configfile)
+        configfile.close()  
 
 def createEmptyConfigFile():
     config = Entities.Config()
