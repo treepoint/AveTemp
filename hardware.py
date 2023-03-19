@@ -241,6 +241,9 @@ def setCpuPerformanceState(self):
     if self.config.getIsTurboManagmentOn():
         setCPUTurbo(turbo_id)
 
+    #Применим
+    applyPowerPlanScheme()
+
     return is_CPU_in_load_mode
 
 @logger.log

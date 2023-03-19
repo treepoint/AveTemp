@@ -10,3 +10,4 @@ pyyaml
 psutil
 beautifulsoup4
 langdetect
+wheel
