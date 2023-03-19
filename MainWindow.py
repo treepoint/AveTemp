@@ -195,6 +195,7 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
             
             if not current_config.getIsBackupNeeded() and self.config.getIsBackupNeeded():
                 workers.startBackupWorker(self)
+                support.saveStatistics(self)
             
             #И если пользователь отключил управление процом — выставим все в сотку и турбо без ограничений, обычно это дефолт
             if self.config.getIsCPUManagmentOn() == False and (self.config.getIsCPUManagmentOn() != current_config.getIsCPUManagmentOn()):
