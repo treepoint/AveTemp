@@ -1,5 +1,6 @@
 from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtWidgets import QTableWidgetItem
+from types import NoneType
 
 import time
 import registry
@@ -116,7 +117,9 @@ class CollectFastDataWorker(QThread):
 
         while self.keepRunning:
             data = hardware.collectFastData(self, self.data_lists, self.cpu_threads)
-            self.result.emit(data)
+            if type(data) != NoneType:
+                self.result.emit(data)
+
             time.sleep(self.collect_fast_data_interval)
 
     def stop(self):
