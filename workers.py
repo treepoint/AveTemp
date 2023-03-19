@@ -66,7 +66,8 @@ class CollectSlowDataWorker(QThread):
 
         while self.keepRunning:
             data = hardware.collectSlowData(self, self.data_lists)
-            self.result.emit(data)
+            if type(data) != NoneType:
+                self.result.emit(data)
             time.sleep(self.collect_slow_data_interval)
 
     def update(self, config):
@@ -392,8 +393,10 @@ def startWorkers(self):
 
     #Для бэкапа
     if self.config.getIsBackupNeeded():
-        if support.getRestoredData(self):
-            self.data_lists = support.getRestoredData(self)
+        restored_data = support.getRestoredData(self)
+
+        if restored_data:
+            self.data_lists = restored_data
 
         startBackupWorker(self)
 
