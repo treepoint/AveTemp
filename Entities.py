@@ -78,7 +78,7 @@ class Config:
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
         self.name = 'AveTemp'
-        self.version = '1.4.5'
+        self.version = '1.4.6'
 
     #Локализация
     def getCurrentLanguageCode(self):
