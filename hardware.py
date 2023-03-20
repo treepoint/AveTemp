@@ -152,29 +152,39 @@ def collectSlowData(self, data_lists):
         hardware.Update()
 
         for sensor in hardware.Sensors:
+
+            if type(sensor.Value) == NoneType:
+                continue
+                
             #Добавляем общую температуру проца
             if str(sensor.SensorType) == 'Temperature' and str(sensor.Name) in ('Core (Tctl/Tdie)', 'CPU Package'):
                 new_temp = round(sensor.Value, 2)
 
                 old_temp = data_lists['current_temp']
 
-                if old_temp > 0:
-                    data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_temp, old_temp)
-                else:
+                if old_temp <= 0:
                     data['cpu']['temp'] = new_temp
+                else:
+                    if new_temp > 0:
+                        data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_temp, old_temp)
+                    else:
+                        data['cpu']['temp'] = old_temp
 
                 continue
 
             #Добавляем TDP
-            if str(sensor.SensorType) == 'Power' and str(sensor.Name) in ('Package', 'CPU Package') and type(sensor.Value) != NoneType:
+            if str(sensor.SensorType) == 'Power' and str(sensor.Name) in ('Package', 'CPU Package'):
                 new_tdp = round(sensor.Value, 2)
 
                 old_tdp = data_lists['current_TDP']
 
-                if old_tdp > 0:
-                    data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_tdp, old_tdp)
-                else:
+                if old_tdp <= 0:
                     data['cpu']['tdp'] = new_tdp
+                else:
+                    if new_tdp > 0:
+                        data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_tdp, old_tdp)
+                    else:
+                        data['cpu']['tdp'] = old_tdp
 
                 continue 
 
@@ -240,6 +250,9 @@ def setCpuPerformanceState(self):
 
     if self.config.getIsTurboManagmentOn():
         setCPUTurbo(turbo_id)
+
+    #Применим
+    applyPowerPlanScheme()
 
     return is_CPU_in_load_mode
 

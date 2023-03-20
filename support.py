@@ -4,6 +4,7 @@ import configparser  # Для чтения конфига
 import ctypes
 import os, sys
 import json
+import copy
 
 from pathlib import Path
 
@@ -64,6 +65,7 @@ def writeToConfig(config):
     with open(config_file, 'w') as configfile:
         configfile.truncate(0)
         configParser.write(configfile)
+        configfile.close()  
 
 def createEmptyConfigFile():
     config = Entities.Config()
@@ -194,8 +196,14 @@ def getTrayImage(value, config):
 
 def saveStatistics(self):
     #Добавляем версию, чтобы проверять на совместимость
-    data = self.data_lists
+    data = copy.copy(self.data_lists)
     data['version'] = self.config.getVersion()
+
+    #Почистим минимум и максимум, они не информативны за рамками сессии
+    data['min_temp'] = 0
+    data['max_temp'] = 0
+    data['min_TDP'] = 0
+    data['max_TDP'] = 0
 
     jsonStr = json.dumps(data)
 
