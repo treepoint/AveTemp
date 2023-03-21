@@ -27,6 +27,8 @@ def initHardware(self):
     computer.IsCpuEnabled = True 
     computer.Open()
 
+    logger.truncateHardwareDumpFile(self)
+
     return computer
 
 @logger.log
@@ -151,7 +153,13 @@ def collectSlowData(self, data_lists):
     for hardware in self.computer.Hardware:
         hardware.Update()
 
+        logger.dumpHardwareToFile(self, '----------sensors---------')
+
         for sensor in hardware.Sensors:
+
+            sensor_log = f'Type: "{ sensor.SensorType }", Name: "{ sensor.Name }", Value: "{ sensor.Value }"'
+
+            logger.dumpHardwareToFile(self, sensor_log)
 
             if type(sensor.Value) == NoneType:
                 continue
@@ -196,7 +204,9 @@ def collectSlowData(self, data_lists):
 
                 data['cpu']['cores'] += [{'id' : int(number), 'clock' : value }]
                 continue 
-                    
+
+        logger.dumpHardwareToFile(self, '----------sensors end---------')
+
     return data
 
 def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, smoothing_factor = 1.5, theshold = 3):

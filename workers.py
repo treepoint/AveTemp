@@ -57,6 +57,7 @@ class CollectSlowDataWorker(QThread):
         self.computer = app_self.computer
         self.data_lists = app_self.data_lists
         self.no_debug = app_self.no_debug
+        self.hardware_dump = app_self.hardware_dump
 
     result = pyqtSignal(dict)
 
