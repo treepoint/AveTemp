@@ -1,4 +1,5 @@
 from PyQt6 import QtWidgets
+import webbrowser
 
 import windows.settingsWindow
 import logger
@@ -20,10 +21,22 @@ class Main(QtWidgets.QDialog,  windows.settingsWindow.Ui_Dialog):
 
         self.setupUi(self, locale)
 
+        #Обработка контролов
+        self.setupControlsActions()
+
+    def setupControlsActions(self):
         self.buttonSaveSettings.pressed.connect(self.closeWindow)
         self.checkBoxCPUManagment.toggled.connect(self.switchCPUManagmentBlock)
         self.checkBoxAutostartIsActive.toggled.connect(self.switchAutostartBlock)
         self.checkBoxStoreStat.toggled.connect(self.switchStatisticsBlock)
+        self.buttonBoosty.pressed.connect(self.openBoosty)
+        self.buttonPatreon.pressed.connect(self.openPatreon)
+
+    def openBoosty(self):
+        webbrowser.open('https://boosty.to/paul_khoziashev', new=0, autoraise=True)
+    
+    def openPatreon(self):
+        webbrowser.open('https://www.patreon.com/paul_khoziashev', new=0, autoraise=True)
 
     @logger.log
     def reloadUi(self, index):

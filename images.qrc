@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="images">
+    <file>images/boosty_hover.png</file>
+    <file>images/boosty_pressed.png</file>
+    <file>images/patreon_hover.png</file>
+    <file>images/patreon_pressed.png</file>
+    <file>images/boosty.png</file>
+    <file>images/patreon.png</file>
     <file>images/close.svg</file>
     <file>images/close_hover.svg</file>
     <file>images/close_pressed.svg</file>
