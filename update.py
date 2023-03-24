@@ -116,6 +116,7 @@ def reorderNewReleaseAlertText(self):
     for locale in locale_list:
         text = trans(locale, 'new_release')
         text = text.replace('<release_url>', self.release_info['release_url'])
+        text = text.replace('<version>', self.release_info['version'])
         self.localizations.setDictionaryValue(locale, 'new_release', text)
 
 @logger.log
