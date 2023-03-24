@@ -106,8 +106,13 @@ def collectFastData(self, data_lists, cpu_threads):
                 sensors = str(sensor.Name).split('#')
 
                 #костыль для Intel
+                #у него наименование потоков идет так: 
+                # "CPU Core #1 Thread #1"
+                # "CPU Core #1 Thread #2"
                 if len(sensors) == 3:
-                    number = sensors[2]
+                    core_number = sensors[1].split(' Thread')[0]
+                    core_thread_number = sensors[2]
+                    number = str(int(core_number)*2+int(core_thread_number)-2)
                 else:
                     number = sensors[1]
 
@@ -355,4 +360,4 @@ def checkSMT(self):
     return self.cpu_cores != self.cpu_threads
 
 if __name__ == "__main__":
-    collectFastData()
+    checkSMT()
