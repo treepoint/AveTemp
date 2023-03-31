@@ -9,10 +9,10 @@ class DataLists:
                             'current_temp' : 0,
                             'prev_current_temp' : 0,
                             'min_temp' : 0,
-                            'max_temp' : 0,
+                            'max_temp' : [], #Нам потом надобно проверять на скачки, потому массив
                             'current_TDP' : 0,
                             'min_TDP' : 0,
-                            'max_TDP' : 0,
+                            'max_TDP' : [], #Нам потом надобно проверять на скачки, потому массив
                             'cpu' : 
                                     { 
                                         'cores' : [],
@@ -41,7 +41,8 @@ class Config:
                  CPU_load_state = 100,
                  is_turbo_managment_on = False,
                  CPU_turbo_idle_id = 0,
-                 CPU_turbo_load_id = 2
+                 CPU_turbo_load_id = 2,
+                 max_values_cache_ticks = 6
                  ):
         #Локализация
         self.current_language_code = 'en'
@@ -77,6 +78,7 @@ class Config:
         #Служебные
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
+        self.max_values_cache_ticks = max_values_cache_ticks
         self.name = 'AveTemp'
         self.version = '1.4.6'
 
@@ -209,6 +211,9 @@ class Config:
 
     def getSystemUsesLightTheme(self):
         return self.system_uses_light_theme
+    
+    def getMaxValuesCacheTicks(self):
+        return self.max_values_cache_ticks
 
     def getName(self):
         return self.name

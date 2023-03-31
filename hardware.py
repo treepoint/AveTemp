@@ -179,9 +179,11 @@ def collectSlowData(self, data_lists):
                     data['cpu']['temp'] = new_temp
                 else:
                     if new_temp > 0:
-                        data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_temp, old_temp)
+                        new_temp = compareAndGetCorrectSensorDataBetweenOldAndNew(new_temp, old_temp)
                     else:
-                        data['cpu']['temp'] = old_temp
+                        new_temp = old_temp
+
+                    data['cpu']['temp'] = new_temp
 
                 continue
 
@@ -195,9 +197,11 @@ def collectSlowData(self, data_lists):
                     data['cpu']['tdp'] = new_tdp
                 else:
                     if new_tdp > 0:
-                        data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_tdp, old_tdp)
+                        new_tdp = compareAndGetCorrectSensorDataBetweenOldAndNew(new_tdp, old_tdp)
                     else:
-                        data['cpu']['tdp'] = old_tdp
+                        new_tdp = old_tdp
+
+                    data['cpu']['tdp'] = new_tdp
 
                 continue 
 

@@ -201,9 +201,9 @@ def saveStatistics(self):
 
     #Почистим минимум и максимум, они не информативны за рамками сессии
     data['min_temp'] = 0
-    data['max_temp'] = 0
+    data['max_temp'] = []
     data['min_TDP'] = 0
-    data['max_TDP'] = 0
+    data['max_TDP'] = []
 
     jsonStr = json.dumps(data)
 

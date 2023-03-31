@@ -65,6 +65,9 @@ class Main(QMainWindow,  windows.mainWindow.Ui_MainWindow):
         #За сколько секунд храним данные, 86400 — сутки
         self.store_period = self.config.getStorePeriod()
 
+        #Сколько тиков по макс. значениям храним, чтобы сглаживать пики
+        self.max_values_cache_ticks = self.config.getMaxValuesCacheTicks()
+
         #Интервал сбора
         self.collect_slow_data_interval = self.config.getCollectSlowDataInterval()
 

@@ -287,7 +287,8 @@ def updateUiScores(self):
         #Текущая
         self.lineEditCpuCurrentTemp.setText(str(data_lists['current_temp']))
         #Максимальная
-        self.lineEditCpuMaxTemp.setText(str(data_lists['max_temp']))
+        max_temp = max([max_temp['value'] for max_temp in self.data_lists['max_temp'] if max_temp['type'] == 'correct'])
+        self.lineEditCpuMaxTemp.setText(str(max_temp))
 
         #Средние температуры
         row = 0
@@ -307,7 +308,8 @@ def updateUiScores(self):
         #Текущий
         self.lineEditCpuCurrentTDP.setText(str(data_lists['current_TDP']))
         #Максимальный
-        self.lineEditCpuMaxTDP.setText(str(data_lists['max_TDP']))
+        max_TDP = max([max_TDP['value'] for max_TDP in self.data_lists['max_TDP'] if max_TDP['type'] == 'correct'])
+        self.lineEditCpuMaxTDP.setText(str(max_TDP))
 
     for core in self.data_lists['cpu']['cores']:
         self.CPUinfoTable.setItem(core['id'], 0, QTableWidgetItem(core['clock']))
