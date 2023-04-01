@@ -66,8 +66,6 @@ def writeTDPData(self, result):
     self.data_lists['average_TDP'] = self.data_lists['average_TDP'][:self.store_period]
     self.data_lists['max_TDP'] = correct_max_TDPs[:self.max_values_cache_ticks]
 
-    print(self.data_lists['max_TDP'])
-
 #Записываем данные по ядрам
 def writeCoresData(self, result):  
     cores = []   
