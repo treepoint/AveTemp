@@ -42,7 +42,7 @@ class Config:
                  is_turbo_managment_on = False,
                  CPU_turbo_idle_id = 0,
                  CPU_turbo_load_id = 2,
-                 max_values_cache_ticks = 6
+                 max_values_cache_ticks = 5
                  ):
         #Локализация
         self.current_language_code = 'en'

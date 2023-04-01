@@ -1,6 +1,7 @@
 from math import inf
 import copy
 import support
+import numpy as np
 
 #Функции для сброса записанных данных
 def resetGeneralTemps(self):
@@ -59,11 +60,13 @@ def writeTDPData(self, result):
 
         self.data_lists['current_TDP'] = cpu_TDP
 
-        correct_max_TDPs = correct_false_peak_data(self.data_lists['max_TDP'], cpu_TDP)
+        correct_max_TDPs = correct_false_peak_data(self.data_lists['max_TDP'], cpu_TDP, 1)
 
     #Обрезаем массивы
     self.data_lists['average_TDP'] = self.data_lists['average_TDP'][:self.store_period]
     self.data_lists['max_TDP'] = correct_max_TDPs[:self.max_values_cache_ticks]
+
+    print(self.data_lists['max_TDP'])
 
 #Записываем данные по ядрам
 def writeCoresData(self, result):  
@@ -88,68 +91,55 @@ def writeThreadsData(self, result):
 
     self.data_lists['all_load'] = self.data_lists['all_load'][:self.store_period]
 
-def correct_false_peak_data(array, new_value):
+def correct_false_peak_data(array, new_value, log = 0):
     #Теперь, чтобы записать данные по макс. температуре и TDP и нам надо исключить явно кривые пики.
     #Для этого мы записываем данные, но те, что отличаются от средних сильно, записываем карандашиком
     #Если потом по среднему значению оказывается, что они правдивы — записываем ручкой.
 
-    result_array = []
+    tmp_array = copy.copy(array)
+    array_len = len(tmp_array)
+    correct_coef = 1.25
 
-    #Посчитаем кол-во значений и среднее макс значение
-    array_len = len(array)
-    avg_max = 0
-
-    if array_len != 0:
-        for max_temp in array:
-            avg_max += max_temp['value']
-    
-        avg_max = avg_max/array_len
+    #Если массив пустой — вернем как есть
+    if array_len == 0:
+        return([{ 'value' : new_value, 'type' : 'correct'}])
 
     #Занесем новое значение с учетом погрешности
-    if array_len == 0 or new_value > avg_max:
+    avg_max = np.average([value['value'] for value in tmp_array])
+    new_max_temp = None
+
+    if new_value >= avg_max*correct_coef:
+        new_max_temp = { 'value' : new_value, 'type' : 'doubtful'}
+    elif new_value > tmp_array[0]['value']:
         new_max_temp = { 'value' : new_value, 'type' : 'correct'}
 
-        if new_value >= (avg_max)*1.25 and avg_max != 0:
-            new_max_temp['type'] = 'doubtful'
-
-        array.insert(0, new_max_temp)
-
     #Проверим весь массив, возможно для чего-то можно переопределить теперь статус
-    max_array = []
+    corrected_array = []
 
-    for value in array:
-        updated_max_value = value
+    for value in tmp_array:
+        if value['value'] <= avg_max*correct_coef and value['type'] == 'doubtful':
+            corrected_array.append({ 'value' : value['value'], 'type' : 'correct'})
+        else:
+            corrected_array.append(value)
 
-        if updated_max_value['value'] <= (avg_max)*1.25:
-            updated_max_value['type'] = 'correct'
-        
-        max_array.append(value)
+    #Если новое значение не определили — значит оно и не максимальное, вернем проверенный массив
+    if new_max_temp == None:
+        return corrected_array
 
-    #Если кривое значение только что прилетело — дадим ему шанс и пока оставим как есть
-    #Но только если их не два суммарно в массиве, чтобы не копить ошибку
-    doubtful_count = len([value for value in max_array if value['type'] == 'doubtful'])
+    corrected_array.insert(0, new_max_temp)
 
-    if max_array[0]['type'] == 'doubtful' and doubtful_count <= 1:
-        return max_array
+    #Если кривое значение только что прилетело и оно одно в массиве — дадим ему шанс и пока оставим как есть
+    doubtful_count = len([value for value in corrected_array if value['type'] == 'doubtful'])
+    
+    if new_max_temp['type'] == 'doubtful' and doubtful_count <= 1:
+        return corrected_array
 
-    #А теперь удалим кривые значения, если они не подряд
-    prev_value = None
+    #Далее, смотрим, если новое значение и предыдущее оба сомнительные и 
+    #отличаются не больше чем на 1.25 — окей, запишем
+    if new_max_temp['type'] == 'doubtful' and corrected_array[0]['type'] == 'doubtful' \
+        and new_max_temp['value'] <= corrected_array[0]['value']*correct_coef:
+        return corrected_array
 
-    is_sequence_of_doubtful = False
-    for value in max_array:
-        if prev_value == None:
-            prev_value = value
-            continue
-        
-        if value['type'] == prev_value['type']:
-            is_sequence_of_doubtful = True
-            break
-
-    #Если последовательности нет — удалим сомнительные
-    if not is_sequence_of_doubtful:
-        result_array = [value for value in max_array if value['type'] == 'correct']
-    else:
-        result_array = max_array
-
-    #Вернем скорректированный массив
-    return result_array
+    #Иначе, если все еще не скорректировались — уберем кривые значения, чтобы не копить ошибку
+    #А если нет — удалим кривые значения, если они не подряд
+    return [value for value in corrected_array if value['type'] == 'correct']

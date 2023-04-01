@@ -1,6 +1,7 @@
 from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtWidgets import QTableWidgetItem
 from types import NoneType
+import numpy as np
 
 import time
 import registry
@@ -287,7 +288,9 @@ def updateUiScores(self):
         #Текущая
         self.lineEditCpuCurrentTemp.setText(str(data_lists['current_temp']))
         #Максимальная
-        max_temp = max([max_temp['value'] for max_temp in self.data_lists['max_temp'] if max_temp['type'] == 'correct'])
+        correct_max_temps_array = [max_temp['value'] for max_temp in self.data_lists['max_temp']]
+        max_temp = max(correct_max_temps_array)
+        
         self.lineEditCpuMaxTemp.setText(str(max_temp))
 
         #Средние температуры
@@ -308,7 +311,9 @@ def updateUiScores(self):
         #Текущий
         self.lineEditCpuCurrentTDP.setText(str(data_lists['current_TDP']))
         #Максимальный
-        max_TDP = max([max_TDP['value'] for max_TDP in self.data_lists['max_TDP'] if max_TDP['type'] == 'correct'])
+        correct_max_TDP_array = [max_TDP['value'] for max_TDP in self.data_lists['max_TDP']]
+        max_TDP = max(correct_max_TDP_array)
+        
         self.lineEditCpuMaxTDP.setText(str(max_TDP))
 
     for core in self.data_lists['cpu']['cores']:
