@@ -28,14 +28,7 @@ It will be helpful to:
 - Low CPU usage. For Ryzen 4600H it's < 1% on the peak, most of the time — 0.01%
 - English and Russian localization
 
-Basically, it was developed for notebooks but may help with desktop CPUs too. Tested with:
-
-- Ryzen 4600H
-- Ryzen 4800H
-- Intel Pentium Gold 7505
-- 11th Gen Intel Core i7-1165G7
-
-And win10/11.
+Basically, it was developed for notebooks but may help with desktop CPUs too.
 
 If you have issues with AveTemp on your CPU/system please contact me: https://t.me/PaulKhoziashev, you can write me english or russian. Also, you can send me the issue here: https://github.com/treepoint/AveTemp/issues
 
@@ -96,14 +89,7 @@ AveTemp — программа на базе python и LibreHardwareMonitorLib �
 - Низкое использование процессора. Для Ryzen 4600H это < 1% максимум, а большую часть времени - 0,01%
 - Русская и английская локализация
 
-В основном разрабатывал для ноутбуков, однако может быть полезно и для настольных CPU. Протестировано с:
-
-- Ryzen 4600H
-- Ryzen 4800H
-- Intel Pentium Gold 7505
-- 11th Gen Intel Core i7-1165G7
-
-на win10/11.
+В основном разрабатывал для ноутбуков, однако может быть полезно и для настольных CPU.
 
 Если обнаружите проблемы при работе на вашем процессоре/системе, пожалуйста, свяжитесь со мной: https://t.me/PaulKhoziashev. Еще можно описать проблему здесь: https://github.com/treepoint/AveTemp/issues
 
