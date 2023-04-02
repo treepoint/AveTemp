@@ -96,7 +96,7 @@ def correct_false_peak_data(array, new_value, log = 0):
 
     tmp_array = copy.copy(array)
     array_len = len(tmp_array)
-    correct_coef = 1.25
+    correct_coef = 1.30
 
     #Если массив пустой — вернем как есть
     if array_len == 0:
@@ -122,6 +122,10 @@ def correct_false_peak_data(array, new_value, log = 0):
 
     #Если новое значение не определили — значит оно и не максимальное, вернем проверенный массив
     if new_max_temp == None:
+        #Но до того посмотрим, если в массиве первое значение сомнительное — дропнем его
+        if corrected_array[0]['type'] == 'doubtful':
+            del corrected_array[0]
+
         return corrected_array
 
     corrected_array.insert(0, new_max_temp)

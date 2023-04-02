@@ -80,7 +80,7 @@ class Config:
         self.system_data_collect_interval = 300
         self.max_values_cache_ticks = max_values_cache_ticks
         self.name = 'AveTemp'
-        self.version = '1.4.6'
+        self.version = '1.4.7'
 
     #Локализация
     def getCurrentLanguageCode(self):
