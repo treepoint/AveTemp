@@ -11,3 +11,4 @@ psutil
 beautifulsoup4
 langdetect
 wheel
+numpy
