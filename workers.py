@@ -1,6 +1,7 @@
 from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtWidgets import QTableWidgetItem
 from types import NoneType
+import numpy as np
 
 import time
 import registry
@@ -57,6 +58,7 @@ class CollectSlowDataWorker(QThread):
         self.computer = app_self.computer
         self.data_lists = app_self.data_lists
         self.no_debug = app_self.no_debug
+        self.hardware_dump = app_self.hardware_dump
 
     result = pyqtSignal(dict)
 
@@ -286,7 +288,10 @@ def updateUiScores(self):
         #Текущая
         self.lineEditCpuCurrentTemp.setText(str(data_lists['current_temp']))
         #Максимальная
-        self.lineEditCpuMaxTemp.setText(str(data_lists['max_temp']))
+        correct_max_temps_array = [max_temp['value'] for max_temp in self.data_lists['max_temp']]
+        max_temp = max(correct_max_temps_array)
+        
+        self.lineEditCpuMaxTemp.setText(str(max_temp))
 
         #Средние температуры
         row = 0
@@ -306,7 +311,10 @@ def updateUiScores(self):
         #Текущий
         self.lineEditCpuCurrentTDP.setText(str(data_lists['current_TDP']))
         #Максимальный
-        self.lineEditCpuMaxTDP.setText(str(data_lists['max_TDP']))
+        correct_max_TDP_array = [max_TDP['value'] for max_TDP in self.data_lists['max_TDP']]
+        max_TDP = max(correct_max_TDP_array)
+        
+        self.lineEditCpuMaxTDP.setText(str(max_TDP))
 
     for core in self.data_lists['cpu']['cores']:
         self.CPUinfoTable.setItem(core['id'], 0, QTableWidgetItem(core['clock']))

@@ -27,6 +27,8 @@ def initHardware(self):
     computer.IsCpuEnabled = True 
     computer.Open()
 
+    logger.truncateHardwareDumpFile(self)
+
     return computer
 
 @logger.log
@@ -104,8 +106,13 @@ def collectFastData(self, data_lists, cpu_threads):
                 sensors = str(sensor.Name).split('#')
 
                 #костыль для Intel
+                #у него наименование потоков идет так: 
+                # "CPU Core #1 Thread #1"
+                # "CPU Core #1 Thread #2"
                 if len(sensors) == 3:
-                    number = sensors[2]
+                    core_number = sensors[1].split(' Thread')[0]
+                    core_thread_number = sensors[2]
+                    number = str(int(core_number)*2+int(core_thread_number)-2)
                 else:
                     number = sensors[1]
 
@@ -151,7 +158,13 @@ def collectSlowData(self, data_lists):
     for hardware in self.computer.Hardware:
         hardware.Update()
 
+        logger.dumpHardwareToFile(self, '----------sensors---------')
+
         for sensor in hardware.Sensors:
+
+            sensor_log = f'Type: "{ sensor.SensorType }", Name: "{ sensor.Name }", Value: "{ sensor.Value }"'
+
+            logger.dumpHardwareToFile(self, sensor_log)
 
             if type(sensor.Value) == NoneType:
                 continue
@@ -166,9 +179,11 @@ def collectSlowData(self, data_lists):
                     data['cpu']['temp'] = new_temp
                 else:
                     if new_temp > 0:
-                        data['cpu']['temp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_temp, old_temp)
+                        new_temp = compareAndGetCorrectSensorDataBetweenOldAndNew(new_temp, old_temp)
                     else:
-                        data['cpu']['temp'] = old_temp
+                        new_temp = old_temp
+
+                    data['cpu']['temp'] = new_temp
 
                 continue
 
@@ -182,9 +197,11 @@ def collectSlowData(self, data_lists):
                     data['cpu']['tdp'] = new_tdp
                 else:
                     if new_tdp > 0:
-                        data['cpu']['tdp'] = compareAndGetCorrectSensorDataBetweenOldAndNew(new_tdp, old_tdp)
+                        new_tdp = compareAndGetCorrectSensorDataBetweenOldAndNew(new_tdp, old_tdp)
                     else:
-                        data['cpu']['tdp'] = old_tdp
+                        new_tdp = old_tdp
+
+                    data['cpu']['tdp'] = new_tdp
 
                 continue 
 
@@ -196,7 +213,9 @@ def collectSlowData(self, data_lists):
 
                 data['cpu']['cores'] += [{'id' : int(number), 'clock' : value }]
                 continue 
-                    
+
+        logger.dumpHardwareToFile(self, '----------sensors end---------')
+
     return data
 
 def compareAndGetCorrectSensorDataBetweenOldAndNew(new_data, old_data, smoothing_factor = 1.5, theshold = 3):
@@ -345,4 +364,4 @@ def checkSMT(self):
     return self.cpu_cores != self.cpu_threads
 
 if __name__ == "__main__":
-    collectFastData()
+    checkSMT()

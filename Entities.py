@@ -9,10 +9,10 @@ class DataLists:
                             'current_temp' : 0,
                             'prev_current_temp' : 0,
                             'min_temp' : 0,
-                            'max_temp' : 0,
+                            'max_temp' : [], #Нам потом надобно проверять на скачки, потому массив
                             'current_TDP' : 0,
                             'min_TDP' : 0,
-                            'max_TDP' : 0,
+                            'max_TDP' : [], #Нам потом надобно проверять на скачки, потому массив
                             'cpu' : 
                                     { 
                                         'cores' : [],
@@ -41,7 +41,8 @@ class Config:
                  CPU_load_state = 100,
                  is_turbo_managment_on = False,
                  CPU_turbo_idle_id = 0,
-                 CPU_turbo_load_id = 2
+                 CPU_turbo_load_id = 2,
+                 max_values_cache_ticks = 5
                  ):
         #Локализация
         self.current_language_code = 'en'
@@ -77,8 +78,9 @@ class Config:
         #Служебные
         self.system_uses_light_theme = False
         self.system_data_collect_interval = 300
+        self.max_values_cache_ticks = max_values_cache_ticks
         self.name = 'AveTemp'
-        self.version = '1.4.6'
+        self.version = '1.4.7'
 
     #Локализация
     def getCurrentLanguageCode(self):
@@ -209,6 +211,9 @@ class Config:
 
     def getSystemUsesLightTheme(self):
         return self.system_uses_light_theme
+    
+    def getMaxValuesCacheTicks(self):
+        return self.max_values_cache_ticks
 
     def getName(self):
         return self.name
@@ -337,7 +342,7 @@ class Localizations:
                                 "min_freq": "Minimum frequencies (energy efficient)",
                                 "basic_freq": "Base frequencies (balanced)",
                                 "max_freq": "Maximum frequencies (productive)",
-                                "new_release": "New version available. <a style='color: inherit;' href=\'<release_url>\'>Download</a>",
+                                "new_release": "Version <version> available. <a style='color: inherit;' href=\'<release_url>\'>Download</a>",
                                 "new_release_description": "",
                                 "close": "Close",
                                 "alert_title": "",
@@ -390,7 +395,7 @@ class Localizations:
                                 "min_freq": "Минимальные частоты (энергоэффективно)",
                                 "basic_freq": "Базовые частоты (сбалансировано)",
                                 "max_freq": "Максимальные частоты (производительно)",
-                                "new_release": "Доступна новая версия. <a style='color: inherit;' href=\'<release_url>\'>Скачать</a>",
+                                "new_release": "Доступна версия <version>. <a style='color: inherit;' href=\'<release_url>\'>Скачать</a>",
                                 "new_release_description": "",                    
                                 "close": "Закрыть",
                                 "alert_title": "",

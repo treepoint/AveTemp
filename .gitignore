@@ -2,3 +2,4 @@ __pycache__
 output
 backup.json
 debug*.txt
+hardware_dump.txt

@@ -137,23 +137,23 @@
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-    border:solid 0px;
-    qproperty-icon: url(&quot; &quot;); /* empty image */
-    /*qproperty-iconSize: 20px 20px;  space for the background image */
-    border-image: url(./images/save.svg);
-    background-repeat: no-repeat;
-}
+                border:solid 0px;
+                qproperty-icon: url(&quot; &quot;); /* empty image */
+                /*qproperty-iconSize: 20px 20px;  space for the background image */
+                border-image: url(./images/save.svg);
+                background-repeat: no-repeat;
+            }
 
-QPushButton:hover {
-    border-image : url(./images/save_hover.svg);
-    background-repeat: no-repeat;
-}
+            QPushButton:hover {
+                border-image : url(./images/save_hover.svg);
+                background-repeat: no-repeat;
+            }
 
-QPushButton:pressed
-{
-    border-image : url(./images/save_pressed.svg);
-    background-repeat: no-repeat;
-}</string>
+            QPushButton:pressed
+            {
+                border-image : url(./images/save_pressed.svg);
+                background-repeat: no-repeat;
+            }</string>
             </property>
             <property name="text">
              <string/>
@@ -188,20 +188,134 @@ QPushButton:pressed
           <number>4</number>
          </property>
          <item>
-          <widget class="QLabel" name="labelNameAndVersion">
-           <property name="styleSheet">
-            <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+          <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <property name="spacing">
+            <number>0</number>
            </property>
-           <property name="text">
-            <string>AveTemp</string>
+           <property name="topMargin">
+            <number>0</number>
            </property>
-           <property name="alignment">
-            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           <property name="bottomMargin">
+            <number>0</number>
            </property>
-           <property name="openExternalLinks">
-            <bool>true</bool>
-           </property>
-          </widget>
+           <item>
+            <widget class="QLabel" name="labelNameAndVersion">
+             <property name="styleSheet">
+              <string notr="true">font-weight: bold; color: #222; font-size:12px;</string>
+             </property>
+             <property name="text">
+              <string>AveTemp</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             </property>
+             <property name="openExternalLinks">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_11">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonBoosty">
+             <property name="maximumSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+                border:solid 0px;
+                qproperty-icon: url(&quot; &quot;); /* empty image */
+                /*qproperty-iconSize: 20px 20px;  space for the background image */
+                border-image: url(./images/boosty.png);
+                background-repeat: no-repeat;
+            }
+
+            QPushButton:hover {
+                border-image : url(./images/boosty_hover.png);
+                background-repeat: no-repeat;
+            }
+
+            QPushButton:pressed
+            {
+                border-image : url(./images/boosty_pressed.png);
+                background-repeat: no-repeat;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer_10">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::Fixed</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>8</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="buttonPatreon">
+             <property name="maximumSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+                border:solid 0px;
+                qproperty-icon: url(&quot; &quot;); /* empty image */
+                /*qproperty-iconSize: 20px 20px;  space for the background image */
+                border-image: url(./images/patreon.png);
+                background-repeat: no-repeat;
+            }
+
+            QPushButton:hover {
+                border-image : url(./images/patreon_hover.png);
+                background-repeat: no-repeat;
+            }
+
+            QPushButton:pressed
+            {
+                border-image : url(./images/patreon_pressed.png);
+                background-repeat: no-repeat;
+            }</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="flat">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <widget class="Line" name="line">
