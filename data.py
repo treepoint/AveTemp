@@ -1,7 +1,6 @@
 from math import inf
 import copy
 import support
-import numpy as np
 
 #Функции для сброса записанных данных
 def resetGeneralTemps(self):
@@ -103,7 +102,7 @@ def correct_false_peak_data(array, new_value, log = 0):
         return([{ 'value' : new_value, 'type' : 'correct'}])
 
     #Занесем новое значение с учетом погрешности
-    avg_max = np.average([value['value'] for value in tmp_array])
+    avg_max = support.average([value['value'] for value in tmp_array])
     new_max_temp = None
 
     if new_value >= avg_max*correct_coef:

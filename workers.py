@@ -1,7 +1,6 @@
 from PyQt6.QtCore import QThread, pyqtSignal
 from PyQt6.QtWidgets import QTableWidgetItem
 from types import NoneType
-import numpy as np
 
 import time
 import registry

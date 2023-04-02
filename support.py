@@ -266,5 +266,9 @@ def nvl(first, second):
 
     return first
 
+# np.average аналог
+def average(array):
+    return sum(array)/len(array)
+
 if __name__ == "__main__":
     print(getCurrentPath())
