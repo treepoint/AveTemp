@@ -3,3 +3,5 @@ output
 backup.json
 debug*.txt
 hardware_dump.txt
+log.txt
+to_remove.txt
