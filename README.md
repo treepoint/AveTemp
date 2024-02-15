@@ -1,6 +1,6 @@
 # Intro
 
-Подробно описание есть на сайте — https://avetemp.ru/
+Подробное описание есть на сайте — https://avetemp.ru/
 
 English description of the programm is available on the site — https://avetemp.ru/en
 
